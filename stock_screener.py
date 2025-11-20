@@ -28,18 +28,34 @@ class StockScreener:
                 if condition_met:
                     # Calculate ATR
                     atr, atr_pct = self.analyzer.calculate_atr(updated_data, 14)
-                    stock_data = StockData(
+                    
+                    # Filter: Skip stocks with ATR% < 0.5%
+                    if atr_pct < 0.5:
+                        continue
+                    
+                    # Calculate volume metrics
+                    last_volume, avg_volume_14d = self.analyzer.calculate_volume_metrics(updated_data)
+                    
+                    # Determine if stock is above SMA
+                    above_sma = last_close > last_sma
+                    
+                    stock_info = StockData(
                         symbol=symbol,
                         last_close=last_close,
                         sma150=last_sma,
                         atr=atr,
-                        atr_percent=atr_pct
+                        atr_percent=atr_pct,
+                        last_volume=last_volume,
+                        avg_volume_14d=avg_volume_14d,
+                        above_sma=above_sma
                     )
 
-                    if last_close > last_sma:
-                        hot_stocks[symbol] = stock_data
+                    # Hot stocks: Above SMA AND volume > 14-day average
+                    if above_sma and last_volume > avg_volume_14d:
+                        hot_stocks[symbol] = stock_info
+                    # Watch list: (Above SMA but low volume) OR (Below SMA)
                     else:
-                        watch_list[symbol] = stock_data
+                        watch_list[symbol] = stock_info
 
             except Exception as e:
                 failed_tickers.append(symbol)

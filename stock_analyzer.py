@@ -20,6 +20,17 @@ class StockAnalyzer:
         return average_atr, average_atr/average_close * 100
 
     @staticmethod
+    def calculate_volume_metrics(data: pd.DataFrame) -> Tuple[float, float]:
+        """Calculate last day volume and 14-day average volume.
+        Returns: (last_volume, avg_volume_14d)
+        """
+        # Get last 15 days of volume data (last day + previous 14 days)
+        volume_data = data.head(15)["Volume"].iloc[:, 0].values
+        last_volume = float(volume_data[0])  # Most recent day
+        avg_volume_14d = float(volume_data[1:15].mean())  # Previous 14 days average
+        return last_volume, avg_volume_14d
+
+    @staticmethod
     def validate_min_data(data: pd.DataFrame, window: int = 150) -> bool:
         """Check if there are at least `window` non-NaN closing prices."""
         return data["Close"].dropna().shape[0] >= window

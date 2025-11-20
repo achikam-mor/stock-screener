@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-11-19T23:40:00.000000",
+  "timestamp": "2025-11-20T12:00:00.000000",
   "hot_stocks": [
     {
       "symbol": "AAPL",
@@ -7,7 +7,11 @@
       "sma150": 185.20,
       "distance_percent": 5.56,
       "atr": 3.45,
-      "atr_percent": 1.76
+      "atr_percent": 1.76,
+      "last_volume": 65000000,
+      "avg_volume_14d": 50000000,
+      "volume_ratio": 1.30,
+      "above_sma": true
     },
     {
       "symbol": "MSFT",
@@ -15,40 +19,80 @@
       "sma150": 395.10,
       "distance_percent": 4.35,
       "atr": 8.20,
-      "atr_percent": 1.99
+      "atr_percent": 1.99,
+      "last_volume": 28000000,
+      "avg_volume_14d": 22000000,
+      "volume_ratio": 1.27,
+      "above_sma": true
     },
     {
-      "symbol": "NVDA",
+      "symbol": "META",
       "last_close": 520.75,
       "sma150": 485.30,
       "distance_percent": 7.30,
       "atr": 15.60,
-      "atr_percent": 3.00
+      "atr_percent": 3.00,
+      "last_volume": 18500000,
+      "avg_volume_14d": 16000000,
+      "volume_ratio": 1.16,
+      "above_sma": true
     }
   ],
   "watch_list": [
     {
-      "symbol": "TSLA",
-      "last_close": 235.80,
-      "sma150": 245.50,
-      "distance_percent": -3.95,
-      "atr": 12.40,
-      "atr_percent": 5.26
+      "symbol": "AMZN",
+      "last_close": 178.50,
+      "sma150": 172.30,
+      "distance_percent": 3.60,
+      "atr": 4.80,
+      "atr_percent": 2.69,
+      "last_volume": 42000000,
+      "avg_volume_14d": 48000000,
+      "volume_ratio": 0.88,
+      "above_sma": true
     },
     {
-      "symbol": "AMD",
-      "last_close": 142.60,
-      "sma150": 148.20,
-      "distance_percent": -3.78,
-      "atr": 6.80,
-      "atr_percent": 4.77
+      "symbol": "BLK",
+      "last_close": 890.20,
+      "sma150": 885.10,
+      "distance_percent": 0.58,
+      "atr": 12.50,
+      "atr_percent": 1.40,
+      "last_volume": 450000,
+      "avg_volume_14d": 520000,
+      "volume_ratio": 0.87,
+      "above_sma": true
+    },
+    {
+      "symbol": "JPM",
+      "last_close": 198.80,
+      "sma150": 205.40,
+      "distance_percent": -3.21,
+      "atr": 3.20,
+      "atr_percent": 1.61,
+      "last_volume": 12000000,
+      "avg_volume_14d": 11000000,
+      "volume_ratio": 1.09,
+      "above_sma": false
+    },
+    {
+      "symbol": "VRNS",
+      "last_close": 48.30,
+      "sma150": 52.10,
+      "distance_percent": -7.30,
+      "atr": 1.80,
+      "atr_percent": 3.73,
+      "last_volume": 850000,
+      "avg_volume_14d": 920000,
+      "volume_ratio": 0.92,
+      "above_sma": false
     }
   ],
-  "failed_tickers": ["XYZ", "ABC"],
+  "failed_tickers": [],
   "summary": {
     "hot_stocks_count": 3,
-    "watch_list_count": 2,
-    "failed_count": 2,
-    "total_analyzed": 5
+    "watch_list_count": 4,
+    "failed_count": 0,
+    "total_analyzed": 7
   }
 }
