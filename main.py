@@ -31,7 +31,7 @@ async def main():
     results_manager.print_results(results)
     
     # Save results to JSON file for web display
-    results_manager.save_to_json(results, "results.json")
+    results_manager.save_to_json(results, len(tickers), "results.json")
 
 if __name__ == "__main__":
     asyncio.run(main())

@@ -11,6 +11,7 @@ class StockScreener:
         hot_stocks: Dict[str, StockData] = {}
         watch_list: Dict[str, StockData] = {}
         failed_tickers: List[str] = []
+        filtered_by_sma: List[str] = []
 
         for symbol, data in stock_data.items():
             try:
@@ -46,8 +47,11 @@ class StockScreener:
                         hot_stocks[symbol] = stock_data
                     else:
                         watch_list[symbol] = stock_data
+                else:
+                    # Stock has data but doesn't meet SMA conditions
+                    filtered_by_sma.append(symbol)
 
             except Exception as e:
                 failed_tickers.append(symbol)
 
-        return ScreenerResults(hot_stocks, watch_list, failed_tickers)
+        return ScreenerResults(hot_stocks, watch_list, failed_tickers, filtered_by_sma)

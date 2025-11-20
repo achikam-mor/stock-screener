@@ -44,8 +44,12 @@ class ResultsManager:
         else:
             print("\n✅ Successfully fetched data for all tickers!")
 
+        if results.filtered_by_sma:
+            print(f"\n=== Filtered by SMA conditions ({len(results.filtered_by_sma)} tickers) ===")
+            print(results.filtered_by_sma)
+
     @staticmethod
-    def save_to_json(results: ScreenerResults, filename: str = "results.json") -> None:
+    def save_to_json(results: ScreenerResults, total_tickers: int, filename: str = "results.json") -> None:
         """Save screening results to JSON file for web display."""
         # Sort hot stocks by distance from SMA
         sorted_hot_stocks = sorted(
@@ -92,11 +96,13 @@ class ResultsManager:
             "hot_stocks": hot_stocks_list,
             "watch_list": watch_list,
             "failed_tickers": results.failed_tickers,
+            "filtered_by_sma": results.filtered_by_sma,
             "summary": {
                 "hot_stocks_count": len(hot_stocks_list),
                 "watch_list_count": len(watch_list),
                 "failed_count": len(results.failed_tickers),
-                "total_analyzed": len(hot_stocks_list) + len(watch_list)
+                "filtered_by_sma_count": len(results.filtered_by_sma),
+                "total_analyzed": total_tickers
             }
         }
 

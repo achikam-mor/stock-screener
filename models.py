@@ -16,3 +16,4 @@ class ScreenerResults:
     hot_stocks: Dict[str, StockData]
     watch_list: Dict[str, StockData]
     failed_tickers: list[str]
+    filtered_by_sma: list[str]

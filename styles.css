@@ -3,6 +3,7 @@
     --hot-color: #ef4444;
     --watch-color: #f59e0b;
     --success-color: #10b981;
+    --filtered-color: #8b5cf6;
     --failed-color: #6b7280;
     --bg-dark: #0f172a;
     --bg-card: #1e293b;
@@ -216,6 +217,10 @@ h1 {
 
 .summary-card.watch .card-number {
     color: var(--watch-color);
+}
+
+.summary-card.filtered .card-number {
+    color: var(--filtered-color);
 }
 
 .summary-card.analyzed .card-number {

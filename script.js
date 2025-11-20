@@ -27,6 +27,7 @@ function displayResults(data) {
     // Update summary cards
     document.getElementById('hot-count').textContent = data.summary.hot_stocks_count;
     document.getElementById('watch-count').textContent = data.summary.watch_list_count;
+    document.getElementById('filtered-count').textContent = data.summary.filtered_by_sma_count;
     document.getElementById('total-count').textContent = data.summary.total_analyzed;
     document.getElementById('failed-count').textContent = data.summary.failed_count;
 
