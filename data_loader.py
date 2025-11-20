@@ -23,7 +23,7 @@ class DataLoader:
     async def _fetch_stock_data_async(self, symbol: str) -> Optional[pd.DataFrame]:
         """Fetch single stock data asynchronously"""
         try:
-            data = yf.download(symbol, period="500d", interval="1d", auto_adjust=False, progress=False)
+            data = yf.download(symbol, period="300d", interval="1d", auto_adjust=False, progress=False)
             if data.empty:
                 self.failed_tickers.append(symbol)  # Track symbols with empty data
                 return None
