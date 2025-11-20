@@ -16,15 +16,19 @@ class ResultsManager:
         )
         for symbol, stock in sorted_stocks:
             distance_pct = (stock.last_close - stock.sma150) / stock.sma150 * 100
-            print(f"🔥 {symbol}: LastClose={stock.last_close:.2f}, "
-                  f"SMA150={stock.sma150:.2f} (Distance: {distance_pct:.2f}%), "
-                  f"ATR14={stock.atr:.2f} ({stock.atr_percent:.2f}%)")
+            volume_ratio = stock.last_volume / stock.avg_volume_14d if stock.avg_volume_14d > 0 else 0
+            print(f"🔥 {symbol}: LastClose=${stock.last_close:.2f}, "
+                  f"SMA150=${stock.sma150:.2f} (Distance: {distance_pct:.2f}%), "
+                  f"ATR14=${stock.atr:.2f} ({stock.atr_percent:.2f}%), "
+                  f"Volume: {stock.last_volume:,.0f} (Avg 14d: {stock.avg_volume_14d:,.0f}, Ratio: {volume_ratio:.2f}x)")
 
         print(f"\n=== Watch List (Last Close below SMA150) ===\n")
         for symbol, stock in results.watch_list.items():
-            print(f"👀 {symbol}: LastClose={stock.last_close:.2f}, "
-                  f"SMA150={stock.sma150:.2f}, "
-                  f"ATR14={stock.atr:.2f} ({stock.atr_percent:.2f}%)")
+            volume_ratio = stock.last_volume / stock.avg_volume_14d if stock.avg_volume_14d > 0 else 0
+            print(f"👀 {symbol}: LastClose=${stock.last_close:.2f}, "
+                  f"SMA150=${stock.sma150:.2f}, "
+                  f"ATR14=${stock.atr:.2f} ({stock.atr_percent:.2f}%), "
+                  f"Volume: {stock.last_volume:,.0f} (Avg 14d: {stock.avg_volume_14d:,.0f}, Ratio: {volume_ratio:.2f}x)")
 
         if results.failed_tickers:
             print("\n=== Failed to fetch data for the following tickers ===")
@@ -50,7 +54,9 @@ class ResultsManager:
                 "sma150": round(stock.sma150, 2),
                 "distance_percent": round(distance_pct, 2),
                 "atr": round(stock.atr, 2),
-                "atr_percent": round(stock.atr_percent, 2)
+                "atr_percent": round(stock.atr_percent, 2),
+                "last_volume": int(stock.last_volume),
+                "avg_volume_14d": int(stock.avg_volume_14d)
             })
 
         watch_list = []
@@ -62,7 +68,9 @@ class ResultsManager:
                 "sma150": round(stock.sma150, 2),
                 "distance_percent": round(distance_pct, 2),
                 "atr": round(stock.atr, 2),
-                "atr_percent": round(stock.atr_percent, 2)
+                "atr_percent": round(stock.atr_percent, 2),
+                "last_volume": int(stock.last_volume),
+                "avg_volume_14d": int(stock.avg_volume_14d)
             })
 
         output = {

@@ -33,7 +33,7 @@ class DataLoader:
                 for col in ["Open", "High", "Low", "Close"]:
                     data[col] = data[col] / splits
 
-            return data[["Open", "High", "Low", "Close"]]
+            return data[["Open", "High", "Low", "Close", "Volume"]]
         except Exception:
             self.failed_tickers.append(symbol)  # Track symbols that raised exceptions
             return None

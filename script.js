@@ -51,7 +51,7 @@ function displayStocks(stocks, containerId, type) {
     }
 
     container.innerHTML = stocks.map(stock => `
-        <div class="stock-card">
+        <div class="stock-card" data-ticker="${stock.symbol}">
             <div class="stock-symbol">
                 ${stock.symbol}
                 <span class="badge badge-${type}">
@@ -81,6 +81,14 @@ function displayStocks(stocks, containerId, type) {
                     <span class="info-label">ATR %</span>
                     <span class="info-value">${stock.atr_percent.toFixed(2)}%</span>
                 </div>
+                <div class="info-row">
+                    <span class="info-label">Last Volume</span>
+                    <span class="info-value">${(stock.last_volume / 1000000).toFixed(2)}M</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Avg Volume (14d)</span>
+                    <span class="info-value">${(stock.avg_volume_14d / 1000000).toFixed(2)}M</span>
+                </div>
             </div>
         </div>
     `).join('');
@@ -95,7 +103,7 @@ function displayFailedTickers(tickers) {
     container.innerHTML = `
         <div class="failed-list">
             ${tickers.map(ticker => `
-                <span class="failed-ticker">${ticker}</span>
+                <span class="failed-ticker" data-ticker="${ticker}">${ticker}</span>
             `).join('')}
         </div>
     `;
@@ -118,3 +126,73 @@ document.addEventListener('DOMContentLoaded', loadResults);
 
 // Auto-refresh every 5 minutes
 setInterval(loadResults, 5 * 60 * 1000);
+
+// Search for ticker and scroll to its location
+function searchTicker() {
+    const input = document.getElementById('ticker-search');
+    const message = document.getElementById('search-message');
+    const ticker = input.value.trim().toUpperCase();
+    
+    // Clear previous message
+    message.textContent = '';
+    message.className = 'search-message';
+    
+    if (!ticker) {
+        message.textContent = 'Please enter a ticker';
+        message.classList.add('error');
+        setTimeout(() => {
+            message.textContent = '';
+            message.className = 'search-message';
+        }, 3000);
+        return;
+    }
+    
+    // Search in all stock cards and failed tickers
+    const allElements = document.querySelectorAll('[data-ticker]');
+    let found = false;
+    
+    for (const element of allElements) {
+        if (element.getAttribute('data-ticker') === ticker) {
+            // Scroll to the element
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            // Highlight the element briefly
+            element.style.transition = 'background-color 0.3s ease';
+            const originalBg = window.getComputedStyle(element).backgroundColor;
+            element.style.backgroundColor = 'rgba(0, 123, 255, 0.2)';
+            
+            setTimeout(() => {
+                element.style.backgroundColor = originalBg;
+            }, 2000);
+            
+            // Show success message
+            message.textContent = `Found: ${ticker}`;
+            message.classList.add('success');
+            found = true;
+            break;
+        }
+    }
+    
+    if (!found) {
+        message.textContent = `Ticker "${ticker}" not found`;
+        message.classList.add('error');
+    }
+    
+    // Clear message after 3 seconds
+    setTimeout(() => {
+        message.textContent = '';
+        message.className = 'search-message';
+    }, 3000);
+}
+
+// Allow Enter key to trigger search
+document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('ticker-search');
+    if (searchInput) {
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                searchTicker();
+            }
+        });
+    }
+});

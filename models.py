@@ -8,6 +8,8 @@ class StockData:
     sma150: float
     atr: float
     atr_percent: float
+    last_volume: float
+    avg_volume_14d: float
 
 @dataclass
 class ScreenerResults:

@@ -28,12 +28,18 @@ class StockScreener:
                 if condition_met:
                     # Calculate ATR
                     atr, atr_pct = self.analyzer.calculate_atr(updated_data, 14)
+                    
+                    # Calculate volume metrics
+                    last_volume, avg_volume_14d = self.analyzer.calculate_volume_metrics(updated_data)
+                    
                     stock_data = StockData(
                         symbol=symbol,
                         last_close=last_close,
                         sma150=last_sma,
                         atr=atr,
-                        atr_percent=atr_pct
+                        atr_percent=atr_pct,
+                        last_volume=last_volume,
+                        avg_volume_14d=avg_volume_14d
                     )
 
                     if last_close > last_sma:

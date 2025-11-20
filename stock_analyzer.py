@@ -42,3 +42,14 @@ class StockAnalyzer:
         condition2 = slope >= 0
 
         return condition1 and condition2, last_close, last_sma
+
+    @staticmethod
+    def calculate_volume_metrics(data: pd.DataFrame) -> Tuple[float, float]:
+        """
+        Calculate volume metrics: last day volume and average of previous 14 days.
+        Uses 15 days total (1 last + 14 previous).
+        """
+        volumes = data["Volume"].iloc[:15]  # Get last 15 days
+        last_volume = float(volumes.iloc[0].values[0])  # Most recent day
+        avg_volume_14d = float(volumes.iloc[1:15].mean().values[0])  # Previous 14 days average
+        return last_volume, avg_volume_14d

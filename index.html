@@ -13,6 +13,12 @@
             <h1>📈 Stock Screener Dashboard</h1>
             <p class="subtitle">SMA150 & ATR14 Technical Analysis</p>
             <div id="last-updated" class="timestamp">Loading...</div>
+            
+            <div class="search-container">
+                <input type="text" id="ticker-search" placeholder="🔍 Search ticker..." maxlength="10">
+                <button id="search-button" onclick="searchTicker()">🔎 Search</button>
+                <span id="search-message" class="search-message"></span>
+            </div>
         </header>
 
         <div class="summary-cards">
