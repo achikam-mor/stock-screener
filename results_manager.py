@@ -23,7 +23,15 @@ class ResultsManager:
                   f"Volume: {stock.last_volume:,.0f} (Avg 14d: {stock.avg_volume_14d:,.0f}, Ratio: {volume_ratio:.2f}x)")
 
         print(f"\n=== Watch List (Last Close below SMA150) ===\n")
-        for symbol, stock in results.watch_list.items():
+        # Sort watch list by distance from SMA (same as hot stocks)
+        sorted_watch_list = sorted(
+            results.watch_list.items(),
+            key=lambda x: (
+                abs((x[1].last_close - x[1].sma150) / x[1].sma150 * 100),  # Distance from SMA as percentage
+                x[1].atr  # ATR as tiebreaker
+            )
+        )
+        for symbol, stock in sorted_watch_list:
             volume_ratio = stock.last_volume / stock.avg_volume_14d if stock.avg_volume_14d > 0 else 0
             print(f"👀 {symbol}: LastClose=${stock.last_close:.2f}, "
                   f"SMA150=${stock.sma150:.2f}, "
@@ -59,8 +67,14 @@ class ResultsManager:
                 "avg_volume_14d": int(stock.avg_volume_14d)
             })
 
+        # Sort watch list by distance from SMA (same as hot stocks)
+        sorted_watch_list = sorted(
+            results.watch_list.items(),
+            key=lambda x: abs((x[1].last_close - x[1].sma150) / x[1].sma150 * 100)
+        )
+        
         watch_list = []
-        for symbol, stock in results.watch_list.items():
+        for symbol, stock in sorted_watch_list:
             distance_pct = (stock.last_close - stock.sma150) / stock.sma150 * 100
             watch_list.append({
                 "symbol": symbol,
