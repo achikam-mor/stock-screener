@@ -561,18 +561,34 @@ h1 {
     padding: 40px;
     border-radius: 12px;
     border: 1px solid var(--border-color);
-    text-align: center;
+    text-align: left;
+    max-width: 900px;
+    margin: 0 auto;
 }
 
 .welcome-section h2 {
     font-size: 2rem;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     color: var(--text-primary);
+    text-align: center;
 }
 
 .welcome-section p {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     color: var(--text-secondary);
+    line-height: 1.8;
+    margin-bottom: 15px;
+}
+
+.welcome-section p:last-child {
+    margin-bottom: 0;
+    margin-top: 20px;
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+.welcome-section strong {
+    color: var(--text-primary);
 }
 
 .badge {
@@ -643,8 +659,9 @@ footer p {
     .nav-brand {
         width: 100%;
         text-align: center;
-        padding: 12px 0;
+        padding: 10px 0;
         border-bottom: 1px solid var(--border-color);
+        font-size: 1.1rem;
     }
     
     .nav-menu {
@@ -655,7 +672,7 @@ footer p {
     }
     
     .nav-menu a {
-        padding: 12px 16px;
+        padding: 10px 14px;
         font-size: 0.85rem;
         white-space: nowrap;
         flex-shrink: 0;
@@ -785,11 +802,12 @@ footer p {
     }
     
     .nav-brand {
-        font-size: 1.2rem;
+        font-size: 1rem;
+        padding: 8px 0;
     }
     
     .nav-menu a {
-        padding: 10px 12px;
+        padding: 8px 10px;
         font-size: 0.8rem;
     }
     

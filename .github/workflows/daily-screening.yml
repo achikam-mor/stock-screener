@@ -2,9 +2,21 @@ name: Daily Stock Screening
 
 on:
   schedule:
-    # Runs at 23:40 Jerusalem time (21:40 UTC in winter, 20:40 UTC in summer)
-    # Using 20:40 UTC to cover daylight saving time
-    - cron: '40 20 * * *'
+    # NYSE opens at 9:30 AM ET, closes at 4:00 PM ET
+    # Runs Monday to Friday only
+    
+    # 8:30 AM ET (1 hour before NYSE opens) = 13:30 UTC
+    - cron: '30 13 * * 1-5'
+    
+    # 11:30 AM ET (2 hours after NYSE opens) = 16:30 UTC
+    - cron: '30 16 * * 1-5'
+    
+    # 1:30 PM ET (4 hours after NYSE opens) = 18:30 UTC
+    - cron: '30 18 * * 1-5'
+    
+    # 4:15 PM ET (15 minutes after NYSE closes) = 21:15 UTC
+    - cron: '15 21 * * 1-5'
+    
   workflow_dispatch: # Allows manual trigger from GitHub Actions tab
 
 jobs:

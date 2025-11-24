@@ -25,8 +25,8 @@ function updateTimestamp(data) {
             `Last Updated: ${timestamp.toLocaleString('en-US', { 
                 dateStyle: 'medium', 
                 timeStyle: 'short',
-                timeZone: 'Asia/Jerusalem'
-            })} (Jerusalem Time)`;
+                timeZone: 'America/New_York'
+            })} (New York Time)`;
     }
 }
 
@@ -100,7 +100,45 @@ function handleSearchResult(foundIn, ticker, listName) {
 
 // Scroll to ticker on current page
 function scrollToTicker(ticker) {
-    // Wait a bit for pagination to render if needed
+    // For stocks pages, we need to find which page the ticker is on
+    if (typeof allStocks !== 'undefined' && allStocks.length > 0) {
+        const tickerIndex = allStocks.findIndex(s => s.symbol === ticker);
+        if (tickerIndex >= 0) {
+            // Calculate which page the ticker is on
+            const targetPage = Math.floor(tickerIndex / stocksPerPage) + 1;
+            
+            // If we're not on the right page, go to it first
+            if (typeof currentPage !== 'undefined' && currentPage !== targetPage) {
+                if (typeof goToPage === 'function') {
+                    goToPage(targetPage);
+                }
+            }
+            
+            // Wait a bit for the page to render
+            setTimeout(() => {
+                const element = document.querySelector(`[data-ticker="${ticker}"]`);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    
+                    // Highlight the element
+                    element.style.transition = 'background-color 0.3s ease';
+                    const originalBg = window.getComputedStyle(element).backgroundColor;
+                    element.style.backgroundColor = 'rgba(0, 123, 255, 0.3)';
+                    
+                    setTimeout(() => {
+                        element.style.backgroundColor = originalBg;
+                    }, 2000);
+                    
+                    showNotification(`Found: ${ticker}`, 'success');
+                } else {
+                    showNotification(`Ticker "${ticker}" not found`, 'error');
+                }
+            }, 300);
+            return;
+        }
+    }
+    
+    // Fallback for non-paginated pages or failed tickers page
     setTimeout(() => {
         const element = document.querySelector(`[data-ticker="${ticker}"]`);
         if (element) {
