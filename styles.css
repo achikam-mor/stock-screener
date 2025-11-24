@@ -591,6 +591,154 @@ h1 {
     color: var(--text-primary);
 }
 
+.welcome-section h3 {
+    font-size: 1.5rem;
+    margin-top: 25px;
+    margin-bottom: 15px;
+    color: var(--text-primary);
+}
+
+.criteria-list {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+.criteria-list li {
+    padding: 12px 0 12px 30px;
+    position: relative;
+    color: var(--text-secondary);
+    line-height: 1.7;
+}
+
+.criteria-list li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--success-color);
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+.criteria-list strong {
+    color: var(--text-primary);
+}
+
+/* Ad Placeholders */
+.ad-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+    padding: 10px;
+}
+
+.ad-banner {
+    min-height: 90px;
+    background: var(--bg-card);
+    border: 1px dashed var(--border-color);
+    border-radius: 8px;
+}
+
+.ad-placeholder {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    text-align: center;
+    padding: 30px;
+    opacity: 0.5;
+}
+
+.ad-container.ad-banner {
+    width: 100%;
+    max-width: 728px;
+}
+
+/* Export Page Styles */
+.export-content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.export-section {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 25px;
+}
+
+.export-section h2 {
+    font-size: 1.6rem;
+    margin-bottom: 15px;
+    color: var(--text-primary);
+}
+
+.export-section p {
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.export-buttons {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.export-btn {
+    padding: 14px 28px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.export-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.export-btn:active {
+    transform: translateY(0);
+}
+
+.export-btn.hot {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: white;
+}
+
+.export-btn.watch {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    color: white;
+}
+
+.export-btn.combined {
+    background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+    color: white;
+}
+
+.export-info {
+    background: rgba(59, 130, 246, 0.1);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 20px;
+}
+
+.export-info p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
 .badge {
     display: inline-block;
     padding: 4px 10px;
@@ -780,8 +928,50 @@ footer p {
         font-size: 1.5rem;
     }
     
+    .welcome-section h3 {
+        font-size: 1.2rem;
+    }
+    
     .welcome-section p {
         font-size: 0.95rem;
+    }
+    
+    .criteria-list li {
+        font-size: 0.9rem;
+        padding-left: 25px;
+    }
+    
+    .ad-container.ad-banner {
+        min-height: 50px;
+        margin: 15px 0;
+    }
+    
+    .ad-placeholder {
+        padding: 15px;
+        font-size: 0.8rem;
+    }
+    
+    .export-content {
+        padding: 15px;
+    }
+    
+    .export-section {
+        padding: 20px;
+    }
+    
+    .export-section h2 {
+        font-size: 1.3rem;
+    }
+    
+    .export-buttons {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .export-btn {
+        width: 100%;
+        justify-content: center;
+        padding: 12px 20px;
     }
     
     footer {

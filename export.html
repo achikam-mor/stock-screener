@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-adsense-account" content="ca-pub-9520776475659458">
+    <meta name="description" content="Export and download stock screening results in JSON format. Download hot stocks and watch list data for your trading analysis.">
+    <meta name="keywords" content="export stocks, download stock data, stock data export, JSON export, trading data download">
+    <title>Export Data | Stock Screener</title>
+    <link rel="stylesheet" href="styles.css">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9520776475659458"
+     crossorigin="anonymous"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">Stock Screener</div>
+            <ul class="nav-menu">
+                <li><a href="home.html">Home</a></li>
+                <li><a href="hot-stocks.html">🔥 Hot Stocks</a></li>
+                <li><a href="watch-list.html">👀 Watch List</a></li>
+                <li><a href="export.html" class="active">📥 Export</a></li>
+                <li><a href="failed-tickers.html">⚠️ Failed</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header>
+            <h1>Export Data</h1>
+            <p class="subtitle">Download screening results for your analysis</p>
+            <div id="last-updated" class="timestamp">Loading...</div>
+        </header>
+
+        <!-- Ad Placeholder - Top Banner -->
+        <div class="ad-container ad-banner">
+            <div class="ad-placeholder">Advertisement</div>
+        </div>
+
+        <div class="export-content">
+            <div class="export-section">
+                <h2>🔥 Hot Stocks</h2>
+                <p>Download all stocks trading above their SMA150 with complete technical analysis including last close price, SMA150, distance percentage, ATR14, and volume data.</p>
+                <div class="export-buttons">
+                    <button class="export-btn hot" onclick="exportData('hot', 'json')">
+                        📊 Download Hot Stocks (JSON)
+                    </button>
+                    <button class="export-btn hot" onclick="exportData('hot', 'csv')">
+                        📄 Download Hot Stocks (CSV)
+                    </button>
+                </div>
+                <div class="export-info">
+                    <p><strong>Count:</strong> <span id="hot-count">0</span> stocks</p>
+                </div>
+            </div>
+
+            <div class="export-section">
+                <h2>👀 Watch List</h2>
+                <p>Download all stocks trading below their SMA150. These stocks may present potential reversal opportunities or support level plays.</p>
+                <div class="export-buttons">
+                    <button class="export-btn watch" onclick="exportData('watch', 'json')">
+                        📊 Download Watch List (JSON)
+                    </button>
+                    <button class="export-btn watch" onclick="exportData('watch', 'csv')">
+                        📄 Download Watch List (CSV)
+                    </button>
+                </div>
+                <div class="export-info">
+                    <p><strong>Count:</strong> <span id="watch-count">0</span> stocks</p>
+                </div>
+            </div>
+
+            <div class="export-section">
+                <h2>📋 Complete Results</h2>
+                <p>Download the complete screening results including hot stocks, watch list, summary statistics, and all metadata.</p>
+                <div class="export-buttons">
+                    <button class="export-btn combined" onclick="exportData('all', 'json')">
+                        📦 Download Complete Results (JSON)
+                    </button>
+                </div>
+                <div class="export-info">
+                    <p><strong>Total:</strong> <span id="total-count">0</span> stocks analyzed</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ad Placeholder - Bottom Banner -->
+        <div class="ad-container ad-banner">
+            <div class="ad-placeholder">Advertisement</div>
+        </div>
+
+        <footer>
+            <p>⚡ Automated 4 times daily (Mon-Fri): 1 hour before market open, 2 & 4 hours after open, and 15 minutes after close (New York Time)</p>
+            <p class="disclaimer">This is not financial advice. Data provided for educational purposes only.</p>
+        </footer>
+    </div>
+
+    <script src="common.js"></script>
+    <script src="export.js"></script>
+</body>
+</html>
