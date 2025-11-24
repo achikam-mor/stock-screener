@@ -2,11 +2,34 @@
 let currentPageType = 'hot'; // 'hot' or 'watch'
 let allStocks = [];
 let currentPage = 1;
-const stocksPerPage = 20;
+let stocksPerPage = 20;
+
+// Adjust stocks per page based on screen size
+function updateStocksPerPage() {
+    if (window.innerWidth <= 768) {
+        stocksPerPage = 10; // Show 10 stocks per page on mobile
+    } else {
+        stocksPerPage = 20; // Show 20 stocks per page on desktop
+    }
+}
 
 function initStocksPage(pageType) {
     currentPageType = pageType;
+    updateStocksPerPage();
     loadStocksPage();
+    
+    // Re-adjust on window resize
+    window.addEventListener('resize', () => {
+        const oldPerPage = stocksPerPage;
+        updateStocksPerPage();
+        if (oldPerPage !== stocksPerPage) {
+            // Recalculate current page to maintain position
+            const firstStockIndex = (currentPage - 1) * oldPerPage;
+            currentPage = Math.floor(firstStockIndex / stocksPerPage) + 1;
+            displayCurrentPage();
+            setupPagination();
+        }
+    });
 }
 
 async function loadStocksPage() {
