@@ -11,7 +11,7 @@
         <div class="nav-container">
             <div class="nav-brand">📈 Stock Screener</div>
             <ul class="nav-menu">
-                <li><a href="home.html" class="active">Home</a></li>
+                <li><a href="index.html" class="active">Home</a></li>
                 <li><a href="hot-stocks.html">🔥 Hot Stocks</a></li>
                 <li><a href="watch-list.html">👀 Watch List</a></li>
                 <li><a href="failed-tickers.html">⚠️ Failed</a></li>
@@ -33,23 +33,23 @@
         </header>
 
         <div class="summary-cards">
-            <div class="card summary-card hot">
+            <a href="hot-stocks.html" class="card summary-card hot clickable">
                 <div class="card-icon">🔥</div>
                 <div class="card-content">
                     <div class="card-number" id="hot-count">0</div>
                     <div class="card-label">Hot Stocks</div>
                     <div class="card-description">Above SMA150</div>
                 </div>
-            </div>
+            </a>
             
-            <div class="card summary-card watch">
+            <a href="watch-list.html" class="card summary-card watch clickable">
                 <div class="card-icon">👀</div>
                 <div class="card-content">
                     <div class="card-number" id="watch-count">0</div>
                     <div class="card-label">Watch List</div>
                     <div class="card-description">Below SMA150</div>
                 </div>
-            </div>
+            </a>
             
             <div class="card summary-card filtered">
                 <div class="card-icon">🔀</div>
@@ -69,20 +69,20 @@
                 </div>
             </div>
             
-            <div class="card summary-card failed">
+            <a href="failed-tickers.html" class="card summary-card failed clickable">
                 <div class="card-icon">⚠️</div>
                 <div class="card-content">
                     <div class="card-number" id="failed-count">0</div>
                     <div class="card-label">Failed</div>
                     <div class="card-description">Data unavailable</div>
                 </div>
-            </div>
+            </a>
         </div>
 
         <section class="home-content">
             <div class="welcome-section">
                 <h2>Welcome to Stock Screener</h2>
-                <p>Automated daily stock analysis based on technical indicators.</p>
+                <p>Automated daily stock analysis based on technical indicators. Click on the cards above to view detailed stock lists.</p>
             </div>
         </section>
 

@@ -273,6 +273,25 @@ h1 {
     gap: 20px;
 }
 
+.summary-card.clickable {
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+}
+
+.summary-card.clickable:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
+}
+
+.summary-card.clickable .card-number {
+    transition: transform 0.3s ease;
+}
+
+.summary-card.clickable:hover .card-number {
+    transform: scale(1.1);
+}
+
 .card-icon {
     font-size: 3rem;
     opacity: 0.9;
