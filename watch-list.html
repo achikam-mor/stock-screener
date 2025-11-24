@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watch List | Stock Screener</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">📈 Stock Screener</div>
+            <ul class="nav-menu">
+                <li><a href="home.html">Home</a></li>
+                <li><a href="hot-stocks.html">🔥 Hot Stocks</a></li>
+                <li><a href="watch-list.html" class="active">👀 Watch List</a></li>
+                <li><a href="failed-tickers.html">⚠️ Failed</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header>
+            <h1>👀 Watch List</h1>
+            <p class="subtitle">Stocks trading below their 150-day SMA</p>
+            <div id="last-updated" class="timestamp">Loading...</div>
+            
+            <div class="search-container">
+                <input type="text" id="ticker-search" placeholder="🔍 Search ticker..." maxlength="10">
+                <button id="search-button" onclick="searchTicker()">🔎 Search</button>
+            </div>
+            <div id="search-notification" class="search-notification"></div>
+        </header>
+
+        <div class="page-info">
+            <div class="result-count">Total: <span id="total-stocks">0</span> stocks</div>
+            <div class="page-count">Page <span id="current-page">1</span> of <span id="total-pages">1</span></div>
+        </div>
+
+        <div id="stocks-container" class="stocks-grid">
+            <div class="loading">Loading watch list...</div>
+        </div>
+
+        <div id="pagination-controls" class="pagination">
+            <!-- Pagination buttons will be inserted here -->
+        </div>
+
+        <footer>
+            <p>⚡ Automated daily at 23:40 Jerusalem Time via GitHub Actions</p>
+            <p class="disclaimer">This is not financial advice. Data provided for educational purposes only.</p>
+        </footer>
+    </div>
+
+    <script src="common.js"></script>
+    <script src="stocks-page.js"></script>
+    <script>
+        // Initialize page with 'watch' type
+        initStocksPage('watch');
+    </script>
+</body>
+</html>

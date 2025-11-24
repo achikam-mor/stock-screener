@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Screener | Home</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">📈 Stock Screener</div>
+            <ul class="nav-menu">
+                <li><a href="home.html" class="active">Home</a></li>
+                <li><a href="hot-stocks.html">🔥 Hot Stocks</a></li>
+                <li><a href="watch-list.html">👀 Watch List</a></li>
+                <li><a href="failed-tickers.html">⚠️ Failed</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header>
+            <h1>📈 Stock Screener Dashboard</h1>
+            <p class="subtitle">SMA150 & ATR14 Technical Analysis</p>
+            <div id="last-updated" class="timestamp">Loading...</div>
+            
+            <div class="search-container">
+                <input type="text" id="ticker-search" placeholder="🔍 Search ticker..." maxlength="10">
+                <button id="search-button" onclick="searchTicker()">🔎 Search</button>
+            </div>
+            <div id="search-notification" class="search-notification"></div>
+        </header>
+
+        <div class="summary-cards">
+            <div class="card summary-card hot">
+                <div class="card-icon">🔥</div>
+                <div class="card-content">
+                    <div class="card-number" id="hot-count">0</div>
+                    <div class="card-label">Hot Stocks</div>
+                    <div class="card-description">Above SMA150</div>
+                </div>
+            </div>
+            
+            <div class="card summary-card watch">
+                <div class="card-icon">👀</div>
+                <div class="card-content">
+                    <div class="card-number" id="watch-count">0</div>
+                    <div class="card-label">Watch List</div>
+                    <div class="card-description">Below SMA150</div>
+                </div>
+            </div>
+            
+            <div class="card summary-card filtered">
+                <div class="card-icon">🔀</div>
+                <div class="card-content">
+                    <div class="card-number" id="filtered-count">0</div>
+                    <div class="card-label">Filtered by SMA</div>
+                    <div class="card-description">Didn't meet criteria</div>
+                </div>
+            </div>
+            
+            <div class="card summary-card analyzed">
+                <div class="card-icon">📊</div>
+                <div class="card-content">
+                    <div class="card-number" id="total-count">0</div>
+                    <div class="card-label">Total Requested</div>
+                    <div class="card-description">All stocks analyzed</div>
+                </div>
+            </div>
+            
+            <div class="card summary-card failed">
+                <div class="card-icon">⚠️</div>
+                <div class="card-content">
+                    <div class="card-number" id="failed-count">0</div>
+                    <div class="card-label">Failed</div>
+                    <div class="card-description">Data unavailable</div>
+                </div>
+            </div>
+        </div>
+
+        <section class="home-content">
+            <div class="welcome-section">
+                <h2>Welcome to Stock Screener</h2>
+                <p>Automated daily stock analysis based on technical indicators.</p>
+            </div>
+        </section>
+
+        <footer>
+            <p>⚡ Automated daily at 23:40 Jerusalem Time via GitHub Actions</p>
+            <p class="disclaimer">This is not financial advice. Data provided for educational purposes only.</p>
+        </footer>
+    </div>
+
+    <script src="common.js"></script>
+    <script src="home.js"></script>
+</body>
+</html>
