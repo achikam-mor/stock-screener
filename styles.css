@@ -631,6 +631,7 @@ h1 {
     align-items: center;
     margin: 20px 0;
     padding: 10px;
+    width: 100%;
 }
 
 .ad-banner {
@@ -638,6 +639,7 @@ h1 {
     background: var(--bg-card);
     border: 1px dashed var(--border-color);
     border-radius: 8px;
+    width: 100%;
 }
 
 .ad-placeholder {
@@ -646,11 +648,6 @@ h1 {
     text-align: center;
     padding: 30px;
     opacity: 0.5;
-}
-
-.ad-container.ad-banner {
-    width: 100%;
-    max-width: 728px;
 }
 
 /* Export Page Styles */
