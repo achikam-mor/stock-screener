@@ -1152,6 +1152,138 @@ footer p {
     color: #10b981;
 }
 
+/* Fear & Greed Scale Gauge */
+.gauge-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.scale-gauge {
+    position: relative;
+    margin: 30px 20px;
+}
+
+.scale-bar {
+    display: flex;
+    height: 40px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.scale-segment {
+    flex: 1;
+    transition: opacity 0.3s ease;
+}
+
+.extreme-fear-bg {
+    background: linear-gradient(90deg, #dc2626 0%, #ef4444 100%);
+}
+
+.fear-bg {
+    background: linear-gradient(90deg, #ef4444 0%, #f59e0b 100%);
+}
+
+.neutral-bg {
+    background: linear-gradient(90deg, #f59e0b 0%, #6b7280 100%);
+}
+
+.greed-bg {
+    background: linear-gradient(90deg, #6b7280 0%, #10b981 100%);
+}
+
+.extreme-greed-bg {
+    background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+}
+
+.scale-needle {
+    position: absolute;
+    top: -8px;
+    width: 4px;
+    height: 56px;
+    background: white;
+    transform: translateX(-50%);
+    border-radius: 2px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    transition: left 0.5s ease;
+}
+
+.scale-needle::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 12px solid white;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.scale-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    padding: 0 2px;
+}
+
+.gauge-value-display {
+    text-align: center;
+    margin: 25px 0 20px;
+}
+
+.gauge-current-value {
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.gauge-current-label {
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 8px;
+}
+
+.scale-legend {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 15px;
+    background: var(--bg-card);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.legend-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-align: center;
+    flex: 1;
+    min-width: 80px;
+}
+
+.gauge-placeholder {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.gauge-error {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-secondary);
+    font-size: 1rem;
+}
+
 /* Extra small phones */
 @media (max-width: 480px) {
     h1 {
@@ -1242,6 +1374,36 @@ footer p {
     
     .gauge-label {
         font-size: 1rem;
+    }
+    
+    .scale-gauge {
+        margin: 20px 10px;
+    }
+    
+    .scale-bar {
+        height: 30px;
+    }
+    
+    .scale-needle {
+        height: 46px;
+        top: -8px;
+    }
+    
+    .gauge-current-value {
+        font-size: 2.2rem;
+    }
+    
+    .gauge-current-label {
+        font-size: 1rem;
+    }
+    
+    .scale-legend {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .legend-label {
+        font-size: 0.75rem;
     }
 }
 
