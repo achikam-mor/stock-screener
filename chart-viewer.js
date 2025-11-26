@@ -84,7 +84,7 @@ function loadChart() {
     
     if (!chartData[ticker]) {
         // Check if stock was filtered by screening criteria
-        if (resultsData && resultsData.filtered_tickers && resultsData.filtered_tickers.includes(ticker)) {
+        if (resultsData && resultsData.filtered_by_sma && resultsData.filtered_by_sma.includes(ticker)) {
             showNotification(`${ticker} was filtered out by our SMA/investing strategy and does not meet the screening criteria.`, 'info');
         } else if (resultsData && resultsData.failed_tickers && resultsData.failed_tickers.includes(ticker)) {
             showNotification(`${ticker} data fetch failed. Please try again later.`, 'error');
