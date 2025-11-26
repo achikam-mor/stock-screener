@@ -24,33 +24,9 @@ async def main():
     with open(tickers_file, 'r') as f:
         content = f.read()
         tickers = ast.literal_eval(content)
-    
-    # Add VIX ticker for market overview page
-    tickers_with_vix = tickers + ["^VIX"]
 
     # Fetch stock data in parallel
-    stock_data, fetch_failed_tickers = await data_loader.fetch_all_stocks_data(tickers_with_vix)
-
-    # Extract VIX data before screening
-    vix_data = stock_data.pop("^VIX", None)
-    if vix_data is not None and not vix_data.empty:
-        try:
-            # Reset index to ensure it's datetime, not strings
-            vix_data = vix_data.reset_index(drop=False)
-            if 'Date' in vix_data.columns:
-                vix_data = vix_data.set_index('Date')
-            
-            # Save VIX data to JSON for market overview page
-            vix_json = {
-                "dates": [date.strftime('%Y-%m-%d') if hasattr(date, 'strftime') else str(date) for date in vix_data.index],
-                "values": [round(float(close), 2) for close in vix_data['Close'] if str(close).replace('.','',1).replace('-','',1).isdigit()],
-                "last_updated": datetime.now().isoformat()
-            }
-            with open('vix_data.json', 'w') as f:
-                json.dump(vix_json, f, indent=2)
-            print(f"✅ VIX data saved: {len(vix_json['dates'])} days")
-        except Exception as e:
-            print(f"⚠️ Could not save VIX data: {str(e)}")
+    stock_data, fetch_failed_tickers = await data_loader.fetch_all_stocks_data(tickers)
     
     # Save all OHLC data for chart viewer
     chart_data = {}
