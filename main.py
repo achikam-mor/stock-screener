@@ -33,14 +33,55 @@ async def main():
     for symbol, data in stock_data.items():
         if data is not None and not data.empty:
             try:
-                chart_data[symbol] = {
-                    "dates": [date.strftime('%Y-%m-%d') if hasattr(date, 'strftime') else str(date) for date in data.index],
-                    "open": [round(float(o), 2) for o in data['Open']],
-                    "high": [round(float(h), 2) for h in data['High']],
-                    "low": [round(float(l), 2) for l in data['Low']],
-                    "close": [round(float(c), 2) for c in data['Close']],
-                    "volume": [int(v) for v in data['Volume']]
-                }
+                # Reset index to ensure it's datetime, not strings
+                data = data.reset_index(drop=False)
+                if 'Date' in data.columns:
+                    data = data.set_index('Date')
+                
+                # Validate data row-by-row to keep arrays aligned
+                dates = []
+                opens = []
+                highs = []
+                lows = []
+                closes = []
+                volumes = []
+                
+                for idx, row in data.iterrows():
+                    # Skip if index is the ticker symbol itself
+                    if str(idx) == symbol:
+                        continue
+                    
+                    # Validate all required fields
+                    try:
+                        date_str = idx.strftime('%Y-%m-%d') if hasattr(idx, 'strftime') else str(idx)
+                        o = float(row['Open'])
+                        h = float(row['High'])
+                        l = float(row['Low'])
+                        c = float(row['Close'])
+                        v = int(row['Volume'])
+                        
+                        # Only add row if all values are valid
+                        if o > 0 and h > 0 and l > 0 and c > 0 and v >= 0:
+                            dates.append(date_str)
+                            opens.append(round(o, 2))
+                            highs.append(round(h, 2))
+                            lows.append(round(l, 2))
+                            closes.append(round(c, 2))
+                            volumes.append(v)
+                    except (ValueError, TypeError, KeyError):
+                        continue
+                
+                # Only save if we have valid data
+                if len(dates) > 0:
+                    chart_data[symbol] = {
+                        "dates": dates,
+                        "open": opens,
+                        "high": highs,
+                        "low": lows,
+                        "close": closes,
+                        "volume": volumes
+                    }
+                    
             except Exception as e:
                 print(f"⚠️ Could not save chart data for {symbol}: {str(e)}")
                 continue

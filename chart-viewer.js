@@ -18,9 +18,17 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const date = new Date(data.last_updated);
                 document.getElementById('last-updated').textContent = 
                     `Last updated: ${date.toLocaleString()}`;
+            } else {
+                document.getElementById('last-updated').textContent = 'Timestamp unavailable';
             }
             
-            console.log(`Chart data loaded: ${Object.keys(chartData).length} stocks available`);
+            // Check if chart data is empty
+            if (!chartData || Object.keys(chartData).length === 0) {
+                document.getElementById('last-updated').textContent = 'No chart data available yet';
+                console.log('Chart data file is empty');
+            } else {
+                console.log(`Chart data loaded: ${Object.keys(chartData).length} stocks available`);
+            }
             
             // Check if ticker is in URL parameter
             const urlParams = new URLSearchParams(window.location.search);
@@ -29,10 +37,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                 document.getElementById('chart-ticker-search').value = ticker.toUpperCase();
                 loadChart();
             }
+        } else {
+            document.getElementById('last-updated').textContent = 'Chart data not found';
+            console.error('Chart data file not found');
         }
     } catch (error) {
         console.error('Error loading chart data:', error);
-        showNotification('Chart data unavailable. Please try again later.', 'error');
+        document.getElementById('last-updated').textContent = 'Error loading chart data';
+        showNotification('Chart data unavailable. Please run the workflow to generate charts.', 'error');
     }
     
     // Handle Enter key in search box
