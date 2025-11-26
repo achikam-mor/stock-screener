@@ -23,12 +23,15 @@ class DataLoader:
     async def _fetch_stock_data_async(self, symbol: str) -> Optional[pd.DataFrame]:
         """Fetch single stock data asynchronously"""
         try:
-            data = yf.download(symbol, period="300d", interval="1d", auto_adjust=False, progress=False)
+            # VIX only needs 30 days of data, regular stocks need 300 days
+            period = "30d" if symbol == "^VIX" else "300d"
+            data = yf.download(symbol, period=period, interval="1d", auto_adjust=False, progress=False)
             if data.empty:
                 self.failed_tickers.append(symbol)  # Track symbols with empty data
                 return None
 
-            if "Stock Splits" in data.columns:
+            # Skip split adjustment for VIX (it's an index)
+            if symbol != "^VIX" and "Stock Splits" in data.columns:
                 splits = data["Stock Splits"].replace(0, 1).cumprod()
                 for col in ["Open", "High", "Low", "Close"]:
                     data[col] = data[col] / splits

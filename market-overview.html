@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-adsense-account" content="ca-pub-9520776475659458">
+    <meta name="description" content="Market overview with VIX volatility index, Fear & Greed indicators. Track market sentiment and volatility for better trading decisions.">
+    <meta name="keywords" content="VIX, volatility index, fear and greed index, market sentiment, stock market indicators, trading indicators">
+    <title>Market Overview | VIX & Market Sentiment</title>
+    <link rel="stylesheet" href="styles.css">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9520776475659458"
+     crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">Stock Screener</div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="hot-stocks.html">🔥 Hot Stocks</a></li>
+                <li><a href="watch-list.html">👀 Watch List</a></li>
+                <li><a href="market-overview.html" class="active">📊 Market</a></li>
+                <li><a href="export.html">📥 Export</a></li>
+                <li><a href="failed-tickers.html">⚠️ Failed</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header>
+            <h1>Market Overview</h1>
+            <p class="subtitle">Volatility Index & Market Sentiment Indicators</p>
+            <div id="last-updated" class="timestamp">Loading...</div>
+            
+            <!-- Ad Placeholder - Above Search -->
+            <div class="ad-container ad-banner">
+                <div class="ad-placeholder">Advertisement</div>
+            </div>
+            
+            <div class="search-container">
+                <input type="text" id="ticker-search" placeholder="🔍 Search ticker..." maxlength="10">
+                <button id="search-button" onclick="searchTicker()">🔎 Search</button>
+            </div>
+            <div id="search-notification" class="search-notification"></div>
+        </header>
+
+        <!-- Ad Placeholder - Content Banner -->
+        <div class="ad-container ad-banner">
+            <div class="ad-placeholder">Advertisement</div>
+        </div>
+
+        <!-- VIX Chart Section -->
+        <section class="market-section">
+            <div class="market-card">
+                <h2>📈 VIX - Volatility Index (Last 30 Days)</h2>
+                <p class="market-description">The CBOE Volatility Index (VIX) measures expected market volatility. Higher values indicate increased fear and uncertainty in the market.</p>
+                <div class="chart-container">
+                    <canvas id="vixChart"></canvas>
+                </div>
+                <div class="vix-info">
+                    <div class="vix-stat">
+                        <span class="stat-label">Current VIX:</span>
+                        <span class="stat-value" id="current-vix">--</span>
+                    </div>
+                    <div class="vix-stat">
+                        <span class="stat-label">30-Day Average:</span>
+                        <span class="stat-value" id="avg-vix">--</span>
+                    </div>
+                    <div class="vix-stat">
+                        <span class="stat-label">30-Day Range:</span>
+                        <span class="stat-value" id="range-vix">--</span>
+                    </div>
+                </div>
+                <div class="vix-legend">
+                    <div class="legend-item">
+                        <span class="legend-color low"></span>
+                        <span>Low Volatility (0-15): Calm Market</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color medium"></span>
+                        <span>Medium Volatility (15-25): Normal Market</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color high"></span>
+                        <span>High Volatility (25+): Fear & Uncertainty</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Fear & Greed Indicators Section -->
+        <section class="market-section">
+            <div class="market-card">
+                <h2>😨 CNN Fear & Greed Index</h2>
+                <p class="market-description">Measures market sentiment from extreme fear to extreme greed based on 7 indicators.</p>
+                <div class="sentiment-container">
+                    <div class="sentiment-gauge" id="fear-greed-gauge">
+                        <div class="gauge-value" id="fear-greed-value">Loading...</div>
+                        <div class="gauge-label" id="fear-greed-label">--</div>
+                    </div>
+                </div>
+                <p class="sentiment-note">Note: Fear & Greed data updated daily. Use as sentiment indicator, not trading signal.</p>
+            </div>
+
+            <div class="market-card">
+                <h2>🪙 Crypto Fear & Greed Index</h2>
+                <p class="market-description">Bitcoin market sentiment indicator. Often correlates with risk-on/risk-off behavior in traditional markets.</p>
+                <div class="sentiment-container">
+                    <div class="sentiment-gauge" id="crypto-fear-greed-gauge">
+                        <div class="gauge-value" id="crypto-fear-greed-value">Loading...</div>
+                        <div class="gauge-label" id="crypto-fear-greed-label">--</div>
+                    </div>
+                </div>
+                <p class="sentiment-note">Source: Alternative.me - Updated every 8 hours</p>
+            </div>
+        </section>
+
+        <!-- Ad Placeholder - Bottom Banner -->
+        <div class="ad-container ad-banner">
+            <div class="ad-placeholder">Advertisement</div>
+        </div>
+
+        <footer>
+            <p>⚡ Automated 4 times daily (Mon-Fri): 1 hour before market open, 2 & 4 hours after open, and 15 minutes after close (New York Time)</p>
+            <p class="disclaimer">This is not financial advice. Data provided for educational purposes only.</p>
+        </footer>
+    </div>
+
+    <script src="common.js"></script>
+    <script src="market-overview.js"></script>
+</body>
+</html>
