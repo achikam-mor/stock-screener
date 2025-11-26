@@ -54,11 +54,11 @@ async def main():
                     # Validate all required fields
                     try:
                         date_str = idx.strftime('%Y-%m-%d') if hasattr(idx, 'strftime') else str(idx)
-                        o = float(row['Open'])
-                        h = float(row['High'])
-                        l = float(row['Low'])
-                        c = float(row['Close'])
-                        v = int(row['Volume'])
+                        o = float(row['Open'].iloc[0] if hasattr(row['Open'], 'iloc') else row['Open'])
+                        h = float(row['High'].iloc[0] if hasattr(row['High'], 'iloc') else row['High'])
+                        l = float(row['Low'].iloc[0] if hasattr(row['Low'], 'iloc') else row['Low'])
+                        c = float(row['Close'].iloc[0] if hasattr(row['Close'], 'iloc') else row['Close'])
+                        v = int(row['Volume'].iloc[0] if hasattr(row['Volume'], 'iloc') else row['Volume'])
                         
                         # Only add row if all values are valid
                         if o > 0 and h > 0 and l > 0 and c > 0 and v >= 0:
