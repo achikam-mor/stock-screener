@@ -33,7 +33,7 @@ async def main():
     results.failed_tickers.extend(fetch_failed_tickers)
     
     # Only save chart data for stocks that passed screening (hot + watch list)
-    passing_stocks = set([s.symbol for s in results.hot_stocks] + [s.symbol for s in results.watch_list])
+    passing_stocks = set(list(results.hot_stocks.keys()) + list(results.watch_list.keys()))
     chart_data = {}
     for symbol in passing_stocks:
         data = stock_data.get(symbol)
