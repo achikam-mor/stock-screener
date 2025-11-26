@@ -9,6 +9,7 @@
     <title>Chart Viewer | Stock Screener</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-financial"></script>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9520776475659458"
      crossorigin="anonymous"></script>
@@ -31,7 +32,7 @@
 
     <div class="container">
         <header>
-            <h1>📈 Chart Viewer</h1>
+            <h1>Chart Viewer</h1>
             <p class="subtitle">Interactive candlestick charts with OHLC data</p>
             <div id="last-updated" class="timestamp">Loading...</div>
             
@@ -52,7 +53,7 @@
             <div class="chart-header">
                 <h2 id="chart-title">Loading...</h2>
                 <div class="chart-info">
-                    <span id="chart-period">Last 300 days</span>
+                    <span id="chart-period">Last 180 days</span>
                     <span id="chart-data-points">0 data points</span>
                 </div>
             </div>
@@ -104,7 +105,7 @@
             <h2>How to Use</h2>
             <ul class="criteria-list">
                 <li><strong>Search for any ticker:</strong> Enter a stock symbol from the NYSE that we've analyzed.</li>
-                <li><strong>View historical data:</strong> See up to 300 days of price history with OHLC candlesticks.</li>
+                <li><strong>View historical data:</strong> See up to 180 days of price history with OHLC candlesticks.</li>
                 <li><strong>Candlestick colors:</strong> Green indicates bullish days (close > open), red indicates bearish days (close < open).</li>
                 <li><strong>Interactive chart:</strong> Hover over candles to see exact OHLC values for each day.</li>
             </ul>

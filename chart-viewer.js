@@ -4,9 +4,20 @@
 
 let chartData = null;
 let currentChart = null;
+let resultsData = null;
 
 // Load chart data on page load
 document.addEventListener('DOMContentLoaded', async () => {
+    // Load results.json to check filtered stocks
+    try {
+        const resultsResponse = await fetch('results.json');
+        if (resultsResponse.ok) {
+            resultsData = await resultsResponse.json();
+        }
+    } catch (error) {
+        console.log('Could not load results.json');
+    }
+    
     try {
         const response = await fetch('chart_data.json');
         if (response.ok) {
@@ -72,7 +83,14 @@ function loadChart() {
     }
     
     if (!chartData[ticker]) {
-        showNotification(`No data available for ${ticker}. Stock may not have been analyzed or data fetch failed.`, 'error');
+        // Check if stock was filtered by screening criteria
+        if (resultsData && resultsData.filtered_tickers && resultsData.filtered_tickers.includes(ticker)) {
+            showNotification(`${ticker} was filtered out by our SMA/investing strategy and does not meet the screening criteria.`, 'info');
+        } else if (resultsData && resultsData.failed_tickers && resultsData.failed_tickers.includes(ticker)) {
+            showNotification(`${ticker} data fetch failed. Please try again later.`, 'error');
+        } else {
+            showNotification(`No chart data available for ${ticker}. Stock may not have been analyzed or does not meet screening criteria.`, 'error');
+        }
         document.getElementById('chart-section').style.display = 'none';
         return;
     }
@@ -123,12 +141,16 @@ function displayCandlestickChart(ticker, data) {
     // Destroy existing chart if any
     if (currentChart) {
         currentChart.destroy();
+        currentChart = null;
     }
     
-    // Create candlestick chart
-    const ctx = document.getElementById('candlestickChart').getContext('2d');
+    // Get canvas and context
+    const canvas = document.getElementById('candlestickChart');
+    const ctx = canvas.getContext('2d');
     
-    currentChart = new Chart(ctx, {
+    // Create candlestick chart
+    try {
+        currentChart = new Chart(ctx, {
         type: 'candlestick',
         data: {
             datasets: [{
@@ -211,14 +233,17 @@ function displayCandlestickChart(ticker, data) {
                     }
                 }
             }
-        }
-    });
+            }
+        });
+    } catch (error) {
+        console.error('Error creating chart:', error);
+        showNotification('Error displaying chart. Please try again.', 'error');
+        return;
+    }
     
     // Scroll to chart
     chartSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-/**
+}/**
  * Format volume number
  */
 function formatVolume(volume) {
