@@ -12,7 +12,7 @@ from results_manager import ResultsManager
 
 async def main():
     # Initialize components
-    data_loader = DataLoader(max_concurrent_requests=5)
+    data_loader = DataLoader(max_concurrent_requests=7)
     analyzer = StockAnalyzer()
     screener = StockScreener(analyzer)
     results_manager = ResultsManager()
@@ -41,17 +41,19 @@ async def main():
             continue
         
         try:
-                # Reset index to ensure it's datetime, not strings
-                data = data.reset_index(drop=False)
-                if 'Date' in data.columns:
-                    data = data.set_index('Date')
+                # Make a copy to avoid modifying original
+                import pandas as pd
+                data = data.copy()
                 
-                # Vectorized validation for speed
-                # Filter out rows where index is the ticker symbol
-                valid_mask = data.index.astype(str) != symbol
-                data = data[valid_mask]
+                # Convert all OHLC columns to numeric first, coerce errors to NaN
+                # This will convert any ticker symbols or invalid strings to NaN
+                data['Open'] = pd.to_numeric(data['Open'], errors='coerce')
+                data['High'] = pd.to_numeric(data['High'], errors='coerce')
+                data['Low'] = pd.to_numeric(data['Low'], errors='coerce')
+                data['Close'] = pd.to_numeric(data['Close'], errors='coerce')
+                data['Volume'] = pd.to_numeric(data['Volume'], errors='coerce')
                 
-                # Filter out rows with invalid OHLC values (must be positive)
+                # Filter out rows with invalid OHLC values (must be positive and not NaN)
                 valid_mask = (data['Open'] > 0) & (data['High'] > 0) & (data['Low'] > 0) & (data['Close'] > 0) & (data['Volume'] >= 0)
                 data = data[valid_mask]
                 

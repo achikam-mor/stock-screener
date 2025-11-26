@@ -3,19 +3,26 @@ name: Daily Stock Screening
 on:
   schedule:
     # NYSE opens at 9:30 AM ET, closes at 4:00 PM ET
-    # Runs Monday to Friday only
+    # Runs 6 times per trading day (Monday to Friday)
+    # Spread from 30 min after open to 10 min after close
     
-    # 8:30 AM ET (1 hour before NYSE opens) = 13:30 UTC
-    - cron: '30 13 * * 1-5'
+    # 10:00 AM ET (30 min after NYSE opens) = 15:00 UTC
+    - cron: '0 15 * * 1-5'
     
-    # 11:30 AM ET (2 hours after NYSE opens) = 16:30 UTC
-    - cron: '30 16 * * 1-5'
+    # 11:14 AM ET = 16:14 UTC
+    - cron: '14 16 * * 1-5'
     
-    # 1:30 PM ET (4 hours after NYSE opens) = 18:30 UTC
-    - cron: '30 18 * * 1-5'
+    # 12:28 PM ET = 17:28 UTC
+    - cron: '28 17 * * 1-5'
     
-    # 4:15 PM ET (15 minutes after NYSE closes) = 21:15 UTC
-    - cron: '15 21 * * 1-5'
+    # 1:42 PM ET = 18:42 UTC
+    - cron: '42 18 * * 1-5'
+    
+    # 2:56 PM ET = 19:56 UTC
+    - cron: '56 19 * * 1-5'
+    
+    # 4:10 PM ET (10 min after NYSE closes) = 21:10 UTC
+    - cron: '10 21 * * 1-5'
     
   workflow_dispatch: # Allows manual trigger from GitHub Actions tab
 
