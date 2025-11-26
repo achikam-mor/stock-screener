@@ -434,6 +434,24 @@ h1 {
     color: var(--text-primary);
 }
 
+.chart-btn {
+    padding: 6px 12px;
+    background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+}
+
+.chart-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
 .stock-data {
     display: grid;
     gap: 6px;
@@ -1284,6 +1302,112 @@ footer p {
     font-size: 1rem;
 }
 
+/* Chart Viewer Styles */
+.chart-search-container {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    justify-content: center;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#chart-ticker-search {
+    padding: 12px 20px;
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    font-size: 1.05rem;
+    width: 220px;
+    text-transform: uppercase;
+    background: var(--bg-dark);
+    color: var(--text-primary);
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+}
+
+#chart-ticker-search:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    transform: translateY(-1px);
+}
+
+#chart-search-button {
+    padding: 12px 28px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+#chart-search-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+}
+
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.chart-info {
+    display: flex;
+    gap: 20px;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.candlestick-chart-container {
+    position: relative;
+    height: 500px;
+    margin-bottom: 30px;
+    background: var(--bg-dark);
+    border-radius: 10px;
+    padding: 20px;
+    border: 1px solid var(--border-color);
+}
+
+.chart-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.chart-legend {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    padding: 15px;
+    background: var(--bg-dark);
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+}
+
+.chart-legend .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.legend-box {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+}
+
 /* Extra small phones */
 @media (max-width: 480px) {
     h1 {
@@ -1312,6 +1436,13 @@ footer p {
         flex-direction: column;
         align-items: flex-start;
         gap: 8px;
+    }
+    
+    .chart-btn {
+        align-self: stretch;
+        text-align: center;
+        font-size: 0.75rem;
+        padding: 5px 10px;
     }
     
     .badge {
@@ -1404,6 +1535,31 @@ footer p {
     
     .legend-label {
         font-size: 0.75rem;
+    }
+    
+    .candlestick-chart-container {
+        height: 350px;
+        padding: 15px;
+    }
+    
+    .chart-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .chart-info {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .chart-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+    
+    .chart-legend {
+        flex-direction: column;
+        gap: 12px;
     }
 }
 

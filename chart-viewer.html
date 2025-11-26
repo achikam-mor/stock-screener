@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-adsense-account" content="ca-pub-9520776475659458">
+    <meta name="description" content="Interactive candlestick chart viewer for NYSE stocks. View OHLC price data with Japanese candlestick patterns for technical analysis.">
+    <meta name="keywords" content="candlestick chart, stock chart, OHLC, Japanese candlesticks, technical analysis chart, stock price chart">
+    <title>Chart Viewer | Stock Screener</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-financial"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9520776475659458"
+     crossorigin="anonymous"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">Stock Screener</div>
+            <ul class="nav-menu">
+                <li><a href="home.html">Home</a></li>
+                <li><a href="hot-stocks.html">🔥 Hot Stocks</a></li>
+                <li><a href="watch-list.html">👀 Watch List</a></li>
+                <li><a href="market-overview.html">📊 Market</a></li>
+                <li><a href="chart-viewer.html" class="active">📈 Charts</a></li>
+                <li><a href="export.html">📥 Export</a></li>
+                <li><a href="failed-tickers.html">⚠️ Failed</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header>
+            <h1>📈 Chart Viewer</h1>
+            <p class="subtitle">Interactive candlestick charts with OHLC data</p>
+            <div id="last-updated" class="timestamp">Loading...</div>
+            
+            <!-- Ad Placeholder - Top Banner -->
+            <div class="ad-container ad-banner">
+                <div class="ad-placeholder">Advertisement</div>
+            </div>
+            
+            <div class="chart-search-container">
+                <input type="text" id="chart-ticker-search" placeholder="Enter ticker symbol..." maxlength="10">
+                <button id="chart-search-button" onclick="loadChart()">📊 Load Chart</button>
+            </div>
+            <div id="chart-notification" class="search-notification"></div>
+        </header>
+
+        <!-- Chart Display Section -->
+        <section id="chart-section" class="market-section" style="display: none;">
+            <div class="chart-header">
+                <h2 id="chart-title">Loading...</h2>
+                <div class="chart-info">
+                    <span id="chart-period">Last 300 days</span>
+                    <span id="chart-data-points">0 data points</span>
+                </div>
+            </div>
+            
+            <div class="candlestick-chart-container">
+                <canvas id="candlestickChart"></canvas>
+            </div>
+
+            <!-- Stock Statistics -->
+            <div class="chart-stats">
+                <div class="stat-item">
+                    <div class="stat-label">Current Price</div>
+                    <div class="stat-value" id="current-price">--</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Period High</div>
+                    <div class="stat-value" id="period-high">--</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Period Low</div>
+                    <div class="stat-value" id="period-low">--</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Avg Volume</div>
+                    <div class="stat-value" id="avg-volume">--</div>
+                </div>
+            </div>
+
+            <!-- Legend -->
+            <div class="chart-legend">
+                <div class="legend-item">
+                    <div class="legend-box" style="background: #10b981;"></div>
+                    <span>Bullish (Close > Open)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-box" style="background: #ef4444;"></div>
+                    <span>Bearish (Close < Open)</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ad Placeholder - Content Banner -->
+        <div class="ad-container ad-banner">
+            <div class="ad-placeholder">Advertisement</div>
+        </div>
+
+        <!-- Instructions -->
+        <section class="market-section">
+            <h2>How to Use</h2>
+            <ul class="criteria-list">
+                <li><strong>Search for any ticker:</strong> Enter a stock symbol from the NYSE that we've analyzed.</li>
+                <li><strong>View historical data:</strong> See up to 300 days of price history with OHLC candlesticks.</li>
+                <li><strong>Candlestick colors:</strong> Green indicates bullish days (close > open), red indicates bearish days (close < open).</li>
+                <li><strong>Interactive chart:</strong> Hover over candles to see exact OHLC values for each day.</li>
+            </ul>
+            <p style="color: var(--text-secondary); margin-top: 20px; font-size: 0.95rem;">
+                📝 Note: Chart data is from the last screening run. Charts are available for all analyzed stocks, including those filtered by SMA rules.
+            </p>
+        </section>
+
+        <footer>
+            <p>⚡ Automated 4 times daily (Mon-Fri): 1 hour before market open, 2 & 4 hours after open, and 15 minutes after close (New York Time)</p>
+            <p class="disclaimer">This is not financial advice. Data provided for educational purposes only.</p>
+        </footer>
+    </div>
+
+    <script src="common.js"></script>
+    <script src="chart-viewer.js"></script>
+</body>
+</html>

@@ -95,9 +95,9 @@ function createCompactStockCard(stock, type) {
         <div class="stock-card-compact" data-ticker="${stock.symbol}">
             <div class="stock-header">
                 <div class="stock-symbol">${stock.symbol}</div>
-                <span class="badge badge-${type}">
-                    ${type === 'hot' ? '🔥' : '👀'}
-                </span>
+                <a href="chart-viewer.html?ticker=${stock.symbol}" class="chart-btn">
+                    📈 Launch Chart
+                </a>
             </div>
             <div class="stock-data">
                 <div class="data-row">
