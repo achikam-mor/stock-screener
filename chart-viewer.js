@@ -148,6 +148,14 @@ function displayCandlestickChart(ticker, data) {
         c: data.close[i]
     }));
     
+    // Prepare SMA150 line data (filter out null values)
+    const sma150Data = data.dates
+        .map((date, i) => ({
+            x: new Date(date).getTime(),
+            y: data.sma150 && data.sma150[i] !== null ? data.sma150[i] : null
+        }))
+        .filter(point => point.y !== null); // Remove null values
+    
     // Calculate Y-axis range with padding
     const priceMin = periodLow * 0.98; // 2% padding below
     const priceMax = periodHigh * 1.02; // 2% padding above
@@ -157,20 +165,36 @@ function displayCandlestickChart(ticker, data) {
         currentChart = new Chart(ctx, {
             type: 'candlestick',
             data: {
-                datasets: [{
-                    label: ticker,
-                    data: candlestickData,
-                    color: {
-                        up: '#10b981',
-                        down: '#ef4444',
-                        unchanged: '#6b7280'
+                datasets: [
+                    {
+                        label: ticker,
+                        type: 'candlestick',
+                        data: candlestickData,
+                        color: {
+                            up: '#10b981',
+                            down: '#ef4444',
+                            unchanged: '#6b7280'
+                        },
+                        borderColor: {
+                            up: '#10b981',
+                            down: '#ef4444',
+                            unchanged: '#6b7280'
+                        },
+                        order: 2
                     },
-                    borderColor: {
-                        up: '#10b981',
-                        down: '#ef4444',
-                        unchanged: '#6b7280'
+                    {
+                        label: 'SMA150',
+                        type: 'line',
+                        data: sma150Data,
+                        borderColor: '#eab308',
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        pointRadius: 0,
+                        pointHoverRadius: 4,
+                        tension: 0.1,
+                        order: 1
                     }
-                }]
+                ]
             },
             options: {
                 responsive: true,
