@@ -103,7 +103,7 @@ function loadChart() {
 }
 
 /**
- * Display candlestick chart using TradingView Lightweight Charts
+ * Display candlestick chart using Chart.js with Financial plugin
  */
 function displayCandlestickChart(ticker, data) {
     const chartSection = document.getElementById('chart-section');
@@ -131,102 +131,126 @@ function displayCandlestickChart(ticker, data) {
     
     // Destroy existing chart if any
     if (currentChart) {
-        currentChart.remove();
+        currentChart.destroy();
         currentChart = null;
     }
     
-    // Get chart container (not canvas anymore)
-    const chartContainer = document.getElementById('candlestickChart');
+    // Get canvas and context
+    const canvas = document.getElementById('candlestickChart');
+    const ctx = canvas.getContext('2d');
     
-    // Clear the container
-    chartContainer.innerHTML = '';
+    // Prepare candlestick data - FIXED: proper format for financial plugin
+    const candlestickData = data.dates.map((date, i) => ({
+        x: new Date(date).getTime(), // Convert to timestamp
+        o: data.open[i],
+        h: data.high[i],
+        l: data.low[i],
+        c: data.close[i]
+    }));
     
+    // Calculate Y-axis range with padding
+    const priceMin = periodLow * 0.98; // 2% padding below
+    const priceMax = periodHigh * 1.02; // 2% padding above
+    
+    // Create candlestick chart
     try {
-        // Create chart with TradingView Lightweight Charts
-        currentChart = LightweightCharts.createChart(chartContainer, {
-            width: chartContainer.clientWidth,
-            height: 500,
-            layout: {
-                background: { color: '#0f172a' },
-                textColor: '#94a3b8',
+        currentChart = new Chart(ctx, {
+            type: 'candlestick',
+            data: {
+                datasets: [{
+                    label: ticker,
+                    data: candlestickData,
+                    color: {
+                        up: '#10b981',
+                        down: '#ef4444',
+                        unchanged: '#6b7280'
+                    },
+                    borderColor: {
+                        up: '#10b981',
+                        down: '#ef4444',
+                        unchanged: '#6b7280'
+                    }
+                }]
             },
-            grid: {
-                vertLines: { color: '#1e293b' },
-                horzLines: { color: '#1e293b' },
-            },
-            crosshair: {
-                mode: LightweightCharts.CrosshairMode.Normal,
-                vertLine: {
-                    color: '#64748b',
-                    width: 1,
-                    style: LightweightCharts.LineStyle.Dashed,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                parsing: false, // Data is already in correct format
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(30, 41, 59, 0.95)',
+                        titleColor: '#f1f5f9',
+                        bodyColor: '#f1f5f9',
+                        borderColor: '#334155',
+                        borderWidth: 1,
+                        padding: 12,
+                        displayColors: false,
+                        callbacks: {
+                            title: function(context) {
+                                const date = new Date(context[0].parsed.x);
+                                return date.toLocaleDateString();
+                            },
+                            label: function(context) {
+                                const data = context.raw;
+                                const change = data.c - data.o;
+                                const changePct = (change / data.o * 100).toFixed(2);
+                                return [
+                                    `Open: $${data.o.toFixed(2)}`,
+                                    `High: $${data.h.toFixed(2)}`,
+                                    `Low: $${data.l.toFixed(2)}`,
+                                    `Close: $${data.c.toFixed(2)}`,
+                                    `Change: $${change.toFixed(2)} (${changePct}%)`
+                                ];
+                            }
+                        }
+                    }
                 },
-                horzLine: {
-                    color: '#64748b',
-                    width: 1,
-                    style: LightweightCharts.LineStyle.Dashed,
-                },
-            },
-            rightPriceScale: {
-                borderColor: '#334155',
-                scaleMargins: {
-                    top: 0.1,
-                    bottom: 0.2,
-                },
-            },
-            timeScale: {
-                borderColor: '#334155',
-                timeVisible: true,
-                secondsVisible: false,
-            },
-        });
-        
-        // Add candlestick series
-        const candlestickSeries = currentChart.addCandlestickSeries({
-            upColor: '#10b981',
-            downColor: '#ef4444',
-            borderUpColor: '#10b981',
-            borderDownColor: '#ef4444',
-            wickUpColor: '#10b981',
-            wickDownColor: '#ef4444',
-        });
-        
-        // Prepare data in Lightweight Charts format
-        // Convert dates to timestamps (seconds since epoch)
-        const candlestickData = data.dates.map((date, i) => ({
-            time: Math.floor(new Date(date).getTime() / 1000), // Convert to seconds
-            open: data.open[i],
-            high: data.high[i],
-            low: data.low[i],
-            close: data.close[i]
-        }));
-        
-        // Sort by time (just in case)
-        candlestickData.sort((a, b) => a.time - b.time);
-        
-        // Set the data
-        candlestickSeries.setData(candlestickData);
-        
-        // Fit content to view
-        currentChart.timeScale().fitContent();
-        
-        // Handle window resize
-        const resizeObserver = new ResizeObserver(entries => {
-            if (currentChart && entries.length > 0) {
-                const newWidth = entries[0].contentRect.width;
-                currentChart.applyOptions({ width: newWidth });
+                scales: {
+                    x: {
+                        type: 'time',
+                        time: {
+                            unit: 'day',
+                            displayFormats: {
+                                day: 'MMM dd'
+                            }
+                        },
+                        grid: {
+                            color: '#334155',
+                            drawBorder: false
+                        },
+                        ticks: {
+                            color: '#94a3b8',
+                            maxRotation: 45,
+                            minRotation: 45
+                        }
+                    },
+                    y: {
+                        min: priceMin,
+                        max: priceMax,
+                        grid: {
+                            color: '#334155',
+                            drawBorder: false
+                        },
+                        ticks: {
+                            color: '#94a3b8',
+                            callback: function(value) {
+                                return '$' + value.toFixed(2);
+                            }
+                        }
+                    }
+                }
             }
         });
-        resizeObserver.observe(chartContainer);
         
-        // Store observer for cleanup
-        currentChart._resizeObserver = resizeObserver;
-        
-        console.log(`Chart created for ${ticker} with ${candlestickData.length} candles`);
+        console.log(`Chart created successfully for ${ticker} with ${candlestickData.length} candles`);
         
     } catch (error) {
         console.error('Error creating chart:', error);
-        showNotification('Error displaying chart. Please try again.', 'error');
+        console.error('Error details:', error.message);
+        showNotification('Error displaying chart. Please check console for details.', 'error');
         return;
     }
     
