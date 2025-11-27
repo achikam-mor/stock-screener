@@ -200,11 +200,19 @@ function displayCandlestickChart(ticker, data) {
                 responsive: true,
                 maintainAspectRatio: false,
                 parsing: false, // Data is already in correct format
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                    axis: 'x'
+                },
                 plugins: {
                     legend: {
                         display: false
                     },
                     tooltip: {
+                        enabled: true,
+                        mode: 'index',
+                        intersect: false,
                         backgroundColor: 'rgba(30, 41, 59, 0.95)',
                         titleColor: '#f1f5f9',
                         bodyColor: '#f1f5f9',
@@ -219,15 +227,22 @@ function displayCandlestickChart(ticker, data) {
                             },
                             label: function(context) {
                                 const data = context.raw;
-                                const change = data.c - data.o;
-                                const changePct = (change / data.o * 100).toFixed(2);
-                                return [
-                                    `Open: $${data.o.toFixed(2)}`,
-                                    `High: $${data.h.toFixed(2)}`,
-                                    `Low: $${data.l.toFixed(2)}`,
-                                    `Close: $${data.c.toFixed(2)}`,
-                                    `Change: $${change.toFixed(2)} (${changePct}%)`
-                                ];
+                                if (data.o !== undefined) {
+                                    // Candlestick data
+                                    const change = data.c - data.o;
+                                    const changePct = (change / data.o * 100).toFixed(2);
+                                    return [
+                                        `Open: $${data.o.toFixed(2)}`,
+                                        `High: $${data.h.toFixed(2)}`,
+                                        `Low: $${data.l.toFixed(2)}`,
+                                        `Close: $${data.c.toFixed(2)}`,
+                                        `Change: $${change.toFixed(2)} (${changePct}%)`
+                                    ];
+                                } else if (context.dataset.label === 'SMA150') {
+                                    // SMA150 line data
+                                    return `SMA150: $${data.y.toFixed(2)}`;
+                                }
+                                return '';
                             }
                         }
                     }
