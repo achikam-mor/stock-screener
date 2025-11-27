@@ -39,13 +39,19 @@ async def main():
             continue
         try:
             import pandas as pd
+            import numpy as np
+            # Remove rows with NaN or inf values
+            data_clean = data.replace([np.inf, -np.inf], np.nan).dropna()
+            if data_clean.empty:
+                continue
+            
             # Just extract the data as-is, no modifications
-            dates = [idx.strftime('%Y-%m-%d') if hasattr(idx, 'strftime') else str(idx) for idx in data.index]
-            opens = [round(float(o), 2) for o in data['Open'].values]
-            highs = [round(float(h), 2) for h in data['High'].values]
-            lows = [round(float(l), 2) for l in data['Low'].values]
-            closes = [round(float(c), 2) for c in data['Close'].values]
-            volumes = [int(v) for v in data['Volume'].values]
+            dates = [idx.strftime('%Y-%m-%d') if hasattr(idx, 'strftime') else str(idx) for idx in data_clean.index]
+            opens = [round(float(o), 2) for o in data_clean['Open'].values]
+            highs = [round(float(h), 2) for h in data_clean['High'].values]
+            lows = [round(float(l), 2) for l in data_clean['Low'].values]
+            closes = [round(float(c), 2) for c in data_clean['Close'].values]
+            volumes = [int(v) for v in data_clean['Volume'].values]
             
             if len(dates) > 0:
                 chart_data_raw[symbol] = {

@@ -47,16 +47,17 @@ class DataLoader:
         """
         self.failed_tickers = []  # Reset failed tickers list
         semaphore = asyncio.Semaphore(self.max_concurrent_requests)
-        async with semaphore:
-            tasks = []
-            for symbol in tickers:
-                task = asyncio.create_task(self._fetch_stock_data_async(symbol))
-                tasks.append((symbol, task))
+        
+        async def fetch_with_semaphore(symbol):
+            async with semaphore:
+                return await self._fetch_stock_data_async(symbol)
+        
+        tasks = [fetch_with_semaphore(symbol) for symbol in tickers]
+        results_list = await asyncio.gather(*tasks)
+        
+        results = {}
+        for symbol, data in zip(tickers, results_list):
+            if data is not None:
+                results[symbol] = data
 
-            results = {}
-            for symbol, task in tasks:
-                data = await task
-                if data is not None:
-                    results[symbol] = data
-
-            return results, self.failed_tickers
+        return results, self.failed_tickers
