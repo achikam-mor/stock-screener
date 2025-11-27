@@ -75,22 +75,17 @@ async def main():
     
     print(f"📊 Chart data extraction: {success_count} successful, {error_count} errors")
     
+    # Save ALL chart data (not filtered) for comparison tool
+    with open('chart_data.json', 'w') as f:
+        json.dump({
+            "stocks": chart_data_raw,
+            "last_updated": datetime.now().isoformat()
+        }, f)
+    print(f"✅ Chart data saved: {len(chart_data_raw)} stocks (all available for comparison)")
+    
     # Screen stocks to identify which ones pass
     results = screener.screen_stocks(stock_data)
     results.failed_tickers.extend(fetch_failed_tickers)
-    
-    # Filter chart data to only include passing stocks (hot + watch list)
-    passing_stocks = set(list(results.hot_stocks.keys()) + list(results.watch_list.keys()))
-    print(f"🔍 Filtering chart data: {len(passing_stocks)} stocks passed screening")
-    chart_data = {symbol: data for symbol, data in chart_data_raw.items() if symbol in passing_stocks}
-    print(f"✅ Final chart data: {len(chart_data)} stocks (after filtering for hot + watch list)")
-    
-    with open('chart_data.json', 'w') as f:
-        json.dump({
-            "stocks": chart_data,
-            "last_updated": datetime.now().isoformat()
-        }, f)
-    print(f"✅ Chart data saved: {len(chart_data)} stocks (hot + watch list only)")
     
     # Display results
     results_manager.print_results(results)

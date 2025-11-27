@@ -1808,6 +1808,11 @@ footer p {
     font-weight: 700;
 }
 
+.status-other {
+    color: var(--text-secondary);
+    font-weight: 700;
+}
+
 .charts-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));

@@ -80,9 +80,9 @@ function addTickerToCompare(ticker = null) {
         return;
     }
     
-    // Check if stock exists in our data
-    if (!resultsData || (!resultsData.hot_stocks[symbol] && !resultsData.watch_list[symbol])) {
-        showNotification(`${symbol} not found in screened stocks`, 'error');
+    // Check if stock exists in chart data
+    if (!chartData || !chartData[symbol]) {
+        showNotification(`${symbol} not found or data unavailable`, 'error');
         input.value = '';
         return;
     }
@@ -185,7 +185,7 @@ function buildMetricsTable() {
     
     // Get stock data
     const stocksData = selectedStocks.map(symbol => {
-        const stock = resultsData.hot_stocks[symbol] || resultsData.watch_list[symbol];
+        const stock = resultsData ? (resultsData.hot_stocks[symbol] || resultsData.watch_list[symbol]) : null;
         const chart = chartData ? chartData[symbol] : null;
         return { symbol, stock, chart };
     });
@@ -194,9 +194,12 @@ function buildMetricsTable() {
     const metrics = [
         {
             label: 'Status',
-            getValue: (data) => resultsData.hot_stocks[data.symbol] ? 
-                '<span class="status-hot">🔥 Hot</span>' : 
-                '<span class="status-watch">👀 Watch</span>'
+            getValue: (data) => {
+                if (!resultsData) return '<span class="status-other">📊 N/A</span>';
+                if (resultsData.hot_stocks[data.symbol]) return '<span class="status-hot">🔥 Hot</span>';
+                if (resultsData.watch_list[data.symbol]) return '<span class="status-watch">👀 Watch</span>';
+                return '<span class="status-other">📊 Other</span>';
+            }
         },
         {
             label: 'Current Price',
