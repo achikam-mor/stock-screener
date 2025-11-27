@@ -94,7 +94,12 @@ function createCompactStockCard(stock, type) {
     return `
         <div class="stock-card-compact" data-ticker="${stock.symbol}">
             <div class="stock-header">
-                <div class="stock-symbol">${stock.symbol}</div>
+                <div class="stock-symbol">
+                    <input type="checkbox" class="compare-checkbox" value="${stock.symbol}" 
+                           onchange="toggleCompareStock('${stock.symbol}')" 
+                           title="Select for comparison">
+                    ${stock.symbol}
+                </div>
                 <a href="chart-viewer.html?ticker=${stock.symbol}" class="chart-btn">
                     📈 Launch Chart
                 </a>
@@ -203,3 +208,69 @@ function showError() {
 
 // Refresh function for auto-refresh
 window.refreshCurrentPage = loadStocksPage;
+
+// Comparison functionality
+let selectedForCompare = [];
+
+function toggleCompareStock(symbol) {
+    const checkbox = document.querySelector(`.compare-checkbox[value="${symbol}"]`);
+    
+    if (checkbox && checkbox.checked) {
+        if (selectedForCompare.length >= 3) {
+            showCompareNotification('Maximum 3 stocks can be compared at once', 'error');
+            checkbox.checked = false;
+            return;
+        }
+        if (!selectedForCompare.includes(symbol)) {
+            selectedForCompare.push(symbol);
+        }
+    } else {
+        selectedForCompare = selectedForCompare.filter(s => s !== symbol);
+    }
+    
+    updateCompareButton();
+}
+
+function updateCompareButton() {
+    let compareBtn = document.getElementById('compare-selected-btn');
+    
+    if (selectedForCompare.length > 0 && !compareBtn) {
+        // Create compare button
+        const container = document.querySelector('.page-info');
+        compareBtn = document.createElement('button');
+        compareBtn.id = 'compare-selected-btn';
+        compareBtn.className = 'compare-selected-button';
+        compareBtn.onclick = navigateToCompare;
+        container.appendChild(compareBtn);
+    }
+    
+    if (compareBtn) {
+        if (selectedForCompare.length === 0) {
+            compareBtn.remove();
+        } else {
+            compareBtn.textContent = `🔄 Compare ${selectedForCompare.length} Stock${selectedForCompare.length > 1 ? 's' : ''}`;
+            compareBtn.disabled = selectedForCompare.length < 2;
+        }
+    }
+}
+
+function navigateToCompare() {
+    if (selectedForCompare.length < 2) {
+        showCompareNotification('Please select at least 2 stocks to compare', 'error');
+        return;
+    }
+    
+    const tickers = selectedForCompare.join(',');
+    window.location.href = `compare.html?tickers=${tickers}`;
+}
+
+function showCompareNotification(message, type) {
+    const notification = document.getElementById('search-notification');
+    notification.textContent = message;
+    notification.className = `search-notification ${type}`;
+    notification.style.display = 'flex';
+    
+    setTimeout(() => {
+        notification.style.display = 'none';
+    }, 3000);
+}
