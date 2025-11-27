@@ -41,11 +41,11 @@ async def main():
             import pandas as pd
             # Just extract the data as-is, no modifications
             dates = [idx.strftime('%Y-%m-%d') if hasattr(idx, 'strftime') else str(idx) for idx in data.index]
-            opens = [round(float(o), 2) for o in data['Open']]
-            highs = [round(float(h), 2) for h in data['High']]
-            lows = [round(float(l), 2) for l in data['Low']]
-            closes = [round(float(c), 2) for c in data['Close']]
-            volumes = [int(v) for v in data['Volume']]
+            opens = [round(float(o), 2) for o in data['Open'].values]
+            highs = [round(float(h), 2) for h in data['High'].values]
+            lows = [round(float(l), 2) for l in data['Low'].values]
+            closes = [round(float(c), 2) for c in data['Close'].values]
+            volumes = [int(v) for v in data['Volume'].values]
             
             if len(dates) > 0:
                 chart_data_raw[symbol] = {
