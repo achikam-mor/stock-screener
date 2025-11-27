@@ -28,57 +28,51 @@ async def main():
     # Fetch stock data in parallel
     stock_data, fetch_failed_tickers = await data_loader.fetch_all_stocks_data(tickers)
     
-    # Screen stocks first to identify which ones pass
+    # Save raw chart data immediately after fetching (before any screening or manipulation)
+    print(f"💾 Saving raw chart data for {len(stock_data)} stocks...")
+    chart_data_raw = {}
+    success_count = 0
+    error_count = 0
+    
+    for symbol, data in stock_data.items():
+        if data is None or data.empty:
+            continue
+        try:
+            import pandas as pd
+            # Just extract the data as-is, no modifications
+            dates = [idx.strftime('%Y-%m-%d') if hasattr(idx, 'strftime') else str(idx) for idx in data.index]
+            opens = [round(float(o), 2) for o in data['Open']]
+            highs = [round(float(h), 2) for h in data['High']]
+            lows = [round(float(l), 2) for l in data['Low']]
+            closes = [round(float(c), 2) for c in data['Close']]
+            volumes = [int(v) for v in data['Volume']]
+            
+            if len(dates) > 0:
+                chart_data_raw[symbol] = {
+                    "dates": dates,
+                    "open": opens,
+                    "high": highs,
+                    "low": lows,
+                    "close": closes,
+                    "volume": volumes
+                }
+                success_count += 1
+        except Exception as e:
+            error_count += 1
+            print(f"⚠️ Could not save chart data for {symbol}: {str(e)}")
+            continue
+    
+    print(f"📊 Chart data extraction: {success_count} successful, {error_count} errors")
+    
+    # Screen stocks to identify which ones pass
     results = screener.screen_stocks(stock_data)
     results.failed_tickers.extend(fetch_failed_tickers)
     
-    # Only save chart data for stocks that passed screening (hot + watch list)
+    # Filter chart data to only include passing stocks (hot + watch list)
     passing_stocks = set(list(results.hot_stocks.keys()) + list(results.watch_list.keys()))
-    chart_data = {}
-    for symbol in passing_stocks:
-        data = stock_data.get(symbol)
-        if data is None or data.empty:
-            continue
-        
-        try:
-                # Make a copy to avoid modifying original
-                import pandas as pd
-                data = data.copy()
-                
-                # Convert all OHLC columns to numeric first, coerce errors to NaN
-                # This will convert any ticker symbols or invalid strings to NaN
-                data['Open'] = pd.to_numeric(data['Open'], errors='coerce')
-                data['High'] = pd.to_numeric(data['High'], errors='coerce')
-                data['Low'] = pd.to_numeric(data['Low'], errors='coerce')
-                data['Close'] = pd.to_numeric(data['Close'], errors='coerce')
-                data['Volume'] = pd.to_numeric(data['Volume'], errors='coerce')
-                
-                # Filter out rows with invalid OHLC values (must be positive and not NaN)
-                valid_mask = (data['Open'] > 0) & (data['High'] > 0) & (data['Low'] > 0) & (data['Close'] > 0) & (data['Volume'] >= 0)
-                data = data[valid_mask]
-                
-                # Convert to lists
-                dates = [idx.strftime('%Y-%m-%d') if hasattr(idx, 'strftime') else str(idx) for idx in data.index]
-                opens = [round(float(o), 2) for o in data['Open']]
-                highs = [round(float(h), 2) for h in data['High']]
-                lows = [round(float(l), 2) for l in data['Low']]
-                closes = [round(float(c), 2) for c in data['Close']]
-                volumes = [int(v) for v in data['Volume']]
-                
-                # Only save if we have valid data
-                if len(dates) > 0:
-                    chart_data[symbol] = {
-                        "dates": dates,
-                        "open": opens,
-                        "high": highs,
-                        "low": lows,
-                        "close": closes,
-                        "volume": volumes
-                    }
-                    
-        except Exception as e:
-            print(f"⚠️ Could not save chart data for {symbol}: {str(e)}")
-            continue
+    print(f"🔍 Filtering chart data: {len(passing_stocks)} stocks passed screening")
+    chart_data = {symbol: data for symbol, data in chart_data_raw.items() if symbol in passing_stocks}
+    print(f"✅ Final chart data: {len(chart_data)} stocks (after filtering for hot + watch list)")
     
     with open('chart_data.json', 'w') as f:
         json.dump({
