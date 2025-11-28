@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-11-28T19:02:49.187037",
+  "timestamp": "2025-11-28T20:22:56.328784",
   "hot_stocks": [
     {
       "symbol": "DTE",
@@ -218,7 +218,7 @@
       "distance_percent": 0.58,
       "atr": 2.59,
       "atr_percent": 1.7,
-      "last_volume": 3829351,
+      "last_volume": 3832543,
       "avg_volume_14d": 9283321
     },
     {
@@ -838,7 +838,7 @@
       "distance_percent": 2.67,
       "atr": 1.23,
       "atr_percent": 1.1,
-      "last_volume": 938870,
+      "last_volume": 938871,
       "avg_volume_14d": 2048421
     },
     {
@@ -1108,7 +1108,7 @@
       "distance_percent": 3.26,
       "atr": 1.33,
       "atr_percent": 3.26,
-      "last_volume": 8727731,
+      "last_volume": 8728299,
       "avg_volume_14d": 15087807
     },
     {
@@ -1188,7 +1188,7 @@
       "distance_percent": 3.4,
       "atr": 0.82,
       "atr_percent": 3.78,
-      "last_volume": 7379852,
+      "last_volume": 7440712,
       "avg_volume_14d": 31289821
     },
     {
@@ -1650,7 +1650,7 @@
       "distance_percent": -0.47,
       "atr": 11.3,
       "atr_percent": 2.72,
-      "last_volume": 399660,
+      "last_volume": 400158,
       "avg_volume_14d": 1207457
     },
     {
@@ -1890,7 +1890,7 @@
       "distance_percent": -1.15,
       "atr": 1.23,
       "atr_percent": 1.63,
-      "last_volume": 1810749,
+      "last_volume": 1810750,
       "avg_volume_14d": 3130585
     },
     {
@@ -2400,7 +2400,7 @@
       "distance_percent": -2.97,
       "atr": 1.39,
       "atr_percent": 2.26,
-      "last_volume": 775390,
+      "last_volume": 775391,
       "avg_volume_14d": 2630985
     },
     {
