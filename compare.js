@@ -183,10 +183,49 @@ function compareStocks() {
 function buildMetricsTable() {
     const tbody = document.getElementById('comparison-metrics-body');
     
-    // Get stock data
+    // Get stock data - calculate from chart data for all stocks
     const stocksData = selectedStocks.map(symbol => {
-        const stock = resultsData ? (resultsData.hot_stocks[symbol] || resultsData.watch_list[symbol]) : null;
+        const stockFromResults = resultsData ? (resultsData.hot_stocks?.[symbol] || resultsData.watch_list?.[symbol]) : null;
         const chart = chartData ? chartData[symbol] : null;
+        
+        // Calculate metrics from chart data if not in results
+        let calculatedData = null;
+        if (chart && chart.close && chart.close.length > 0) {
+            const lastIndex = chart.close.length - 1;
+            const currentPrice = chart.close[lastIndex];
+            const currentSMA150 = chart.sma150 && chart.sma150[lastIndex] !== null ? chart.sma150[lastIndex] : null;
+            
+            // Calculate ATR14 from chart data
+            let atr14 = null;
+            if (chart.high && chart.low && chart.close && chart.high.length >= 15) {
+                const trValues = [];
+                for (let i = Math.max(1, chart.high.length - 14); i < chart.high.length; i++) {
+                    const high = chart.high[i];
+                    const low = chart.low[i];
+                    const prevClose = chart.close[i - 1];
+                    const tr = Math.max(
+                        high - low,
+                        Math.abs(high - prevClose),
+                        Math.abs(low - prevClose)
+                    );
+                    trValues.push(tr);
+                }
+                if (trValues.length > 0) {
+                    atr14 = trValues.reduce((a, b) => a + b, 0) / trValues.length;
+                }
+            }
+            
+            calculatedData = {
+                close: currentPrice,
+                sma150: currentSMA150,
+                atr14: atr14,
+                atr14_percent: atr14 && currentPrice ? (atr14 / currentPrice * 100) : null
+            };
+        }
+        
+        // Use results data if available, otherwise use calculated data
+        const stock = stockFromResults || calculatedData;
+        
         return { symbol, stock, chart };
     });
     
@@ -196,35 +235,35 @@ function buildMetricsTable() {
             label: 'Status',
             getValue: (data) => {
                 if (!resultsData) return '<span class="status-other">📊 N/A</span>';
-                if (resultsData.hot_stocks[data.symbol]) return '<span class="status-hot">🔥 Hot</span>';
-                if (resultsData.watch_list[data.symbol]) return '<span class="status-watch">👀 Watch</span>';
+                if (resultsData.hot_stocks?.[data.symbol]) return '<span class="status-hot">🔥 Hot</span>';
+                if (resultsData.watch_list?.[data.symbol]) return '<span class="status-watch">👀 Watch</span>';
                 return '<span class="status-other">📊 Other</span>';
             }
         },
         {
             label: 'Current Price',
-            getValue: (data) => data.stock ? `$${data.stock.close.toFixed(2)}` : 'N/A'
+            getValue: (data) => data.stock && data.stock.close ? `$${data.stock.close.toFixed(2)}` : 'N/A'
         },
         {
-            label: 'SMA150',
-            getValue: (data) => data.stock ? `$${data.stock.sma150.toFixed(2)}` : 'N/A'
+            label: 'SMA 150',
+            getValue: (data) => data.stock && data.stock.sma150 ? `$${data.stock.sma150.toFixed(2)}` : 'N/A'
         },
         {
-            label: '% Above SMA150',
+            label: '% Above SMA 150',
             getValue: (data) => {
-                if (!data.stock) return 'N/A';
+                if (!data.stock || !data.stock.close || !data.stock.sma150) return 'N/A';
                 const pct = ((data.stock.close - data.stock.sma150) / data.stock.sma150 * 100);
                 const color = pct >= 0 ? '#10b981' : '#ef4444';
                 return `<span style="color: ${color}">${pct >= 0 ? '+' : ''}${pct.toFixed(2)}%</span>`;
             }
         },
         {
-            label: 'ATR14',
-            getValue: (data) => data.stock ? `$${data.stock.atr14.toFixed(2)}` : 'N/A'
+            label: 'ATR 14 Days',
+            getValue: (data) => data.stock && data.stock.atr14 ? `$${data.stock.atr14.toFixed(2)}` : 'N/A'
         },
         {
-            label: 'ATR14%',
-            getValue: (data) => data.stock ? `${data.stock.atr14_percent.toFixed(2)}%` : 'N/A'
+            label: 'ATR 14 Days %',
+            getValue: (data) => data.stock && data.stock.atr14_percent ? `${data.stock.atr14_percent.toFixed(2)}%` : 'N/A'
         },
         {
             label: '52-Week High',
@@ -298,26 +337,36 @@ function createComparisonChart(symbol, canvas) {
     const data = chartData[symbol];
     const ctx = canvas.getContext('2d');
     
+    // Limit to last 260 days (approximately 1 trading year)
+    const maxDays = 260;
+    const startIndex = Math.max(0, data.dates.length - maxDays);
+    const dates = data.dates.slice(startIndex);
+    const opens = data.open.slice(startIndex);
+    const highs = data.high.slice(startIndex);
+    const lows = data.low.slice(startIndex);
+    const closes = data.close.slice(startIndex);
+    const sma150Values = data.sma150 ? data.sma150.slice(startIndex) : [];
+    
     // Prepare candlestick data
-    const candlestickData = data.dates.map((date, i) => ({
+    const candlestickData = dates.map((date, i) => ({
         x: new Date(date).getTime(),
-        o: data.open[i],
-        h: data.high[i],
-        l: data.low[i],
-        c: data.close[i]
+        o: opens[i],
+        h: highs[i],
+        l: lows[i],
+        c: closes[i]
     }));
     
     // Prepare SMA150 line data
-    const sma150Data = data.dates
+    const sma150Data = dates
         .map((date, i) => ({
             x: new Date(date).getTime(),
-            y: data.sma150 && data.sma150[i] !== null ? data.sma150[i] : null
+            y: sma150Values && sma150Values[i] !== null ? sma150Values[i] : null
         }))
         .filter(point => point.y !== null);
     
-    // Calculate Y-axis range
-    const periodHigh = Math.max(...data.high);
-    const periodLow = Math.min(...data.low);
+    // Calculate Y-axis range for displayed data
+    const periodHigh = Math.max(...highs);
+    const periodLow = Math.min(...lows);
     const priceMin = periodLow * 0.98;
     const priceMax = periodHigh * 1.02;
     
