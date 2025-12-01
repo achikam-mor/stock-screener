@@ -111,13 +111,25 @@ function displayCandlestickChart(ticker, data) {
     
     // Update chart title
     document.getElementById('chart-title').textContent = `${ticker} - Candlestick Chart`;
-    document.getElementById('chart-data-points').textContent = `${data.dates.length} trading days`;
     
-    // Calculate statistics
-    const currentPrice = data.close[data.close.length - 1];
-    const periodHigh = Math.max(...data.high);
-    const periodLow = Math.min(...data.low);
-    const avgVolume = Math.round(data.volume.reduce((a, b) => a + b, 0) / data.volume.length);
+    // Limit to last 260 days (approximately 1 trading year)
+    const maxDays = 260;
+    const startIndex = Math.max(0, data.dates.length - maxDays);
+    const dates = data.dates.slice(startIndex);
+    const opens = data.open.slice(startIndex);
+    const highs = data.high.slice(startIndex);
+    const lows = data.low.slice(startIndex);
+    const closes = data.close.slice(startIndex);
+    const volumes = data.volume.slice(startIndex);
+    const sma150Values = data.sma150 ? data.sma150.slice(startIndex) : [];
+    
+    document.getElementById('chart-data-points').textContent = `${dates.length} trading days`;
+    
+    // Calculate statistics for displayed period
+    const currentPrice = closes[closes.length - 1];
+    const periodHigh = Math.max(...highs);
+    const periodLow = Math.min(...lows);
+    const avgVolume = Math.round(volumes.reduce((a, b) => a + b, 0) / volumes.length);
     
     // Update statistics
     document.getElementById('current-price').textContent = `$${currentPrice.toFixed(2)}`;
@@ -139,20 +151,20 @@ function displayCandlestickChart(ticker, data) {
     const canvas = document.getElementById('candlestickChart');
     const ctx = canvas.getContext('2d');
     
-    // Prepare candlestick data - FIXED: proper format for financial plugin
-    const candlestickData = data.dates.map((date, i) => ({
+    // Prepare candlestick data - using sliced arrays
+    const candlestickData = dates.map((date, i) => ({
         x: new Date(date).getTime(), // Convert to timestamp
-        o: data.open[i],
-        h: data.high[i],
-        l: data.low[i],
-        c: data.close[i]
+        o: opens[i],
+        h: highs[i],
+        l: lows[i],
+        c: closes[i]
     }));
     
     // Prepare SMA150 line data (filter out null values)
-    const sma150Data = data.dates
+    const sma150Data = dates
         .map((date, i) => ({
             x: new Date(date).getTime(),
-            y: data.sma150 && data.sma150[i] !== null ? data.sma150[i] : null
+            y: sma150Values && sma150Values[i] !== null ? sma150Values[i] : null
         }))
         .filter(point => point.y !== null); // Remove null values
     

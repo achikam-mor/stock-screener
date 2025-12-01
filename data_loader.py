@@ -23,8 +23,8 @@ class DataLoader:
     async def _fetch_stock_data_async(self, symbol: str) -> Optional[pd.DataFrame]:
         """Fetch single stock data asynchronously"""
         try:
-            # Fetch 260 days of data (full trading year)
-            data = yf.download(symbol, period="260d", interval="1d", auto_adjust=False, progress=False)
+            # Fetch 410 days of data (enough for SMA150 calculation on 260 trading days)
+            data = yf.download(symbol, period="410d", interval="1d", auto_adjust=False, progress=False)
             if data.empty:
                 self.failed_tickers.append(symbol)  # Track symbols with empty data
                 return None
