@@ -3,28 +3,26 @@ name: Daily Stock Screening
 on:
   schedule:
     # NYSE opens at 9:30 AM ET, closes at 4:00 PM ET
-    # Runs 6 times per trading day (Monday to Friday)
-    # Spread from 30 min after open to 10 min after close
+    # Runs 4 times per trading day (Monday to Friday)
+    # Different priority levels scanned at different times to reduce API calls
     
-    # 10:00 AM ET (30 min after NYSE opens) = 15:00 UTC
-    - cron: '0 15 * * 1-5'
+    # Run 1: 1 hour before market open - Priority 1 only
+    # 8:30 AM ET = 13:30 UTC
+    - cron: '30 13 * * 1-5'
     
-    # 11:14 AM ET = 16:14 UTC
-    - cron: '14 16 * * 1-5'
+    # Run 2: 2 hours after market open - Priority 1 + 2
+    # 11:30 AM ET = 16:30 UTC
+    - cron: '30 16 * * 1-5'
     
-    # 12:28 PM ET = 17:28 UTC
-    - cron: '28 17 * * 1-5'
+    # Run 3: 4 hours after market open - Priority 1 only
+    # 1:30 PM ET = 18:30 UTC
+    - cron: '30 18 * * 1-5'
     
-    # 1:42 PM ET = 18:42 UTC
-    - cron: '42 18 * * 1-5'
+    # Run 4: 15 minutes after market close - ALL stocks (full scan + reclassification)
+    # 4:15 PM ET = 21:15 UTC
+    - cron: '15 21 * * 1-5'
     
-    # 2:56 PM ET = 19:56 UTC
-    - cron: '56 19 * * 1-5'
-    
-    # 4:10 PM ET (10 min after NYSE closes) = 21:10 UTC
-    - cron: '10 21 * * 1-5'
-    
-  workflow_dispatch: # Allows manual trigger from GitHub Actions tab
+  workflow_dispatch: # Manual trigger scans ALL stocks
 
 jobs:
   run-screening:
@@ -47,15 +45,54 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     
+    - name: Determine scan mode
+      id: scan-mode
+      run: |
+        # Check if this is a manual trigger
+        if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+          echo "mode=manual" >> $GITHUB_OUTPUT
+          echo "📋 Manual trigger detected - scanning ALL stocks"
+        else
+          # Determine mode based on schedule time
+          SCHEDULE="${{ github.event.schedule }}"
+          case "$SCHEDULE" in
+            "30 13 * * 1-5")
+              # Run 1: 1 hour before market open - Priority 1 only
+              echo "mode=priority1" >> $GITHUB_OUTPUT
+              echo "📋 Run 1 (pre-market) - scanning Priority 1 stocks only"
+              ;;
+            "30 16 * * 1-5")
+              # Run 2: 2 hours after open - Priority 1 + 2
+              echo "mode=priority1_2" >> $GITHUB_OUTPUT
+              echo "📋 Run 2 (mid-morning) - scanning Priority 1+2 stocks"
+              ;;
+            "30 18 * * 1-5")
+              # Run 3: 4 hours after open - Priority 1 only
+              echo "mode=priority1" >> $GITHUB_OUTPUT
+              echo "📋 Run 3 (afternoon) - scanning Priority 1 stocks only"
+              ;;
+            "15 21 * * 1-5")
+              # Run 4: After market close - ALL stocks (full scan)
+              echo "mode=all" >> $GITHUB_OUTPUT
+              echo "📋 Run 4 (post-market) - scanning ALL stocks + reclassification"
+              ;;
+            *)
+              # Default to all if unknown schedule
+              echo "mode=all" >> $GITHUB_OUTPUT
+              echo "📋 Unknown schedule - scanning ALL stocks"
+              ;;
+          esac
+        fi
+    
     - name: Run stock screening
       run: |
-        python main.py
+        python main.py --mode ${{ steps.scan-mode.outputs.mode }}
     
     - name: Commit and push results
       run: |
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
         git config --local user.name "github-actions[bot]"
-        git add results.json chart_data.json
-        git diff --quiet && git diff --staged --quiet || (git commit -m "Update stock screening results - $(date +'%Y-%m-%d %H:%M:%S')" && git push)
+        git add results.json chart_data.json Priority1.txt Priority2.txt Priority3.txt
+        git diff --quiet && git diff --staged --quiet || (git commit -m "Update stock screening results - $(date +'%Y-%m-%d %H:%M:%S') [Mode: ${{ steps.scan-mode.outputs.mode }}]" && git push)
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
