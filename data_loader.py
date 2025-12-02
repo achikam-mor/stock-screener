@@ -24,16 +24,15 @@ class DataLoader:
         """Fetch single stock data asynchronously"""
         try:
             # Fetch 410 days of data (enough for SMA150 calculation on 260 trading days)
-            data = yf.download(symbol, period="410d", interval="1d", auto_adjust=False, progress=False)
+            # Use auto_adjust=True to get prices adjusted for splits AND dividends
+            # This matches TradingView's SMA calculation methodology
+            data = yf.download(symbol, period="410d", interval="1d", auto_adjust=True, progress=False)
             if data.empty:
                 self.failed_tickers.append(symbol)  # Track symbols with empty data
                 return None
 
-            # Apply split adjustment
-            if "Stock Splits" in data.columns:
-                splits = data["Stock Splits"].replace(0, 1).cumprod()
-                for col in ["Open", "High", "Low", "Close"]:
-                    data[col] = data[col] / splits
+            # With auto_adjust=True, prices are already adjusted for splits and dividends
+            # No manual adjustment needed - this matches TradingView's methodology
 
             return data[["Open", "High", "Low", "Close", "Volume"]]
         except Exception:
