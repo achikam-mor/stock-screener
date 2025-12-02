@@ -1,12 +1,14 @@
 /**
  * Chart Viewer - Interactive Candlestick Charts with TradingView Lightweight Charts
+ * Uses on-demand loading - individual stock files loaded only when requested
  */
 
-let chartData = null;
+let stockList = null;  // List of available stocks
 let currentChart = null;
 let resultsData = null;
+let chartCache = {};  // Cache for loaded chart data
 
-// Load chart data on page load
+// Load stock list on page load (small file, loads instantly)
 document.addEventListener('DOMContentLoaded', async () => {
     // Load results.json to check filtered stocks
     try {
@@ -19,10 +21,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     
     try {
-        const response = await fetch('chart_data.json');
+        // Load only the stock list (tiny file) - not all chart data
+        const response = await fetch('stock-list.json');
         if (response.ok) {
             const data = await response.json();
-            chartData = data.stocks;
+            stockList = data.symbols;
             
             // Update timestamp
             if (data.last_updated) {
@@ -30,15 +33,15 @@ document.addEventListener('DOMContentLoaded', async () => {
                 document.getElementById('last-updated').textContent = 
                     `Last updated: ${date.toLocaleString()}`;
             } else {
-                document.getElementById('last-updated').textContent = 'Timestamp unavailable';
+                document.getElementById('last-updated').textContent = 'Ready to search';
             }
             
-            // Check if chart data is empty
-            if (!chartData || Object.keys(chartData).length === 0) {
+            // Check if stock list is empty
+            if (!stockList || stockList.length === 0) {
                 document.getElementById('last-updated').textContent = 'No chart data available yet';
-                console.log('Chart data file is empty');
+                console.log('Stock list is empty');
             } else {
-                console.log(`Chart data loaded: ${Object.keys(chartData).length} stocks available`);
+                console.log(`Stock list loaded: ${stockList.length} stocks available`);
             }
             
             // Check if ticker is in URL parameter
@@ -49,13 +52,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                 loadChart();
             }
         } else {
-            document.getElementById('last-updated').textContent = 'Chart data not found';
-            console.error('Chart data file not found');
+            document.getElementById('last-updated').textContent = 'Stock list not found';
+            console.error('Stock list file not found');
         }
     } catch (error) {
-        console.error('Error loading chart data:', error);
-        document.getElementById('last-updated').textContent = 'Error loading chart data';
-        showNotification('Chart data unavailable. Please run the workflow to generate charts.', 'error');
+        console.error('Error loading stock list:', error);
+        document.getElementById('last-updated').textContent = 'Error loading stock list';
+        showNotification('Stock list unavailable. Please run the workflow to generate data.', 'error');
     }
     
     // Handle Enter key in search box
@@ -67,9 +70,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 /**
- * Load and display chart for the searched ticker
+ * Load and display chart for the searched ticker (on-demand)
  */
-function loadChart() {
+async function loadChart() {
     const ticker = document.getElementById('chart-ticker-search').value.trim().toUpperCase();
     
     if (!ticker) {
@@ -77,12 +80,13 @@ function loadChart() {
         return;
     }
     
-    if (!chartData) {
-        showNotification('Chart data not loaded yet. Please wait...', 'error');
+    if (!stockList) {
+        showNotification('Stock list not loaded yet. Please wait...', 'error');
         return;
     }
     
-    if (!chartData[ticker]) {
+    // Check if stock exists in our list
+    if (!stockList.includes(ticker)) {
         // Check if stock was filtered by screening criteria
         if (resultsData && resultsData.filtered_by_sma && resultsData.filtered_by_sma.includes(ticker)) {
             showNotification(`${ticker} was filtered out by our SMA/investing strategy and does not meet the screening criteria.`, 'info');
@@ -95,11 +99,31 @@ function loadChart() {
         return;
     }
     
-    // Show success notification
+    // Show loading message
     showNotification(`Loading chart for ${ticker}...`, 'success');
     
-    // Display the chart
-    displayCandlestickChart(ticker, chartData[ticker]);
+    // Check cache first
+    if (chartCache[ticker]) {
+        displayCandlestickChart(ticker, chartCache[ticker]);
+        return;
+    }
+    
+    // Fetch individual stock data on-demand
+    try {
+        const response = await fetch(`charts/${ticker}.json`);
+        if (response.ok) {
+            const chartData = await response.json();
+            chartCache[ticker] = chartData;  // Cache for future use
+            displayCandlestickChart(ticker, chartData);
+        } else {
+            showNotification(`Could not load chart data for ${ticker}`, 'error');
+            document.getElementById('chart-section').style.display = 'none';
+        }
+    } catch (error) {
+        console.error(`Error loading chart for ${ticker}:`, error);
+        showNotification(`Error loading chart for ${ticker}. Please try again.`, 'error');
+        document.getElementById('chart-section').style.display = 'none';
+    }
 }
 
 /**

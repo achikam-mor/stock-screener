@@ -14,6 +14,7 @@ from data_loader import DataLoader
 from stock_analyzer import StockAnalyzer
 from stock_screener import StockScreener
 from results_manager import ResultsManager
+from market_data_fetcher import fetch_and_save_market_data
 
 
 def load_tickers_from_file(filepath):
@@ -87,21 +88,55 @@ def classify_stocks_by_sma_distance(chart_data_raw):
     return priority1, priority2, priority3
 
 
-def merge_existing_chart_data(new_data, existing_filepath='chart_data.json'):
-    """Merge new chart data with existing data to preserve stocks not scanned this run."""
-    if not os.path.exists(existing_filepath):
-        return new_data
+def merge_existing_chart_data(new_data, charts_dir='charts'):
+    """Merge new chart data with existing data by reading individual stock files."""
+    merged = dict(new_data)  # Start with new data
     
-    try:
-        with open(existing_filepath, 'r') as f:
-            existing = json.load(f)
-            existing_stocks = existing.get('stocks', {})
-            
-            # Update existing with new data (new data takes precedence)
-            existing_stocks.update(new_data)
-            return existing_stocks
-    except (json.JSONDecodeError, KeyError):
-        return new_data
+    if not os.path.exists(charts_dir):
+        return merged
+    
+    # Read existing individual stock files for stocks not in new_data
+    for filename in os.listdir(charts_dir):
+        if filename.endswith('.json'):
+            symbol = filename[:-5]  # Remove .json extension
+            if symbol not in merged:
+                try:
+                    with open(os.path.join(charts_dir, filename), 'r') as f:
+                        stock_data = json.load(f)
+                        merged[symbol] = stock_data
+                except (json.JSONDecodeError, IOError):
+                    continue
+    
+    return merged
+
+
+def save_individual_chart_files(chart_data, charts_dir='charts'):
+    """Save each stock's chart data to individual JSON files."""
+    os.makedirs(charts_dir, exist_ok=True)
+    
+    saved_count = 0
+    for symbol, data in chart_data.items():
+        filepath = os.path.join(charts_dir, f'{symbol}.json')
+        try:
+            with open(filepath, 'w') as f:
+                json.dump(data, f)
+            saved_count += 1
+        except Exception as e:
+            print(f"⚠️ Could not save chart file for {symbol}: {str(e)}")
+    
+    return saved_count
+
+
+def save_stock_list(chart_data, filepath='stock-list.json'):
+    """Save a list of all available stock symbols for the search dropdown."""
+    symbols = sorted(chart_data.keys())
+    with open(filepath, 'w') as f:
+        json.dump({
+            "symbols": symbols,
+            "count": len(symbols),
+            "last_updated": datetime.now().isoformat()
+        }, f)
+    return len(symbols)
 
 
 def merge_results(new_results, existing_filepath='results.json'):
@@ -227,13 +262,22 @@ async def main():
     else:
         final_chart_data = merge_existing_chart_data(chart_data_raw)
     
-    # Save chart data
+    # Save individual chart files for each stock (for on-demand loading)
+    print(f"💾 Saving individual chart files...")
+    saved_files = save_individual_chart_files(final_chart_data)
+    print(f"✅ Saved {saved_files} individual chart files to charts/ folder")
+    
+    # Save stock list for search dropdown
+    stock_count = save_stock_list(final_chart_data)
+    print(f"✅ Stock list saved: {stock_count} symbols")
+    
+    # Also save combined chart_data.json for backward compatibility (legacy)
     with open('chart_data.json', 'w') as f:
         json.dump({
             "stocks": final_chart_data,
             "last_updated": datetime.now().isoformat()
         }, f)
-    print(f"✅ Chart data saved: {len(final_chart_data)} stocks total")
+    print(f"✅ Combined chart data saved: {len(final_chart_data)} stocks total")
     
     # Classify stocks into priority groups based on current SMA distance
     # Use ALL available chart data for classification (to reclassify all stocks)
@@ -290,6 +334,10 @@ async def main():
     
     # Save results to JSON file for web display
     results_manager.save_to_json(results, len(all_tickers), "results.json")
+    
+    # Fetch and save market sentiment data (Fear & Greed indices)
+    print("\n📈 Fetching market sentiment data...")
+    fetch_and_save_market_data()
 
 if __name__ == "__main__":
     asyncio.run(main())

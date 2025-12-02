@@ -1,9 +1,11 @@
 /**
  * Stock Comparison Tool - Compare up to 3 stocks side-by-side
+ * Uses on-demand loading - individual stock files loaded only when requested
  */
 
 let resultsData = null;
-let chartData = null;
+let stockList = null;  // List of available stocks
+let chartCache = {};   // Cache for loaded chart data
 let selectedStocks = [];
 let charts = [];
 
@@ -23,11 +25,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         }
         
-        // Load chart_data.json
-        const chartResponse = await fetch('chart_data.json');
-        if (chartResponse.ok) {
-            const data = await chartResponse.json();
-            chartData = data.stocks;
+        // Load stock list (small file) instead of all chart data
+        const stockListResponse = await fetch('stock-list.json');
+        if (stockListResponse.ok) {
+            const data = await stockListResponse.json();
+            stockList = data.symbols;
+            console.log(`Stock list loaded: ${stockList.length} stocks available`);
         }
         
         // Check for URL parameters (tickers passed from other pages)
@@ -35,9 +38,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         const tickers = urlParams.get('tickers');
         if (tickers) {
             const tickerList = tickers.split(',').slice(0, 3); // Max 3 stocks
-            tickerList.forEach(ticker => {
-                addTickerToCompare(ticker.toUpperCase());
-            });
+            for (const ticker of tickerList) {
+                await addTickerToCompare(ticker.toUpperCase());
+            }
             if (selectedStocks.length > 0) {
                 compareStocks();
             }
@@ -56,9 +59,31 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 /**
+ * Load chart data for a single stock on-demand
+ */
+async function loadStockChartData(symbol) {
+    // Check cache first
+    if (chartCache[symbol]) {
+        return chartCache[symbol];
+    }
+    
+    try {
+        const response = await fetch(`charts/${symbol}.json`);
+        if (response.ok) {
+            const data = await response.json();
+            chartCache[symbol] = data;
+            return data;
+        }
+    } catch (error) {
+        console.error(`Error loading chart for ${symbol}:`, error);
+    }
+    return null;
+}
+
+/**
  * Add a ticker to the comparison selection
  */
-function addTickerToCompare(ticker = null) {
+async function addTickerToCompare(ticker = null) {
     const input = document.getElementById('compare-ticker-search');
     const symbol = (ticker || input.value.trim().toUpperCase());
     
@@ -80,8 +105,8 @@ function addTickerToCompare(ticker = null) {
         return;
     }
     
-    // Check if stock exists in chart data
-    if (!chartData || !chartData[symbol]) {
+    // Check if stock exists in stock list
+    if (!stockList || !stockList.includes(symbol)) {
         showNotification(`${symbol} not found or data unavailable`, 'error');
         input.value = '';
         return;
@@ -137,10 +162,19 @@ function updateCompareButton() {
 /**
  * Perform the comparison
  */
-function compareStocks() {
+async function compareStocks() {
     if (selectedStocks.length < 2) {
         showNotification('Please select at least 2 stocks to compare', 'error');
         return;
+    }
+    
+    showNotification('Loading stock data...', 'success');
+    
+    // Load chart data for all selected stocks on-demand
+    for (const symbol of selectedStocks) {
+        if (!chartCache[symbol]) {
+            await loadStockChartData(symbol);
+        }
     }
     
     // Destroy existing charts
@@ -186,7 +220,7 @@ function buildMetricsTable() {
     // Get stock data - calculate from chart data for all stocks
     const stocksData = selectedStocks.map(symbol => {
         const stockFromResults = resultsData ? (resultsData.hot_stocks?.[symbol] || resultsData.watch_list?.[symbol]) : null;
-        const chart = chartData ? chartData[symbol] : null;
+        const chart = chartCache[symbol] || null;
         
         // Calculate metrics from chart data if not in results
         let calculatedData = null;
@@ -323,8 +357,8 @@ function buildChartsComparison() {
         chartWrapper.appendChild(canvas);
         container.appendChild(chartWrapper);
         
-        // Create chart
-        if (chartData && chartData[symbol]) {
+        // Create chart using cached data
+        if (chartCache[symbol]) {
             createComparisonChart(symbol, canvas);
         }
     });
@@ -334,7 +368,9 @@ function buildChartsComparison() {
  * Create a candlestick chart for comparison
  */
 function createComparisonChart(symbol, canvas) {
-    const data = chartData[symbol];
+    const data = chartCache[symbol];
+    if (!data) return;
+    
     const ctx = canvas.getContext('2d');
     
     // Limit to last 260 days (approximately 1 trading year)

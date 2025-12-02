@@ -5,8 +5,8 @@
 // Load market data on page load
 document.addEventListener('DOMContentLoaded', async () => {
     try {
-        // Load Fear & Greed indicators
-        await loadFearGreedIndicators();
+        // Load pre-fetched market data
+        await loadMarketData();
         
         // Update timestamp from results
         const response = await fetch('results.json');
@@ -20,10 +20,63 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 /**
- * Load Fear & Greed indicators
+ * Load market data from pre-fetched JSON file
  */
-async function loadFearGreedIndicators() {
-    // Load Crypto Fear & Greed (has free API)
+async function loadMarketData() {
+    try {
+        const response = await fetch('market_data.json');
+        if (response.ok) {
+            const data = await response.json();
+            
+            // Update timestamp
+            if (data.last_updated) {
+                const date = new Date(data.last_updated);
+                document.getElementById('last-updated').textContent = 
+                    `Last updated: ${date.toLocaleString()}`;
+            }
+            
+            // Load CNN Fear & Greed
+            if (data.cnn_fear_greed && data.cnn_fear_greed.available) {
+                createFearGreedScale(
+                    'fear-greed-gauge',
+                    data.cnn_fear_greed.score,
+                    data.cnn_fear_greed.rating,
+                    'CNN Fear & Greed Index',
+                    data.cnn_fear_greed.previous_close
+                );
+            } else {
+                // Fallback to link if data not available
+                showCNNFallback();
+            }
+            
+            // Load Crypto Fear & Greed
+            if (data.crypto_fear_greed && data.crypto_fear_greed.available) {
+                createFearGreedScale(
+                    'crypto-fear-greed-gauge',
+                    data.crypto_fear_greed.score,
+                    data.crypto_fear_greed.rating,
+                    'Crypto Fear & Greed Index'
+                );
+            } else {
+                // Fallback to API call
+                await loadCryptoFearGreedFromAPI();
+            }
+        } else {
+            // market_data.json not found, use fallbacks
+            await loadCryptoFearGreedFromAPI();
+            showCNNFallback();
+        }
+    } catch (error) {
+        console.error('Error loading market data:', error);
+        await loadCryptoFearGreedFromAPI();
+        showCNNFallback();
+    }
+}
+
+/**
+ * Load Crypto Fear & Greed directly from API (fallback)
+ */
+async function loadCryptoFearGreedFromAPI() {
     try {
         const response = await fetch('https://api.alternative.me/fng/?limit=1');
         if (response.ok) {
@@ -31,21 +84,24 @@ async function loadFearGreedIndicators() {
             const value = parseInt(data.data[0].value);
             const classification = data.data[0].value_classification;
             
-            // Update gauge with scale
-            createFearGreedScale('crypto-fear-greed-gauge', value, classification);
+            createFearGreedScale('crypto-fear-greed-gauge', value, classification, 'Crypto Fear & Greed Index');
         }
     } catch (error) {
         console.error('Error loading Crypto Fear & Greed:', error);
         document.getElementById('crypto-fear-greed-gauge').innerHTML = 
             '<div class="gauge-error">Data Unavailable</div>';
     }
-    
-    // CNN Fear & Greed (no free API - show placeholder)
+}
+
+/**
+ * Show CNN fallback link
+ */
+function showCNNFallback() {
     const cnnGauge = document.getElementById('fear-greed-gauge');
     cnnGauge.innerHTML = `
         <div class="gauge-placeholder">
             <p style="font-size: 1.1rem; margin-bottom: 10px;">📊 CNN Fear & Greed Index</p>
-            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 15px;">No free API available</p>
+            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 15px;">Data temporarily unavailable</p>
             <a href="https://www.cnn.com/markets/fear-and-greed" target="_blank" 
                style="display: inline-block; padding: 10px 20px; background: #3b82f6; color: white; 
                       text-decoration: none; border-radius: 8px; font-weight: 600;">
@@ -58,7 +114,7 @@ async function loadFearGreedIndicators() {
 /**
  * Create a horizontal fear & greed scale gauge
  */
-function createFearGreedScale(containerId, value, label) {
+function createFearGreedScale(containerId, value, label, title, previousClose = null) {
     const container = document.getElementById(containerId);
     
     // Determine color based on value
@@ -77,8 +133,17 @@ function createFearGreedScale(containerId, value, label) {
     
     const needlePosition = value; // 0-100 scale
     
+    // Calculate change from previous close
+    let changeHtml = '';
+    if (previousClose !== null && previousClose !== undefined) {
+        const change = value - previousClose;
+        const changeSign = change >= 0 ? '+' : '';
+        const changeColor = change >= 0 ? '#10b981' : '#ef4444';
+        changeHtml = `<div class="gauge-change" style="color: ${changeColor}; font-size: 0.85rem; margin-top: 5px;">${changeSign}${change} from previous</div>`;
+    }
+    
     container.innerHTML = `
-        <div class="gauge-title">Crypto Fear & Greed Index</div>
+        <div class="gauge-title">${title}</div>
         <div class="scale-gauge">
             <div class="scale-bar">
                 <div class="scale-segment extreme-fear-bg"></div>
@@ -99,6 +164,7 @@ function createFearGreedScale(containerId, value, label) {
         <div class="gauge-value-display">
             <div class="gauge-current-value" style="color: ${needleColor};">${value}</div>
             <div class="gauge-current-label" style="color: ${needleColor};">${label}</div>
+            ${changeHtml}
         </div>
         <div class="scale-legend">
             <span class="legend-label" style="color: #ef4444;">Extreme Fear</span>

@@ -104,7 +104,7 @@ jobs:
       run: |
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
         git config --local user.name "github-actions[bot]"
-        git add results.json chart_data.json Priority1.txt Priority2.txt Priority3.txt
+        git add results.json chart_data.json stock-list.json market_data.json Priority1.txt Priority2.txt Priority3.txt charts/
         git diff --quiet && git diff --staged --quiet || (git commit -m "Update stock screening results - $(date +'%Y-%m-%d %H:%M:%S') [Mode: ${{ steps.scan-mode.outputs.mode }}]" && git push)
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
