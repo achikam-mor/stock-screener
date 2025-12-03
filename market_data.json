@@ -1,14 +1,14 @@
 {
   "cnn_fear_greed": {
-    "score": 24,
-    "rating": "extreme fear",
-    "previous_close": 23,
+    "score": 27,
+    "rating": "fear",
+    "previous_close": 24,
     "available": true
   },
   "crypto_fear_greed": {
-    "score": 23,
-    "rating": "Extreme Fear",
+    "score": 28,
+    "rating": "Fear",
     "available": true
   },
-  "last_updated": "2025-12-02T21:35:44.872903"
+  "last_updated": "2025-12-03T14:55:38.624475"
 }
