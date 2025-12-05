@@ -1,6 +1,6 @@
 {
   "cnn_fear_greed": {
-    "score": 41,
+    "score": 40,
     "rating": "fear",
     "previous_close": 39,
     "available": true
@@ -10,5 +10,5 @@
     "rating": "Fear",
     "available": true
   },
-  "last_updated": "2025-12-05T20:39:40.958765"
+  "last_updated": "2025-12-05T21:34:07.877216"
 }
