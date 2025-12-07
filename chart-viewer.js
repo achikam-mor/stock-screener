@@ -145,7 +145,9 @@ function displayCandlestickChart(ticker, data) {
     const lows = data.low.slice(startIndex);
     const closes = data.close.slice(startIndex);
     const volumes = data.volume.slice(startIndex);
+    const sma50Values = data.sma50 ? data.sma50.slice(startIndex) : [];
     const sma150Values = data.sma150 ? data.sma150.slice(startIndex) : [];
+    const sma200Values = data.sma200 ? data.sma200.slice(startIndex) : [];
     
     document.getElementById('chart-data-points').textContent = `${dates.length} trading days`;
     
@@ -184,13 +186,27 @@ function displayCandlestickChart(ticker, data) {
         c: closes[i]
     }));
     
-    // Prepare SMA150 line data (filter out null values)
+    // Prepare SMA data
+    const sma50Data = dates
+        .map((date, i) => ({
+            x: new Date(date).getTime(),
+            y: sma50Values && sma50Values[i] !== null ? sma50Values[i] : null
+        }))
+        .filter(point => point.y !== null);
+
     const sma150Data = dates
         .map((date, i) => ({
             x: new Date(date).getTime(),
             y: sma150Values && sma150Values[i] !== null ? sma150Values[i] : null
         }))
-        .filter(point => point.y !== null); // Remove null values
+        .filter(point => point.y !== null);
+
+    const sma200Data = dates
+        .map((date, i) => ({
+            x: new Date(date).getTime(),
+            y: sma200Values && sma200Values[i] !== null ? sma200Values[i] : null
+        }))
+        .filter(point => point.y !== null);
     
     // Calculate Y-axis range with padding
     const priceMin = periodLow * 0.98; // 2% padding below
@@ -216,7 +232,20 @@ function displayCandlestickChart(ticker, data) {
                             down: '#ef4444',
                             unchanged: '#6b7280'
                         },
-                        order: 2
+                        order: 4
+                    },
+                    {
+                        label: 'SMA50',
+                        type: 'line',
+                        data: sma50Data,
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        pointRadius: 0,
+                        pointHoverRadius: 4,
+                        tension: 0.1,
+                        hidden: !document.getElementById('sma50-checkbox').checked,
+                        order: 3
                     },
                     {
                         label: 'SMA150',
@@ -228,6 +257,20 @@ function displayCandlestickChart(ticker, data) {
                         pointRadius: 0,
                         pointHoverRadius: 4,
                         tension: 0.1,
+                        hidden: !document.getElementById('sma150-checkbox').checked,
+                        order: 2
+                    },
+                    {
+                        label: 'SMA200',
+                        type: 'line',
+                        data: sma200Data,
+                        borderColor: '#a855f7',
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        pointRadius: 0,
+                        pointHoverRadius: 4,
+                        tension: 0.1,
+                        hidden: !document.getElementById('sma200-checkbox').checked,
                         order: 1
                     }
                 ]
@@ -274,9 +317,9 @@ function displayCandlestickChart(ticker, data) {
                                         `Close: $${data.c.toFixed(2)}`,
                                         `Change: $${change.toFixed(2)} (${changePct}%)`
                                     ];
-                                } else if (context.dataset.label === 'SMA150') {
-                                    // SMA150 line data
-                                    return `SMA150: $${data.y.toFixed(2)}`;
+                                } else if (context.dataset.label.startsWith('SMA')) {
+                                    // SMA line data
+                                    return `${context.dataset.label}: $${data.y.toFixed(2)}`;
                                 }
                                 return '';
                             }
@@ -358,3 +401,22 @@ function showNotification(message, type) {
         notification.style.display = 'none';
     }, 5000);
 }
+
+/**
+ * Toggle SMA visibility
+ */
+function toggleSMA(smaType) {
+    if (!currentChart) return;
+    
+    const checkbox = document.getElementById(`${smaType}-checkbox`);
+    const isChecked = checkbox.checked;
+    
+    // Find dataset index based on label
+    const datasetIndex = currentChart.data.datasets.findIndex(d => d.label.toLowerCase() === smaType.toLowerCase());
+    
+    if (datasetIndex !== -1) {
+        currentChart.setDatasetVisibility(datasetIndex, isChecked);
+        currentChart.update();
+    }
+}
+

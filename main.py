@@ -226,8 +226,10 @@ async def main():
             if data_clean.empty:
                 continue
             
-            # Calculate SMA150 (150-day Simple Moving Average)
+            # Calculate SMAs
+            sma50 = data_clean['Close'].rolling(window=50).mean()
             sma150 = data_clean['Close'].rolling(window=150).mean()
+            sma200 = data_clean['Close'].rolling(window=200).mean()
             
             # Just extract the data as-is, no modifications
             dates = [idx.strftime('%Y-%m-%d') if hasattr(idx, 'strftime') else str(idx) for idx in data_clean.index]
@@ -236,7 +238,9 @@ async def main():
             lows = [round(float(l), 2) for l in data_clean['Low'].values]
             closes = [round(float(c), 2) for c in data_clean['Close'].values]
             volumes = [int(v) for v in data_clean['Volume'].values]
+            sma50_values = [round(float(s), 2) if not np.isnan(s) else None for s in sma50.values]
             sma150_values = [round(float(s), 2) if not np.isnan(s) else None for s in sma150.values]
+            sma200_values = [round(float(s), 2) if not np.isnan(s) else None for s in sma200.values]
             
             if len(dates) > 0:
                 chart_data_raw[symbol] = {
@@ -246,7 +250,9 @@ async def main():
                     "low": lows,
                     "close": closes,
                     "volume": volumes,
-                    "sma150": sma150_values
+                    "sma50": sma50_values,
+                    "sma150": sma150_values,
+                    "sma200": sma200_values
                 }
                 success_count += 1
         except Exception as e:

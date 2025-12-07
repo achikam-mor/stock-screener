@@ -104,8 +104,19 @@
                     <span>Bearish (Close < Open)</span>
                 </div>
                 <div class="legend-item">
+                    <input type="checkbox" id="sma50-checkbox" onchange="toggleSMA('sma50')">
+                    <div class="legend-box" style="background: #3b82f6;"></div>
+                    <span>SMA50</span>
+                </div>
+                <div class="legend-item">
+                    <input type="checkbox" id="sma150-checkbox" checked onchange="toggleSMA('sma150')">
                     <div class="legend-box" style="background: #eab308;"></div>
-                    <span>SMA150 (150-day Moving Average)</span>
+                    <span>SMA150</span>
+                </div>
+                <div class="legend-item">
+                    <input type="checkbox" id="sma200-checkbox" onchange="toggleSMA('sma200')">
+                    <div class="legend-box" style="background: #a855f7;"></div>
+                    <span>SMA200</span>
                 </div>
             </div>
         </section>
@@ -122,7 +133,7 @@
                 <li><strong>Search for any ticker:</strong> Enter a stock symbol from the NYSE that we've analyzed.</li>
                 <li><strong>View historical data:</strong> See the last year of price history with OHLC candlesticks.</li>
                 <li><strong>Candlestick colors:</strong> Green indicates bullish days (close > open), red indicates bearish days (close < open).</li>
-                <li><strong>SMA 150 (Yellow line):</strong> The 150-day Simple Moving Average - a key indicator for identifying trend direction.</li>
+                <li><strong>SMAs:</strong> Simple Moving Averages (50, 150, 200) to identify trend direction. Use checkboxes to toggle visibility.</li>
                 <li><strong>Interactive chart:</strong> Hover over candles to see exact OHLC values for each day.</li>
             </ul>
             <p style="color: var(--text-secondary); margin-top: 20px; font-size: 0.95rem;">
