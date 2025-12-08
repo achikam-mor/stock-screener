@@ -14,7 +14,6 @@ async function initHomePage() {
     document.getElementById('watch-count').textContent = data.summary.watch_list_count;
     document.getElementById('filtered-count').textContent = data.summary.filtered_by_sma_count;
     document.getElementById('total-count').textContent = data.summary.total_analyzed;
-    document.getElementById('failed-count').textContent = data.summary.failed_count;
     
     // Load and display market summary
     await loadMarketSummary();
