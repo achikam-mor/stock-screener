@@ -52,16 +52,32 @@ async function loadFavoritesPage() {
     // Get favorite tickers from localStorage
     const favoriteTickers = getFavorites();
     
+    if (favoriteTickers.length === 0) {
+        // No favorites - show empty state immediately
+        document.getElementById('total-stocks').textContent = '0';
+        document.getElementById('no-favorites-message').style.display = 'block';
+        document.getElementById('stocks-container').style.display = 'none';
+        return;
+    }
+    
     // Filter stocks that are in favorites from both hot_stocks and watch_list
-    const allStocks = [...data.hot_stocks, ...data.watch_list];
+    const allScreenedStocks = [...data.hot_stocks, ...data.watch_list];
     
     // Remove duplicates and filter by favorites
     const uniqueStocks = new Map();
-    allStocks.forEach(stock => {
+    allScreenedStocks.forEach(stock => {
         if (favoriteTickers.includes(stock.symbol) && !uniqueStocks.has(stock.symbol)) {
             uniqueStocks.set(stock.symbol, stock);
         }
     });
+    
+    // Find favorites that aren't in hot_stocks or watch_list (filtered stocks)
+    const missingFavorites = favoriteTickers.filter(ticker => !uniqueStocks.has(ticker));
+    
+    // Load data for missing favorites from individual chart files
+    if (missingFavorites.length > 0) {
+        await loadFilteredFavorites(missingFavorites, uniqueStocks);
+    }
     
     allFavoriteStocks = Array.from(uniqueStocks.values());
 
@@ -105,12 +121,18 @@ function createFavoriteStockCard(stock) {
         ? (stock.last_volume / stock.avg_volume_14d).toFixed(2) 
         : '0.00';
     
-    // Determine if stock is in hot or watch category
-    const isHot = stock.distance_percent >= 0;
-    const categoryClass = isHot ? 'hot-stock' : 'watch-stock';
-    const categoryBadge = isHot 
-        ? '<span class="stock-badge hot-badge">🔥 Hot</span>' 
-        : '<span class="stock-badge watch-badge">👀 Watch</span>';
+    // Determine category based on whether stock is filtered or screened
+    let categoryClass, categoryBadge;
+    if (stock.isFiltered) {
+        categoryClass = 'filtered-stock';
+        categoryBadge = '<span class="stock-badge filtered-badge">📊 Filtered</span>';
+    } else if (stock.distance_percent >= 0) {
+        categoryClass = 'hot-stock';
+        categoryBadge = '<span class="stock-badge hot-badge">🔥 Hot</span>';
+    } else {
+        categoryClass = 'watch-stock';
+        categoryBadge = '<span class="stock-badge watch-badge">👀 Watch</span>';
+    }
     
     return `
         <div class="stock-card-compact ${categoryClass}" data-ticker="${stock.symbol}">
@@ -227,6 +249,66 @@ function showError() {
             ⚠️ Unable to load results. Please try again later or check if results.json exists.
         </div>
     `;
+}
+
+/**
+ * Load data for filtered favorites from individual chart files
+ * Creates stock objects with basic data for display
+ */
+async function loadFilteredFavorites(tickers, stockMap) {
+    const loadPromises = tickers.map(async (ticker) => {
+        try {
+            const response = await fetch(`charts/${ticker}.json`);
+            if (response.ok) {
+                const chartData = await response.json();
+                
+                // Calculate basic metrics from chart data
+                const closes = chartData.close;
+                const volumes = chartData.volume;
+                const lastIndex = closes.length - 1;
+                
+                // Calculate SMA150 from the last 150 closes
+                const sma150Period = Math.min(150, closes.length);
+                const sma150Values = closes.slice(-sma150Period);
+                const sma150 = sma150Values.reduce((a, b) => a + b, 0) / sma150Values.length;
+                
+                // Calculate ATR14 (simplified - using close differences)
+                const atrPeriod = Math.min(14, closes.length - 1);
+                let trSum = 0;
+                for (let i = closes.length - atrPeriod; i < closes.length; i++) {
+                    const high = chartData.high[i];
+                    const low = chartData.low[i];
+                    const prevClose = closes[i - 1];
+                    const tr = Math.max(high - low, Math.abs(high - prevClose), Math.abs(low - prevClose));
+                    trSum += tr;
+                }
+                const atr = trSum / atrPeriod;
+                
+                // Calculate average volume over 14 days
+                const volPeriod = Math.min(14, volumes.length);
+                const avgVolume = volumes.slice(-volPeriod).reduce((a, b) => a + b, 0) / volPeriod;
+                
+                // Create stock object compatible with display functions
+                const stock = {
+                    symbol: ticker,
+                    last_close: closes[lastIndex],
+                    sma150: sma150,
+                    distance_percent: ((closes[lastIndex] - sma150) / sma150) * 100,
+                    atr: atr,
+                    atr_percent: (atr / closes[lastIndex]) * 100,
+                    last_volume: volumes[lastIndex],
+                    avg_volume_14d: avgVolume,
+                    isFiltered: true  // Mark as filtered stock
+                };
+                
+                stockMap.set(ticker, stock);
+            }
+        } catch (error) {
+            console.log(`Could not load chart data for ${ticker}:`, error);
+        }
+    });
+    
+    await Promise.all(loadPromises);
 }
 
 // Comparison functionality (same as stocks-page.js)

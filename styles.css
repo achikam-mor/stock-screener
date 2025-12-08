@@ -1971,6 +1971,12 @@ footer p {
     border: 1px solid rgba(245, 158, 11, 0.4);
 }
 
+.filtered-badge {
+    background: rgba(107, 114, 128, 0.2);
+    color: #9ca3af;
+    border: 1px solid rgba(107, 114, 128, 0.4);
+}
+
 /* Mobile responsiveness for favorites */
 @media (max-width: 768px) {
     .favorite-star {

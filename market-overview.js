@@ -5,15 +5,8 @@
 // Load market data on page load
 document.addEventListener('DOMContentLoaded', async () => {
     try {
-        // Load pre-fetched market data
+        // Load pre-fetched market data (timestamp is included in market_data.json)
         await loadMarketData();
-        
-        // Update timestamp from results
-        const response = await fetch('results.json');
-        if (response.ok) {
-            const data = await response.json();
-            updateTimestamp(data.timestamp);
-        }
     } catch (error) {
         console.error('Error loading market data:', error);
     }
