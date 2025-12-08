@@ -133,8 +133,18 @@ function displayCandlestickChart(ticker, data) {
     const chartSection = document.getElementById('chart-section');
     chartSection.style.display = 'block';
     
-    // Update chart title
-    document.getElementById('chart-title').textContent = `${ticker} - Candlestick Chart`;
+    // Update chart title with favorite star
+    const chartTitleEl = document.getElementById('chart-title');
+    const isFav = isFavorite(ticker);
+    chartTitleEl.innerHTML = `
+        <span class="favorite-star chart-favorite-star ${isFav ? 'is-favorite' : ''}" 
+              data-ticker="${ticker}" 
+              onclick="toggleFavorite('${ticker}', event)"
+              title="${isFav ? 'Remove from favorites' : 'Add to favorites'}">
+            ${isFav ? '★' : '☆'}
+        </span>
+        ${ticker} - Candlestick Chart
+    `;
     
     // Limit to last 260 days (approximately 1 trading year)
     const maxDays = 260;

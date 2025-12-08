@@ -141,14 +141,23 @@ function updateSelectedStocksDisplay() {
         return;
     }
     
-    container.innerHTML = selectedStocks.map(symbol => `
-        <div class="stock-chip">
-            <span class="stock-chip-symbol">${symbol}</span>
-            <button class="stock-chip-remove" onclick="removeTickerFromCompare('${symbol}')" title="Remove">
-                ✕
-            </button>
-        </div>
-    `).join('');
+    container.innerHTML = selectedStocks.map(symbol => {
+        const isFav = isFavorite(symbol);
+        return `
+            <div class="stock-chip">
+                <span class="favorite-star ${isFav ? 'is-favorite' : ''}" 
+                      data-ticker="${symbol}" 
+                      onclick="toggleFavorite('${symbol}', event)"
+                      title="${isFav ? 'Remove from favorites' : 'Add to favorites'}">
+                    ${isFav ? '★' : '☆'}
+                </span>
+                <span class="stock-chip-symbol">${symbol}</span>
+                <button class="stock-chip-remove" onclick="removeTickerFromCompare('${symbol}')" title="Remove">
+                    ✕
+                </button>
+            </div>
+        `;
+    }).join('');
 }
 
 /**
@@ -184,11 +193,20 @@ async function compareStocks() {
     // Show comparison section
     document.getElementById('comparison-section').style.display = 'block';
     
-    // Update headers
+    // Update headers with favorite stars
     selectedStocks.forEach((symbol, index) => {
         const headerEl = document.getElementById(`ticker-header-${index + 1}`);
         if (headerEl) {
-            headerEl.textContent = symbol;
+            const isFav = isFavorite(symbol);
+            headerEl.innerHTML = `
+                <span class="favorite-star ${isFav ? 'is-favorite' : ''}" 
+                      data-ticker="${symbol}" 
+                      onclick="toggleFavorite('${symbol}', event)"
+                      title="${isFav ? 'Remove from favorites' : 'Add to favorites'}">
+                    ${isFav ? '★' : '☆'}
+                </span>
+                ${symbol}
+            `;
             headerEl.style.display = '';
         }
     });

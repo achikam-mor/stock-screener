@@ -1,38 +1,45 @@
-// Stocks page functionality (for hot-stocks and watch-list pages)
-let currentPageType = 'hot'; // 'hot' or 'watch'
-let allStocks = [];
+/**
+ * Favorites Page - Display and manage user's favorite stocks
+ * Uses localStorage to persist favorites across sessions
+ */
+
+let allFavoriteStocks = [];
 let currentPage = 1;
 let stocksPerPage = 20;
 
 // Adjust stocks per page based on screen size
 function updateStocksPerPage() {
     if (window.innerWidth <= 768) {
-        stocksPerPage = 10; // Show 10 stocks per page on mobile
+        stocksPerPage = 10;
     } else {
-        stocksPerPage = 20; // Show 20 stocks per page on desktop
+        stocksPerPage = 20;
     }
 }
 
-function initStocksPage(pageType) {
-    currentPageType = pageType;
+// Initialize favorites page
+document.addEventListener('DOMContentLoaded', () => {
     updateStocksPerPage();
-    loadStocksPage();
+    loadFavoritesPage();
     
     // Re-adjust on window resize
     window.addEventListener('resize', () => {
         const oldPerPage = stocksPerPage;
         updateStocksPerPage();
         if (oldPerPage !== stocksPerPage) {
-            // Recalculate current page to maintain position
             const firstStockIndex = (currentPage - 1) * oldPerPage;
             currentPage = Math.floor(firstStockIndex / stocksPerPage) + 1;
             displayCurrentPage();
             setupPagination();
         }
     });
-}
+    
+    // Listen for favorites changes
+    window.addEventListener('favoritesChanged', () => {
+        loadFavoritesPage();
+    });
+});
 
-async function loadStocksPage() {
+async function loadFavoritesPage() {
     const data = await loadResults();
     if (!data) {
         showError();
@@ -42,57 +49,71 @@ async function loadStocksPage() {
     globalData = data;
     updateTimestamp(data);
 
-    // Get stocks based on page type
-    allStocks = currentPageType === 'hot' ? data.hot_stocks : data.watch_list;
+    // Get favorite tickers from localStorage
+    const favoriteTickers = getFavorites();
+    
+    // Filter stocks that are in favorites from both hot_stocks and watch_list
+    const allStocks = [...data.hot_stocks, ...data.watch_list];
+    
+    // Remove duplicates and filter by favorites
+    const uniqueStocks = new Map();
+    allStocks.forEach(stock => {
+        if (favoriteTickers.includes(stock.symbol) && !uniqueStocks.has(stock.symbol)) {
+            uniqueStocks.set(stock.symbol, stock);
+        }
+    });
+    
+    allFavoriteStocks = Array.from(uniqueStocks.values());
 
     // Update total count
-    document.getElementById('total-stocks').textContent = allStocks.length;
+    document.getElementById('total-stocks').textContent = allFavoriteStocks.length;
 
-    // Check if we should scroll to a specific ticker (from search redirect)
-    const urlParams = new URLSearchParams(window.location.search);
-    const tickerToFind = urlParams.get('ticker');
+    // Show/hide no favorites message
+    const noFavoritesMessage = document.getElementById('no-favorites-message');
+    const stocksContainer = document.getElementById('stocks-container');
     
-    if (tickerToFind) {
-        // Find which page the ticker is on
-        const tickerIndex = allStocks.findIndex(s => s.symbol === tickerToFind.toUpperCase());
-        if (tickerIndex >= 0) {
-            currentPage = Math.floor(tickerIndex / stocksPerPage) + 1;
-        }
-    }
-
-    displayCurrentPage();
-    setupPagination();
-
-    // Scroll to ticker if specified
-    if (tickerToFind) {
-        setTimeout(() => scrollToTicker(tickerToFind.toUpperCase()), 200);
+    if (allFavoriteStocks.length === 0) {
+        noFavoritesMessage.style.display = 'block';
+        stocksContainer.style.display = 'none';
+    } else {
+        noFavoritesMessage.style.display = 'none';
+        stocksContainer.style.display = '';
+        displayCurrentPage();
+        setupPagination();
     }
 }
 
 function displayCurrentPage() {
     const container = document.getElementById('stocks-container');
     const startIndex = (currentPage - 1) * stocksPerPage;
-    const endIndex = Math.min(startIndex + stocksPerPage, allStocks.length);
-    const pageStocks = allStocks.slice(startIndex, endIndex);
+    const endIndex = Math.min(startIndex + stocksPerPage, allFavoriteStocks.length);
+    const pageStocks = allFavoriteStocks.slice(startIndex, endIndex);
 
     if (pageStocks.length === 0) {
-        container.innerHTML = '<div class="loading">No stocks found in this category</div>';
+        container.innerHTML = '<div class="loading">No favorite stocks on this page</div>';
         return;
     }
 
-    container.innerHTML = pageStocks.map(stock => createCompactStockCard(stock, currentPageType)).join('');
+    container.innerHTML = pageStocks.map(stock => createFavoriteStockCard(stock)).join('');
 
     // Update page info
     document.getElementById('current-page').textContent = currentPage;
 }
 
-function createCompactStockCard(stock, type) {
+function createFavoriteStockCard(stock) {
     const volumeRatio = stock.avg_volume_14d > 0 
         ? (stock.last_volume / stock.avg_volume_14d).toFixed(2) 
         : '0.00';
     
+    // Determine if stock is in hot or watch category
+    const isHot = stock.distance_percent >= 0;
+    const categoryClass = isHot ? 'hot-stock' : 'watch-stock';
+    const categoryBadge = isHot 
+        ? '<span class="stock-badge hot-badge">🔥 Hot</span>' 
+        : '<span class="stock-badge watch-badge">👀 Watch</span>';
+    
     return `
-        <div class="stock-card-compact" data-ticker="${stock.symbol}">
+        <div class="stock-card-compact ${categoryClass}" data-ticker="${stock.symbol}">
             <div class="stock-header">
                 <div class="stock-symbol">
                     ${createFavoriteStarHTML(stock.symbol)}
@@ -100,6 +121,7 @@ function createCompactStockCard(stock, type) {
                            onchange="toggleCompareStock('${stock.symbol}')" 
                            title="Select for comparison">
                     ${stock.symbol}
+                    ${categoryBadge}
                 </div>
                 <a href="chart-viewer.html?ticker=${stock.symbol}" class="chart-btn">
                     📈 Launch Chart
@@ -138,8 +160,8 @@ function createCompactStockCard(stock, type) {
 }
 
 function setupPagination() {
-    const totalPages = Math.ceil(allStocks.length / stocksPerPage);
-    document.getElementById('total-pages').textContent = totalPages;
+    const totalPages = Math.ceil(allFavoriteStocks.length / stocksPerPage);
+    document.getElementById('total-pages').textContent = totalPages || 1;
 
     const paginationContainer = document.getElementById('pagination-controls');
     
@@ -207,10 +229,7 @@ function showError() {
     `;
 }
 
-// Refresh function for auto-refresh
-window.refreshCurrentPage = loadStocksPage;
-
-// Comparison functionality
+// Comparison functionality (same as stocks-page.js)
 let selectedForCompare = [];
 
 function toggleCompareStock(symbol) {
@@ -218,7 +237,7 @@ function toggleCompareStock(symbol) {
     
     if (checkbox && checkbox.checked) {
         if (selectedForCompare.length >= 3) {
-            showCompareNotification('Maximum 3 stocks can be compared at once', 'error');
+            showNotification('Maximum 3 stocks can be compared at once', 'error');
             checkbox.checked = false;
             return;
         }
@@ -236,7 +255,6 @@ function updateCompareButton() {
     let compareBtn = document.getElementById('compare-selected-btn');
     
     if (selectedForCompare.length > 0 && !compareBtn) {
-        // Create compare button
         const container = document.querySelector('.page-info');
         compareBtn = document.createElement('button');
         compareBtn.id = 'compare-selected-btn';
@@ -257,7 +275,7 @@ function updateCompareButton() {
 
 function navigateToCompare() {
     if (selectedForCompare.length < 2) {
-        showCompareNotification('Please select at least 2 stocks to compare', 'error');
+        showNotification('Please select at least 2 stocks to compare', 'error');
         return;
     }
     
@@ -265,13 +283,5 @@ function navigateToCompare() {
     window.location.href = `compare.html?tickers=${tickers}`;
 }
 
-function showCompareNotification(message, type) {
-    const notification = document.getElementById('search-notification');
-    notification.textContent = message;
-    notification.className = `search-notification ${type}`;
-    notification.style.display = 'flex';
-    
-    setTimeout(() => {
-        notification.style.display = 'none';
-    }, 3000);
-}
+// Refresh function for auto-refresh
+window.refreshCurrentPage = loadFavoritesPage;

@@ -1,6 +1,101 @@
 // Common functionality shared across all pages
 let globalData = null;
 
+// ============================================
+// FAVORITES MANAGEMENT (localStorage-based)
+// ============================================
+
+const FAVORITES_STORAGE_KEY = 'stock_favorites';
+
+// Get all favorite tickers from localStorage
+function getFavorites() {
+    try {
+        const favorites = localStorage.getItem(FAVORITES_STORAGE_KEY);
+        return favorites ? JSON.parse(favorites) : [];
+    } catch (e) {
+        console.error('Error reading favorites from localStorage:', e);
+        return [];
+    }
+}
+
+// Save favorites to localStorage
+function saveFavorites(favorites) {
+    try {
+        localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(favorites));
+    } catch (e) {
+        console.error('Error saving favorites to localStorage:', e);
+    }
+}
+
+// Check if a ticker is a favorite
+function isFavorite(ticker) {
+    const favorites = getFavorites();
+    return favorites.includes(ticker);
+}
+
+// Toggle favorite status for a ticker
+function toggleFavorite(ticker, event) {
+    if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+    
+    const favorites = getFavorites();
+    const index = favorites.indexOf(ticker);
+    
+    if (index === -1) {
+        // Add to favorites
+        favorites.push(ticker);
+        showNotification(`${ticker} added to favorites ⭐`, 'success');
+    } else {
+        // Remove from favorites
+        favorites.splice(index, 1);
+        showNotification(`${ticker} removed from favorites`, 'info');
+    }
+    
+    saveFavorites(favorites);
+    updateAllFavoriteStars();
+    
+    // Dispatch custom event for pages to react
+    window.dispatchEvent(new CustomEvent('favoritesChanged', { detail: { ticker, isFavorite: index === -1 } }));
+}
+
+// Update all favorite star icons on the current page
+function updateAllFavoriteStars() {
+    const stars = document.querySelectorAll('.favorite-star');
+    const favorites = getFavorites();
+    
+    stars.forEach(star => {
+        const ticker = star.dataset.ticker;
+        if (favorites.includes(ticker)) {
+            star.classList.add('is-favorite');
+            star.textContent = '★';
+            star.title = 'Remove from favorites';
+        } else {
+            star.classList.remove('is-favorite');
+            star.textContent = '☆';
+            star.title = 'Add to favorites';
+        }
+    });
+}
+
+// Create a favorite star HTML element
+function createFavoriteStarHTML(ticker) {
+    const isFav = isFavorite(ticker);
+    return `
+        <span class="favorite-star ${isFav ? 'is-favorite' : ''}" 
+              data-ticker="${ticker}" 
+              onclick="toggleFavorite('${ticker}', event)"
+              title="${isFav ? 'Remove from favorites' : 'Add to favorites'}">
+            ${isFav ? '★' : '☆'}
+        </span>
+    `;
+}
+
+// ============================================
+// END FAVORITES MANAGEMENT
+// ============================================
+
 // Load results data
 async function loadResults() {
     try {
