@@ -14,9 +14,9 @@
     </script>
     
     <meta name="google-adsense-account" content="ca-pub-9520776475659458">
-    <meta name="description" content="Hot stocks trading above SMA150 - Find momentum stocks and breakout opportunities for day trading. Updated 4 times daily with technical analysis and ATR14 indicators.">
-    <meta name="keywords" content="hot stocks, momentum stocks, breakout stocks, stocks above SMA, bullish stocks, day trading picks, swing trading opportunities, trending stocks">
-    <title>Hot Stocks Above SMA150 | Day Trading & Momentum Stocks</title>
+    <meta name="description" content="Filtered stocks - stocks that didn't meet the ±4% SMA150 distance criteria. View charts and analyze why these stocks were filtered from our screener.">
+    <meta name="keywords" content="filtered stocks, SMA150 filter, stock screening criteria, distance from SMA, technical analysis filter">
+    <title>Filtered Stocks | Price Too Far From SMA150</title>
     <link rel="stylesheet" href="styles.css">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9520776475659458"
      crossorigin="anonymous"></script>
@@ -27,9 +27,9 @@
             <div class="nav-brand">Stock Scanner</div>
             <ul class="nav-menu">
                 <li><a href="home.html">Home</a></li>
-                <li><a href="hot-stocks.html" class="active">🔥 Hot Stocks</a></li>
+                <li><a href="hot-stocks.html">🔥 Hot Stocks</a></li>
                 <li><a href="watch-list.html">👀 Watch List</a></li>
-                <li><a href="filtered-stocks.html">🔀 Filtered</a></li>
+                <li><a href="filtered-stocks.html" class="active">🔀 Filtered</a></li>
                 <li><a href="favorites.html">⭐ Favorites</a></li>
                 <li><a href="market-overview.html">📊 Market</a></li>
                 <li><a href="chart-viewer.html">📈 Charts</a></li>
@@ -41,8 +41,8 @@
 
     <div class="container">
         <header>
-            <h1>Hot Stocks</h1>
-            <p class="subtitle">Stocks trading above their 150-day SMA</p>
+            <h1>🔀 Filtered Stocks</h1>
+            <p class="subtitle">Stocks with price more than ±4% from SMA150</p>
             <div id="last-updated" class="timestamp">Loading...</div>
             
             <!-- Ad Placeholder - Top Banner -->
@@ -57,8 +57,12 @@
             <div id="search-notification" class="search-notification"></div>
         </header>
 
+        <div class="filter-explanation">
+            <p>📊 These stocks were analyzed but filtered out because their current price is more than 4% away from their 150-day Simple Moving Average (SMA150). Click on any ticker to view its chart and see the exact distance from SMA150.</p>
+        </div>
+
         <div class="page-info">
-            <div class="result-count">Total: <span id="total-stocks">0</span> stocks</div>
+            <div class="result-count">Total: <span id="total-stocks">0</span> filtered stocks</div>
             <div class="page-count">Page <span id="current-page">1</span> of <span id="total-pages">1</span></div>
         </div>
 
@@ -67,8 +71,8 @@
             <div class="ad-placeholder">Advertisement</div>
         </div>
 
-        <div id="stocks-container" class="stocks-grid">
-            <div class="loading">Loading hot stocks...</div>
+        <div id="filtered-container" class="filtered-grid">
+            <div class="loading">Loading filtered stocks...</div>
         </div>
 
         <div id="pagination-controls" class="pagination">
@@ -81,10 +85,6 @@
     </div>
 
     <script src="common.js"></script>
-    <script src="stocks-page.js"></script>
-    <script>
-        // Initialize page with 'hot' type
-        initStocksPage('hot');
-    </script>
+    <script src="filtered-page.js"></script>
 </body>
 </html>

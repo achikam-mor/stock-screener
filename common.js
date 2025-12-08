@@ -166,6 +166,13 @@ async function searchTicker() {
         return;
     }
 
+    // Search in filtered by SMA (stocks that didn't meet the ±4% SMA distance criteria)
+    const inFiltered = globalData.filtered_by_sma && globalData.filtered_by_sma.includes(ticker);
+    if (inFiltered) {
+        handleSearchResult('filtered', ticker, 'Filtered Stocks');
+        return;
+    }
+
     showNotification(`Ticker "${ticker}" not found`, 'error');
 }
 
@@ -177,13 +184,15 @@ function handleSearchResult(foundIn, ticker, listName) {
     const pageMap = {
         'hot': 'hot-stocks.html',
         'watch': 'watch-list.html',
-        'failed': 'failed-tickers.html'
+        'failed': 'failed-tickers.html',
+        'filtered': 'filtered-stocks.html'
     };
 
     // If ticker is on current page, scroll to it
     if ((currentPage === 'hot-stocks.html' && foundIn === 'hot') ||
         (currentPage === 'watch-list.html' && foundIn === 'watch') ||
-        (currentPage === 'failed-tickers.html' && foundIn === 'failed')) {
+        (currentPage === 'failed-tickers.html' && foundIn === 'failed') ||
+        (currentPage === 'filtered-stocks.html' && foundIn === 'filtered')) {
         
         scrollToTicker(ticker);
         return;
@@ -195,9 +204,47 @@ function handleSearchResult(foundIn, ticker, listName) {
 
 // Scroll to ticker on current page
 function scrollToTicker(ticker) {
-    // For stocks pages, we need to find which page the ticker is on
+    // For stocks pages (hot/watch), we need to find which page the ticker is on
     if (typeof allStocks !== 'undefined' && allStocks.length > 0) {
         const tickerIndex = allStocks.findIndex(s => s.symbol === ticker);
+        if (tickerIndex >= 0) {
+            // Calculate which page the ticker is on
+            const targetPage = Math.floor(tickerIndex / stocksPerPage) + 1;
+            
+            // If we're not on the right page, go to it first
+            if (typeof currentPage !== 'undefined' && currentPage !== targetPage) {
+                if (typeof goToPage === 'function') {
+                    goToPage(targetPage);
+                }
+            }
+            
+            // Wait a bit for the page to render
+            setTimeout(() => {
+                const element = document.querySelector(`[data-ticker="${ticker}"]`);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    
+                    // Highlight the element
+                    element.style.transition = 'background-color 0.3s ease';
+                    const originalBg = window.getComputedStyle(element).backgroundColor;
+                    element.style.backgroundColor = 'rgba(0, 123, 255, 0.3)';
+                    
+                    setTimeout(() => {
+                        element.style.backgroundColor = originalBg;
+                    }, 2000);
+                    
+                    showNotification(`Found: ${ticker}`, 'success');
+                } else {
+                    showNotification(`Ticker "${ticker}" not found`, 'error');
+                }
+            }, 300);
+            return;
+        }
+    }
+    
+    // For filtered stocks page - array of ticker strings
+    if (typeof filteredStocks !== 'undefined' && filteredStocks.length > 0) {
+        const tickerIndex = filteredStocks.findIndex(t => t === ticker);
         if (tickerIndex >= 0) {
             // Calculate which page the ticker is on
             const targetPage = Math.floor(tickerIndex / stocksPerPage) + 1;
@@ -256,7 +303,7 @@ function scrollToTicker(ticker) {
 }
 
 // Show notification message
-function showNotification(message, type) {
+function showNotification(message, type, duration = 3000) {
     const notification = document.getElementById('search-notification');
     if (!notification) return;
     
@@ -266,7 +313,7 @@ function showNotification(message, type) {
     
     setTimeout(() => {
         notification.style.display = 'none';
-    }, 3000);
+    }, duration);
 }
 
 // Show notification with redirect button

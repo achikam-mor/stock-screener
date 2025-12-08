@@ -173,6 +173,24 @@ function displayCandlestickChart(ticker, data) {
     document.getElementById('period-low').textContent = `$${periodLow.toFixed(2)}`;
     document.getElementById('avg-volume').textContent = formatVolume(avgVolume);
     
+    // Calculate and display SMA150 and distance
+    const currentSMA150 = sma150Values.length > 0 ? sma150Values[sma150Values.length - 1] : null;
+    if (currentSMA150 !== null) {
+        document.getElementById('current-sma150').textContent = `$${currentSMA150.toFixed(2)}`;
+        const distance = ((currentPrice - currentSMA150) / currentSMA150) * 100;
+        const distanceEl = document.getElementById('sma150-distance');
+        distanceEl.textContent = `${distance >= 0 ? '+' : ''}${distance.toFixed(2)}%`;
+        // Color based on whether it meets the ±4% criteria
+        if (Math.abs(distance) <= 4) {
+            distanceEl.style.color = '#10b981'; // Green - within criteria
+        } else {
+            distanceEl.style.color = '#f59e0b'; // Amber - outside criteria
+        }
+    } else {
+        document.getElementById('current-sma150').textContent = 'N/A';
+        document.getElementById('sma150-distance').textContent = 'N/A';
+    }
+    
     // Color current price based on change
     const priceChange = data.close[data.close.length - 1] - data.close[0];
     document.getElementById('current-price').style.color = priceChange >= 0 ? '#10b981' : '#ef4444';

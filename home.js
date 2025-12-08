@@ -30,7 +30,7 @@ async function loadMarketSummary() {
     try {
         const response = await fetch('market_data.json');
         if (!response.ok) {
-            summaryContainer.style.display = 'none';
+            summaryContainer.innerHTML = '<div class="market-summary-error">Market data temporarily unavailable</div>';
             return;
         }
         
@@ -38,7 +38,7 @@ async function loadMarketSummary() {
         displayMarketSummary(marketData, summaryContainer);
     } catch (error) {
         console.error('Error loading market summary:', error);
-        summaryContainer.style.display = 'none';
+        summaryContainer.innerHTML = '<div class="market-summary-error">Unable to load market overview</div>';
     }
 }
 
@@ -146,7 +146,7 @@ function displayMarketSummary(data, container) {
             <span class="market-summary-date">${formattedDate}</span>
         </div>
         <div class="market-summary-content">
-            <p>${sentimentSummary}</p>
+            ${sentimentSummary ? `<p>${sentimentSummary}</p>` : ''}
             ${assetSummary ? `<p>${assetSummary}</p>` : ''}
             ${overallSentiment ? `<p>${overallSentiment}</p>` : ''}
             <p>Use our stock screener to identify trading opportunities based on <strong>SMA150</strong> technical analysis. Browse <a href="hot-stocks.html" style="color: var(--hot-color);">Hot Stocks</a> trading above their moving average or check the <a href="watch-list.html" style="color: var(--watch-color);">Watch List</a> for potential reversal plays.</p>
