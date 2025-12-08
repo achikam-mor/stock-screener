@@ -61,6 +61,11 @@ async function loadMarketData() {
                 // Fallback to API call
                 await loadCryptoFearGreedFromAPI();
             }
+            
+            // Load Asset Prices
+            if (data.assets) {
+                displayAssetPrices(data.assets);
+            }
         } else {
             // market_data.json not found, use fallbacks
             await loadCryptoFearGreedFromAPI();
@@ -174,4 +179,49 @@ function createFearGreedScale(containerId, value, label, title, previousClose = 
             <span class="legend-label" style="color: #10b981;">Extreme Greed</span>
         </div>
     `;
+}
+
+/**
+ * Display asset prices (Gold, Silver, Bitcoin, Ethereum)
+ */
+function displayAssetPrices(assets) {
+    const icons = {
+        gold: '🥇',
+        silver: '🥈',
+        bitcoin: '₿',
+        ethereum: 'Ξ'
+    };
+    
+    const container = document.getElementById('assets-grid');
+    if (!container) return;
+    
+    let html = '';
+    
+    for (const [key, asset] of Object.entries(assets)) {
+        if (asset.available) {
+            const changeColor = asset.change >= 0 ? '#10b981' : '#ef4444';
+            const changeSign = asset.change >= 0 ? '+' : '';
+            
+            html += `
+                <div class="asset-card">
+                    <div class="asset-icon">${icons[key] || '💰'}</div>
+                    <div class="asset-name">${asset.name}</div>
+                    <div class="asset-price">$${asset.price.toLocaleString()}</div>
+                    <div class="asset-change" style="color: ${changeColor};">
+                        ${changeSign}$${asset.change.toLocaleString()} (${changeSign}${asset.change_percent}%)
+                    </div>
+                </div>
+            `;
+        } else {
+            html += `
+                <div class="asset-card unavailable">
+                    <div class="asset-icon">${icons[key] || '💰'}</div>
+                    <div class="asset-name">${asset.name || key}</div>
+                    <div class="asset-price">Unavailable</div>
+                </div>
+            `;
+        }
+    }
+    
+    container.innerHTML = html;
 }

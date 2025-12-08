@@ -85,6 +85,64 @@ def fetch_crypto_fear_greed():
         return {'success': False, 'error': str(e)}
 
 
+def fetch_asset_prices():
+    """
+    Fetch prices for Gold, Silver, Bitcoin, and Ethereum using Yahoo Finance API.
+    Symbols: GC=F (Gold Futures), SI=F (Silver Futures), BTC-USD (Bitcoin), ETH-USD (Ethereum)
+    """
+    assets = {
+        'gold': {'symbol': 'GC=F', 'name': 'Gold'},
+        'silver': {'symbol': 'SI=F', 'name': 'Silver'},
+        'bitcoin': {'symbol': 'BTC-USD', 'name': 'Bitcoin'},
+        'ethereum': {'symbol': 'ETH-USD', 'name': 'Ethereum'}
+    }
+    
+    results = {}
+    
+    for key, asset in assets.items():
+        try:
+            symbol = asset['symbol']
+            url = f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}?interval=1d&range=2d"
+            
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+            }
+            
+            response = requests.get(url, headers=headers, timeout=30)
+            
+            if response.status_code == 200:
+                data = response.json()
+                chart = data.get('chart', {}).get('result', [{}])[0]
+                meta = chart.get('meta', {})
+                
+                current_price = meta.get('regularMarketPrice', 0)
+                previous_close = meta.get('previousClose', 0)
+                
+                # Calculate change
+                change = current_price - previous_close if previous_close else 0
+                change_percent = (change / previous_close * 100) if previous_close else 0
+                
+                results[key] = {
+                    'name': asset['name'],
+                    'symbol': symbol,
+                    'price': round(current_price, 2),
+                    'previous_close': round(previous_close, 2),
+                    'change': round(change, 2),
+                    'change_percent': round(change_percent, 2),
+                    'available': True
+                }
+                print(f"   ✅ {asset['name']}: ${current_price:,.2f} ({change_percent:+.2f}%)")
+            else:
+                results[key] = {'name': asset['name'], 'available': False, 'error': f'HTTP {response.status_code}'}
+                print(f"   ⚠️ {asset['name']} failed: HTTP {response.status_code}")
+                
+        except Exception as e:
+            results[key] = {'name': asset['name'], 'available': False, 'error': str(e)}
+            print(f"   ⚠️ {asset['name']} failed: {str(e)}")
+    
+    return results
+
+
 def get_rating_from_score(score):
     """
     Convert numeric score to rating label.
@@ -125,6 +183,10 @@ def fetch_and_save_market_data(output_file='market_data.json'):
     else:
         print(f"   ⚠️ Crypto Fear & Greed failed: {crypto_data.get('error')}")
     
+    # Fetch Asset Prices (Gold, Silver, Bitcoin, Ethereum)
+    print("   Fetching asset prices (Gold, Silver, Bitcoin, Ethereum)...")
+    asset_prices = fetch_asset_prices()
+    
     # Compile market data
     market_data = {
         'cnn_fear_greed': {
@@ -138,6 +200,7 @@ def fetch_and_save_market_data(output_file='market_data.json'):
             'rating': crypto_data.get('rating'),
             'available': crypto_data.get('success', False)
         },
+        'assets': asset_prices,
         'last_updated': datetime.now().isoformat()
     }
     

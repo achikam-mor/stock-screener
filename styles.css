@@ -2000,3 +2000,200 @@ footer p {
         padding: 2px 6px;
     }
 }
+
+/* ============================================ */
+/* ASSET PRICES GRID                            */
+/* ============================================ */
+
+.assets-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.asset-card {
+    background: var(--bg-card);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.asset-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    border-color: var(--primary-color);
+}
+
+.asset-card.loading {
+    opacity: 0.6;
+}
+
+.asset-card.unavailable {
+    opacity: 0.5;
+}
+
+.asset-icon {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.asset-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.asset-price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 5px;
+}
+
+.asset-change {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+/* Mobile responsiveness for assets grid */
+@media (max-width: 900px) {
+    .assets-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 500px) {
+    .assets-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .asset-card {
+        padding: 15px;
+    }
+    
+    .asset-icon {
+        font-size: 2rem;
+    }
+    
+    .asset-price {
+        font-size: 1.3rem;
+    }
+}
+
+/* ============================================ */
+/* MARKET SUMMARY (Home Page)                   */
+/* ============================================ */
+
+.market-summary-card {
+    background: linear-gradient(135deg, var(--bg-card) 0%, rgba(59, 130, 246, 0.1) 100%);
+    border-radius: 16px;
+    padding: 25px;
+    margin-bottom: 30px;
+    border: 1px solid var(--border-color);
+    position: relative;
+    overflow: hidden;
+}
+
+.market-summary-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6, #10b981);
+}
+
+.market-summary-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.market-summary-header h3 {
+    font-size: 1.2rem;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.market-summary-date {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    background: var(--bg-dark);
+    padding: 4px 12px;
+    border-radius: 20px;
+}
+
+.market-summary-content {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+}
+
+.market-summary-content strong {
+    color: var(--text-primary);
+}
+
+.market-summary-content .highlight-fear {
+    color: #ef4444;
+    font-weight: 600;
+}
+
+.market-summary-content .highlight-greed {
+    color: #10b981;
+    font-weight: 600;
+}
+
+.market-summary-content .highlight-neutral {
+    color: #6b7280;
+    font-weight: 600;
+}
+
+.market-summary-content .highlight-gold {
+    color: #fbbf24;
+    font-weight: 600;
+}
+
+.market-summary-content .highlight-silver {
+    color: #9ca3af;
+    font-weight: 600;
+}
+
+.market-summary-content .highlight-bitcoin {
+    color: #f7931a;
+    font-weight: 600;
+}
+
+.market-summary-content .highlight-ethereum {
+    color: #627eea;
+    font-weight: 600;
+}
+
+.market-summary-loading {
+    text-align: center;
+    padding: 20px;
+    color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+    .market-summary-card {
+        padding: 20px;
+    }
+    
+    .market-summary-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .market-summary-content {
+        font-size: 0.95rem;
+    }
+}
