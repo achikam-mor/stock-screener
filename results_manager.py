@@ -49,7 +49,7 @@ class ResultsManager:
             print(results.filtered_by_sma)
 
     @staticmethod
-    def save_to_json(results: ScreenerResults, total_tickers: int, filename: str = "results.json") -> None:
+    def save_to_json(results: ScreenerResults, total_tickers: int, filename: str = "results.json", scan_mode: str = "all") -> None:
         """Save screening results to JSON file for web display."""
         # Sort hot stocks by distance from SMA
         sorted_hot_stocks = sorted(
@@ -93,6 +93,7 @@ class ResultsManager:
 
         output = {
             "timestamp": datetime.now().isoformat(),
+            "scan_mode": scan_mode,
             "hot_stocks": hot_stocks_list,
             "watch_list": watch_list,
             "failed_tickers": results.failed_tickers,

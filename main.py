@@ -339,7 +339,7 @@ async def main():
     results_manager.print_results(results)
     
     # Save results to JSON file for web display
-    results_manager.save_to_json(results, len(all_tickers), "results.json")
+    results_manager.save_to_json(results, len(all_tickers), "results.json", args.mode)
     
     # Fetch and save market sentiment data (Fear & Greed indices)
     print("\n📈 Fetching market sentiment data...")

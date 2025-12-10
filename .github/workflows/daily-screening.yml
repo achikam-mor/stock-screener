@@ -3,25 +3,37 @@ name: Daily Stock Screening
 on:
   schedule:
     # NYSE opens at 9:30 AM ET, closes at 4:00 PM ET
-    # Runs 6 times per trading day (Monday to Friday)
+    # Runs 10 times per trading day (Monday to Friday)
     # Different priority levels scanned at different times to reduce API calls
     
-    # Run 1: 09:40 AM ET = 14:40 UTC - Priority 1 only
-    - cron: '40 14 * * 1-5'
+    # Run 1: 09:00 AM ET = 14:00 UTC - Priority 1 only
+    - cron: '0 14 * * 1-5'
     
-    # Run 2: 11:10 AM ET = 16:10 UTC - Priority 1 + 2
-    - cron: '10 16 * * 1-5'
+    # Run 2: 09:50 AM ET = 14:50 UTC - Priority 1 + 2
+    - cron: '50 14 * * 1-5'
     
-    # Run 3: 12:40 PM ET = 17:40 UTC - ALL stocks (full scan + reclassification)
-    - cron: '40 17 * * 1-5'
+    # Run 3: 10:40 AM ET = 15:40 UTC - ALL stocks (full scan + reclassification)
+    - cron: '40 15 * * 1-5'
     
-    # Run 4: 02:10 PM ET = 19:10 UTC - Priority 1 + 2
-    - cron: '10 19 * * 1-5'
+    # Run 4: 11:30 AM ET = 16:30 UTC - Priority 1 only
+    - cron: '30 16 * * 1-5'
     
-    # Run 5: 03:10 PM ET = 20:10 UTC - Priority 1 only
-    - cron: '10 20 * * 1-5'
+    # Run 5: 12:20 PM ET = 17:20 UTC - Priority 1 + 2
+    - cron: '20 17 * * 1-5'
     
-    # Run 6: 04:10 PM ET = 21:10 UTC - ALL stocks (full scan + reclassification)
+    # Run 6: 13:10 PM ET = 18:10 UTC - ALL stocks (full scan + reclassification)
+    - cron: '10 18 * * 1-5'
+    
+    # Run 7: 14:00 PM ET = 19:00 UTC - Priority 1 only
+    - cron: '0 19 * * 1-5'
+    
+    # Run 8: 14:50 PM ET = 19:50 UTC - Priority 1 + 2
+    - cron: '50 19 * * 1-5'
+    
+    # Run 9: 15:40 PM ET = 20:40 UTC - Priority 1 only
+    - cron: '40 20 * * 1-5'
+    
+    # Run 10: 16:10 PM ET = 21:10 UTC - ALL stocks (full scan + reclassification)
     - cron: '10 21 * * 1-5'
     
   workflow_dispatch: # Manual trigger scans ALL stocks
@@ -58,35 +70,55 @@ jobs:
           # Determine mode based on schedule time
           SCHEDULE="${{ github.event.schedule }}"
           case "$SCHEDULE" in
-            "40 14 * * 1-5")
-              # Run 1: 09:40 AM ET - Priority 1 only
+            "0 14 * * 1-5")
+              # Run 1: 09:00 AM ET - Priority 1 only
               echo "mode=priority1" >> $GITHUB_OUTPUT
-              echo "📋 Run 1 (09:40 ET) - scanning Priority 1 stocks only"
+              echo "📋 Run 1 (09:00 ET) - scanning Priority 1 stocks only"
               ;;
-            "10 16 * * 1-5")
-              # Run 2: 11:10 AM ET - Priority 1 + 2
+            "50 14 * * 1-5")
+              # Run 2: 09:50 AM ET - Priority 1 + 2
               echo "mode=priority1_2" >> $GITHUB_OUTPUT
-              echo "📋 Run 2 (11:10 ET) - scanning Priority 1+2 stocks"
+              echo "📋 Run 2 (09:50 ET) - scanning Priority 1+2 stocks"
               ;;
-            "40 17 * * 1-5")
-              # Run 3: 12:40 PM ET - ALL stocks (full scan)
+            "40 15 * * 1-5")
+              # Run 3: 10:40 AM ET - ALL stocks (full scan)
               echo "mode=all" >> $GITHUB_OUTPUT
-              echo "📋 Run 3 (12:40 ET) - scanning ALL stocks + reclassification"
+              echo "📋 Run 3 (10:40 ET) - scanning ALL stocks + reclassification"
               ;;
-            "10 19 * * 1-5")
-              # Run 4: 02:10 PM ET - Priority 1 + 2
-              echo "mode=priority1_2" >> $GITHUB_OUTPUT
-              echo "📋 Run 4 (14:10 ET) - scanning Priority 1+2 stocks"
-              ;;
-            "10 20 * * 1-5")
-              # Run 5: 03:10 PM ET - Priority 1 only
+            "30 16 * * 1-5")
+              # Run 4: 11:30 AM ET - Priority 1 only
               echo "mode=priority1" >> $GITHUB_OUTPUT
-              echo "📋 Run 5 (15:10 ET) - scanning Priority 1 stocks only"
+              echo "📋 Run 4 (11:30 ET) - scanning Priority 1 stocks only"
+              ;;
+            "20 17 * * 1-5")
+              # Run 5: 12:20 PM ET - Priority 1 + 2
+              echo "mode=priority1_2" >> $GITHUB_OUTPUT
+              echo "📋 Run 5 (12:20 ET) - scanning Priority 1+2 stocks"
+              ;;
+            "10 18 * * 1-5")
+              # Run 6: 13:10 PM ET - ALL stocks (full scan)
+              echo "mode=all" >> $GITHUB_OUTPUT
+              echo "📋 Run 6 (13:10 ET) - scanning ALL stocks + reclassification"
+              ;;
+            "0 19 * * 1-5")
+              # Run 7: 14:00 PM ET - Priority 1 only
+              echo "mode=priority1" >> $GITHUB_OUTPUT
+              echo "📋 Run 7 (14:00 ET) - scanning Priority 1 stocks only"
+              ;;
+            "50 19 * * 1-5")
+              # Run 8: 14:50 PM ET - Priority 1 + 2
+              echo "mode=priority1_2" >> $GITHUB_OUTPUT
+              echo "📋 Run 8 (14:50 ET) - scanning Priority 1+2 stocks"
+              ;;
+            "40 20 * * 1-5")
+              # Run 9: 15:40 PM ET - Priority 1 only
+              echo "mode=priority1" >> $GITHUB_OUTPUT
+              echo "📋 Run 9 (15:40 ET) - scanning Priority 1 stocks only"
               ;;
             "10 21 * * 1-5")
-              # Run 6: 04:10 PM ET - ALL stocks (full scan)
+              # Run 10: 16:10 PM ET - ALL stocks (full scan)
               echo "mode=all" >> $GITHUB_OUTPUT
-              echo "📋 Run 6 (16:10 ET) - scanning ALL stocks + reclassification"
+              echo "📋 Run 10 (16:10 ET) - scanning ALL stocks + reclassification"
               ;;
             *)
               # Default to all if unknown schedule

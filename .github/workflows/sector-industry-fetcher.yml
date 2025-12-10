@@ -1,0 +1,40 @@
+name: Sector and Industry Fetcher
+
+on:
+  workflow_dispatch: # Manual trigger only
+
+jobs:
+  fetch-sectors:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+        cache: 'pip'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Fetch sector and industry data
+      run: |
+        echo "🏢 Starting Sector and Industry Fetcher..."
+        echo "⏱️ This may take 10-20 minutes for ~1400 stocks"
+        python sector_fetcher.py
+    
+    - name: Commit and push results
+      run: |
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
+        git add sectors.json industries.json
+        git diff --quiet && git diff --staged --quiet || (git commit -m "Update sector and industry data - $(date +'%Y-%m-%d')" && git push)
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
