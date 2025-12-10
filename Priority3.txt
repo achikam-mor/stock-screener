@@ -19,9 +19,9 @@
 'ONTO', 'ORA', 'OUT', 'PAAS', 'PAM', 'PATH', 'PAYC', 'PAYX', 'PBF', 'PBH', 'PFSI', 'PH', 'PII', 'PINS', 'PL', 
 'POOL', 'PRGO', 'PRIM', 'PRKS', 'PRM', 'PRMB', 'PSN', 'PWR', 'QBTS', 'QS', 'RACE', 'RCL', 'RDDT', 'REGN', 'RELX', 
 'RH', 'RHI', 'RIG', 'RIO', 'RKT', 'RL', 'ROK', 'ROP', 'ROST', 'RY', 'S', 'SA', 'SAN', 'SAND', 'SBSW', 
-'SCCO', 'SE', 'SEE', 'SEI', 'SF', 'SGI', 'SHAK', 'SII', 'SKE', 'SKY', 'SLG', 'SLGN', 'SM', 'SMCI', 'SMFG', 
-'SMR', 'SPHR', 'SQM', 'STLA', 'STLD', 'STT', 'STX', 'SW', 'SXI', 'SYF', 'TBBB', 'TD', 'TDC', 'TECK', 'TEF', 
-'TEL', 'TEO', 'TER', 'TEVA', 'TFPM', 'TGLS', 'TGS', 'TLK', 'TMO', 'TNET', 'TNL', 'TOST', 'TPC', 'TPR', 'TREX', 
-'TSLA', 'TSM', 'TTD', 'TYL', 'U', 'UAA', 'UHS', 'ULTA', 'VAC', 'VAL', 'VALE', 'VEEV', 'VFC', 'VG', 'VIK', 
-'VIPS', 'VIST', 'VLO', 'VRNS', 'VRSK', 'VRT', 'VSCO', 'VTR', 'VTRS', 'VVV', 'W', 'WAT', 'WBD', 'WCC', 'WD', 
-'WDC', 'WELL', 'WFG', 'WK', 'WLYB', 'WPP', 'WSO', 'WWW', 'YETI', 'ZTS']
+'SCCO', 'SE', 'SEE', 'SEI', 'SF', 'SGI', 'SHAK', 'SID', 'SII', 'SKE', 'SKY', 'SLG', 'SLGN', 'SM', 'SMCI', 
+'SMFG', 'SMR', 'SPHR', 'SQM', 'STLA', 'STLD', 'STT', 'STX', 'SW', 'SXI', 'SYF', 'TBBB', 'TD', 'TDC', 'TECK', 
+'TEF', 'TEL', 'TEO', 'TER', 'TEVA', 'TFPM', 'TGLS', 'TGS', 'TLK', 'TMO', 'TNET', 'TNL', 'TOST', 'TPC', 'TPR', 
+'TREX', 'TSLA', 'TSM', 'TTD', 'TYL', 'U', 'UAA', 'UHS', 'ULTA', 'VAC', 'VAL', 'VALE', 'VEEV', 'VFC', 'VG', 
+'VIK', 'VIPS', 'VIST', 'VLO', 'VRNS', 'VRSK', 'VRT', 'VSCO', 'VTR', 'VTRS', 'VVV', 'W', 'WAT', 'WBD', 'WCC', 
+'WD', 'WDC', 'WELL', 'WFG', 'WK', 'WLYB', 'WPP', 'WSO', 'WWW', 'YETI', 'ZTS']
