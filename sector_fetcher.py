@@ -9,6 +9,7 @@ import time
 import yfinance as yf
 from datetime import datetime
 from collections import defaultdict
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 
 def load_tickers_from_file(filepath: str) -> list:
@@ -22,108 +23,127 @@ def load_tickers_from_file(filepath: str) -> list:
         return []
 
 
-def fetch_stock_info(ticker: str, retries: int = 3) -> dict:
+def fetch_single_stock_info(ticker: str) -> dict:
     """
-    Fetch sector and industry info for a single stock.
-    Returns dict with sector and industry, or None values if not available.
+    Fetch sector and industry info for a single stock using yfinance.
     """
-    for attempt in range(retries):
+    try:
+        stock = yf.Ticker(ticker)
+        
+        # Try to get info
         try:
-            stock = yf.Ticker(ticker)
             info = stock.info
-            
-            sector = info.get('sector', None)
-            industry = info.get('industry', None)
-            
-            return {
-                'sector': sector,
-                'industry': industry
-            }
+            if info and isinstance(info, dict):
+                sector = info.get('sector')
+                industry = info.get('industry')
+                
+                # Check if we got valid data
+                if sector or industry:
+                    return {
+                        'ticker': ticker,
+                        'sector': sector if sector else None,
+                        'industry': industry if industry else None,
+                        'success': True
+                    }
         except Exception as e:
-            if attempt < retries - 1:
-                time.sleep(1)  # Wait before retry
-            else:
-                print(f"⚠️ Failed to fetch {ticker} after {retries} attempts: {str(e)}")
-                return {'sector': None, 'industry': None}
-    
-    return {'sector': None, 'industry': None}
+            pass
+        
+        # No data found
+        return {
+            'ticker': ticker,
+            'sector': None,
+            'industry': None,
+            'success': False
+        }
+        
+    except Exception as e:
+        return {
+            'ticker': ticker,
+            'sector': None,
+            'industry': None,
+            'success': False
+        }
 
 
-def fetch_all_sectors_and_industries(tickers: list, batch_size: int = 50, delay: float = 0.5):
+def fetch_all_sectors_and_industries(tickers: list, max_workers: int = 5):
     """
-    Fetch sector and industry data for all tickers.
-    Uses batching and delays to avoid rate limiting.
+    Fetch sector and industry data for all tickers using parallel processing.
     
     Args:
         tickers: List of stock tickers
-        batch_size: Number of stocks to process before a longer pause
-        delay: Delay between each API call in seconds
+        max_workers: Number of parallel threads
     
     Returns:
         Tuple of (sectors_data, industries_data)
     """
     # Data structures for sectors
-    sectors_by_name = defaultdict(list)  # sector -> [tickers]
-    stocks_by_sector = {}  # ticker -> sector
+    sectors_by_name = defaultdict(list)
+    stocks_by_sector = {}
     
     # Data structures for industries
-    industries_by_name = defaultdict(list)  # industry -> [tickers]
-    stocks_by_industry = {}  # ticker -> industry
+    industries_by_name = defaultdict(list)
+    stocks_by_industry = {}
     
     total = len(tickers)
     success_count = 0
     failed_count = 0
+    processed = 0
     
     print(f"📊 Fetching sector/industry data for {total} stocks...")
-    print(f"   Estimated time: ~{(total * delay) / 60:.1f} minutes")
+    print(f"   Using {max_workers} parallel workers")
     
-    for i, ticker in enumerate(tickers):
-        # Progress update every 50 stocks
-        if i > 0 and i % 50 == 0:
-            print(f"   Progress: {i}/{total} ({i*100//total}%) - Success: {success_count}, Failed: {failed_count}")
+    # Process in batches
+    batch_size = 100
+    
+    for batch_start in range(0, total, batch_size):
+        batch_end = min(batch_start + batch_size, total)
+        batch_tickers = tickers[batch_start:batch_end]
         
-        # Fetch stock info
-        info = fetch_stock_info(ticker)
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
+            future_to_ticker = {
+                executor.submit(fetch_single_stock_info, ticker): ticker 
+                for ticker in batch_tickers
+            }
+            
+            for future in as_completed(future_to_ticker):
+                result = future.result()
+                ticker = result['ticker']
+                sector = result['sector']
+                industry = result['industry']
+                
+                if sector:
+                    sectors_by_name[sector].append(ticker)
+                    stocks_by_sector[ticker] = sector
+                    success_count += 1
+                else:
+                    sectors_by_name['Other'].append(ticker)
+                    stocks_by_sector[ticker] = 'Other'
+                    if not industry:
+                        failed_count += 1
+                
+                if industry:
+                    industries_by_name[industry].append(ticker)
+                    stocks_by_industry[ticker] = industry
+                else:
+                    industries_by_name['Other'].append(ticker)
+                    stocks_by_industry[ticker] = 'Other'
+                
+                processed += 1
         
-        sector = info['sector']
-        industry = info['industry']
+        print(f"   Progress: {processed}/{total} ({processed*100//total}%) - Success: {success_count}, Failed: {failed_count}")
         
-        # Handle sector
-        if sector:
-            sectors_by_name[sector].append(ticker)
-            stocks_by_sector[ticker] = sector
-            success_count += 1
-        else:
-            sectors_by_name['Other'].append(ticker)
-            stocks_by_sector[ticker] = 'Other'
-            if not industry:  # Only count as failed if both are missing
-                failed_count += 1
-        
-        # Handle industry
-        if industry:
-            industries_by_name[industry].append(ticker)
-            stocks_by_industry[ticker] = industry
-        else:
-            industries_by_name['Other'].append(ticker)
-            stocks_by_industry[ticker] = 'Other'
-        
-        # Rate limiting
-        time.sleep(delay)
-        
-        # Longer pause every batch_size stocks
-        if (i + 1) % batch_size == 0 and i < total - 1:
-            print(f"   Batch {(i+1)//batch_size} complete, pausing...")
+        if batch_end < total:
             time.sleep(2)
     
     print(f"\n✅ Completed: {success_count} successful, {failed_count} without data")
     
-    # Sort tickers within each sector/industry
     sectors_data = {
         'sectors': {k: sorted(v) for k, v in sorted(sectors_by_name.items())},
         'stocks': dict(sorted(stocks_by_sector.items())),
         'sector_list': sorted(sectors_by_name.keys()),
         'last_updated': datetime.now().isoformat(),
-        'total_stocks': total
+        'total_stocks': total,
+        'success_count': success_count
     }
     
     industries_data = {
@@ -131,7 +151,8 @@ def fetch_all_sectors_and_industries(tickers: list, batch_size: int = 50, delay:
         'stocks': dict(sorted(stocks_by_industry.items())),
         'industry_list': sorted(industries_by_name.keys()),
         'last_updated': datetime.now().isoformat(),
-        'total_stocks': total
+        'total_stocks': total,
+        'success_count': success_count
     }
     
     return sectors_data, industries_data
@@ -150,7 +171,6 @@ def main():
     print("🏢 Stock Sector and Industry Fetcher")
     print("=" * 60)
     
-    # Load tickers
     tickers = load_tickers_from_file("AllStocks.txt")
     
     if not tickers:
@@ -159,14 +179,11 @@ def main():
     
     print(f"📋 Loaded {len(tickers)} tickers from AllStocks.txt")
     
-    # Fetch data
     sectors_data, industries_data = fetch_all_sectors_and_industries(
         tickers, 
-        batch_size=50, 
-        delay=0.3  # 0.3 seconds between calls
+        max_workers=5
     )
     
-    # Print summary
     print("\n" + "=" * 60)
     print("📊 Summary")
     print("=" * 60)
@@ -178,7 +195,6 @@ def main():
     
     print(f"\nIndustries: {len(industries_data['industry_list'])} unique industries")
     
-    # Save to files
     print("\n" + "=" * 60)
     save_to_json(sectors_data, "sectors.json")
     save_to_json(industries_data, "industries.json")
