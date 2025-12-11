@@ -1,8 +1,10 @@
 // Stocks page functionality (for hot-stocks and watch-list pages)
 let currentPageType = 'hot'; // 'hot' or 'watch'
 let allStocks = [];
+let filteredStocks = [];
 let currentPage = 1;
 let stocksPerPage = 20;
+let sectorsData = null;
 
 // Adjust stocks per page based on screen size
 function updateStocksPerPage() {
@@ -17,6 +19,7 @@ function initStocksPage(pageType) {
     currentPageType = pageType;
     updateStocksPerPage();
     loadStocksPage();
+    loadSectorsData();
     
     // Re-adjust on window resize
     window.addEventListener('resize', () => {
@@ -29,6 +32,43 @@ function initStocksPage(pageType) {
             displayCurrentPage();
             setupPagination();
         }
+    });
+    
+    // Re-apply filters when favorites change (if favorites filter is active)
+    window.addEventListener('favoritesChanged', () => {
+        const favoritesFilter = document.getElementById('favorites-filter');
+        if (favoritesFilter && favoritesFilter.value !== 'all') {
+            applyFilters();
+        }
+    });
+}
+
+async function loadSectorsData() {
+    try {
+        const response = await fetch('sectors.json');
+        if (response.ok) {
+            sectorsData = await response.json();
+            populateSectorFilter();
+        }
+    } catch (error) {
+        console.log('Sectors data not available yet');
+    }
+}
+
+function populateSectorFilter() {
+    const sectorSelect = document.getElementById('sector-filter');
+    if (!sectorSelect || !sectorsData || !sectorsData.sector_list) return;
+    
+    // Clear existing options except "All"
+    sectorSelect.innerHTML = '<option value="all">All Sectors</option>';
+    
+    // Add sector options
+    sectorsData.sector_list.forEach(sector => {
+        const count = sectorsData.sectors[sector] ? sectorsData.sectors[sector].length : 0;
+        const option = document.createElement('option');
+        option.value = sector;
+        option.textContent = `${sector} (${count})`;
+        sectorSelect.appendChild(option);
     });
 }
 
@@ -44,9 +84,10 @@ async function loadStocksPage() {
 
     // Get stocks based on page type
     allStocks = currentPageType === 'hot' ? data.hot_stocks : data.watch_list;
+    filteredStocks = [...allStocks];
 
     // Update total count
-    document.getElementById('total-stocks').textContent = allStocks.length;
+    document.getElementById('total-stocks').textContent = filteredStocks.length;
 
     // Check if we should scroll to a specific ticker (from search redirect)
     const urlParams = new URLSearchParams(window.location.search);
@@ -54,7 +95,7 @@ async function loadStocksPage() {
     
     if (tickerToFind) {
         // Find which page the ticker is on
-        const tickerIndex = allStocks.findIndex(s => s.symbol === tickerToFind.toUpperCase());
+        const tickerIndex = filteredStocks.findIndex(s => s.symbol === tickerToFind.toUpperCase());
         if (tickerIndex >= 0) {
             currentPage = Math.floor(tickerIndex / stocksPerPage) + 1;
         }
@@ -69,14 +110,53 @@ async function loadStocksPage() {
     }
 }
 
+function applyFilters() {
+    const sectorFilter = document.getElementById('sector-filter').value;
+    const favoritesFilter = document.getElementById('favorites-filter').value;
+    const favorites = getFavorites();
+    
+    filteredStocks = allStocks.filter(stock => {
+        // Sector filter
+        if (sectorFilter !== 'all') {
+            if (!sectorsData || !sectorsData.stocks) return false;
+            const stockSector = sectorsData.stocks[stock.symbol];
+            if (stockSector !== sectorFilter) return false;
+        }
+        
+        // Favorites filter
+        if (favoritesFilter === 'favorites') {
+            if (!favorites.includes(stock.symbol)) return false;
+        } else if (favoritesFilter === 'non-favorites') {
+            if (favorites.includes(stock.symbol)) return false;
+        }
+        
+        return true;
+    });
+    
+    // Reset to page 1 when filters change
+    currentPage = 1;
+    
+    // Update total count
+    document.getElementById('total-stocks').textContent = filteredStocks.length;
+    
+    displayCurrentPage();
+    setupPagination();
+}
+
+function resetFilters() {
+    document.getElementById('sector-filter').value = 'all';
+    document.getElementById('favorites-filter').value = 'all';
+    applyFilters();
+}
+
 function displayCurrentPage() {
     const container = document.getElementById('stocks-container');
     const startIndex = (currentPage - 1) * stocksPerPage;
-    const endIndex = Math.min(startIndex + stocksPerPage, allStocks.length);
-    const pageStocks = allStocks.slice(startIndex, endIndex);
+    const endIndex = Math.min(startIndex + stocksPerPage, filteredStocks.length);
+    const pageStocks = filteredStocks.slice(startIndex, endIndex);
 
     if (pageStocks.length === 0) {
-        container.innerHTML = '<div class="loading">No stocks found in this category</div>';
+        container.innerHTML = '<div class="loading">No stocks found matching your filters</div>';
         return;
     }
 
@@ -138,7 +218,7 @@ function createCompactStockCard(stock, type) {
 }
 
 function setupPagination() {
-    const totalPages = Math.ceil(allStocks.length / stocksPerPage);
+    const totalPages = Math.ceil(filteredStocks.length / stocksPerPage);
     document.getElementById('total-pages').textContent = totalPages;
 
     const paginationContainer = document.getElementById('pagination-controls');

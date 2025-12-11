@@ -55,6 +55,25 @@
                 <button id="search-button" onclick="searchTicker()">🔎 Search</button>
             </div>
             <div id="search-notification" class="search-notification"></div>
+            
+            <!-- Filters -->
+            <div class="filters-container">
+                <div class="filter-group">
+                    <label for="sector-filter">Sector:</label>
+                    <select id="sector-filter" onchange="applyFilters()">
+                        <option value="all">All Sectors</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="favorites-filter">Favorites:</label>
+                    <select id="favorites-filter" onchange="applyFilters()">
+                        <option value="all">All Stocks</option>
+                        <option value="favorites">⭐ Favorites Only</option>
+                        <option value="non-favorites">Non-Favorites</option>
+                    </select>
+                </div>
+                <button class="filter-reset-btn" onclick="resetFilters()">Reset Filters</button>
+            </div>
         </header>
 
         <div class="page-info">
