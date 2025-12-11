@@ -13,10 +13,31 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 
 def load_tickers_from_file(filepath: str) -> list:
-    """Load tickers from a text file (one per line)."""
+    """Load tickers from a text file. Handles both list format and one-per-line format."""
     try:
         with open(filepath, 'r') as f:
-            tickers = [line.strip().upper() for line in f if line.strip()]
+            content = f.read().strip()
+        
+        # Check if content is a Python list format (starts with [ and ends with ])
+        if content.startswith('[') and content.endswith(']'):
+            # Parse as Python list
+            try:
+                tickers = eval(content)  # Safe since it's our own file
+                return [t.strip().upper() for t in tickers if t.strip()]
+            except:
+                pass
+        
+        # Otherwise, try to parse as comma-separated with quotes
+        # Remove brackets if present
+        content = content.strip('[]')
+        # Split by comma and clean up quotes/whitespace
+        tickers = []
+        for item in content.replace('\n', ',').split(','):
+            # Remove quotes and whitespace
+            ticker = item.strip().strip("'\"").strip()
+            if ticker:
+                tickers.append(ticker.upper())
+        
         return tickers
     except FileNotFoundError:
         print(f"⚠️ File not found: {filepath}")
