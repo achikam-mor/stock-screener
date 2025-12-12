@@ -6,10 +6,10 @@
 'FICO', 'FITB', 'FLG', 'FMS', 'FNB', 'FR', 'G', 'GBTG', 'GEF', 'GIL', 'GLOB', 'GNW', 'GOLF', 'GTLS', 'GVA', 
 'GWRE', 'H', 'HAS', 'HBI', 'HHH', 'HIW', 'HOG', 'HOLX', 'HOOD', 'HPE', 'HRL', 'HST', 'IBM', 'IHG', 'INGM', 
 'INGR', 'INSW', 'INVH', 'IOT', 'IP', 'JBL', 'JEF', 'JHG', 'JHX', 'JKHY', 'JOBY', 'KAR', 'KBH', 'KGS', 'KNSL', 
-'KWR', 'LAD', 'LEA', 'LIN', 'LULU', 'LXP', 'LYB', 'MDLZ', 'MDU', 'MFC', 'MNST', 'MSGS', 'MSI', 'MTD', 'NE', 
-'NLY', 'NTRS', 'NVO', 'NVST', 'OC', 'OHI', 'ON', 'ORI', 'PAC', 'PAGS', 'PAYX', 'PBF', 'PBH', 'PFS', 'PHIN', 
-'PNC', 'POR', 'PRU', 'PSN', 'PSX', 'PUK', 'PYPL', 'QCOM', 'QXO', 'RF', 'ROP', 'RSI', 'RTX', 'RVTY', 'SAP', 
-'SN', 'SOLV', 'SPOT', 'SSL', 'STN', 'SU', 'SVV', 'SW', 'SWK', 'TAC', 'TDW', 'TFC', 'TFII', 'TJX', 'TKO', 
-'TME', 'TNET', 'TOL', 'TOST', 'TPL', 'TRGP', 'TS', 'TSN', 'UBS', 'UGP', 'UI', 'UPS', 'UWMC', 'VICI', 'VIRT', 
-'VIST', 'VLO', 'VTMX', 'VTR', 'VVV', 'WBS', 'WD', 'WELL', 'WFC', 'WFG', 'WHD', 'WMT', 'WNS', 'WSO', 'WST', 
-'WTM', 'WU', 'WYNN', 'ZETA', 'ZTO', 'ZWS']
+'KWR', 'LAD', 'LEA', 'LIN', 'LULU', 'LXP', 'LYB', 'MDLZ', 'MDU', 'MFC', 'MNST', 'MPW', 'MSGS', 'MSI', 'MTD', 
+'NE', 'NLY', 'NTRS', 'NVO', 'NVST', 'OC', 'OHI', 'ON', 'ORI', 'PAC', 'PAGS', 'PAYX', 'PBF', 'PBH', 'PFS', 
+'PHIN', 'PNC', 'POR', 'PRU', 'PSN', 'PSX', 'PUK', 'PYPL', 'QCOM', 'QXO', 'RF', 'ROP', 'RSI', 'RTX', 'RVTY', 
+'SAP', 'SN', 'SOLV', 'SPOT', 'SSL', 'STN', 'SU', 'SVV', 'SW', 'SWK', 'TAC', 'TDW', 'TFC', 'TFII', 'TJX', 
+'TKO', 'TME', 'TNET', 'TOL', 'TOST', 'TPL', 'TRGP', 'TS', 'TSN', 'UBS', 'UGP', 'UI', 'UPS', 'UWMC', 'VICI', 
+'VIRT', 'VIST', 'VLO', 'VTMX', 'VTR', 'VVV', 'WBS', 'WD', 'WELL', 'WFC', 'WFG', 'WHD', 'WMT', 'WNS', 'WSO', 
+'WST', 'WTM', 'WU', 'WYNN', 'ZETA', 'ZTO', 'ZWS']
