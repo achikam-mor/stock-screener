@@ -17,6 +17,14 @@
     <meta name="description" content="Interactive candlestick chart viewer for NYSE stocks. View OHLC price data with Japanese candlestick patterns for technical analysis.">
     <meta name="keywords" content="candlestick chart, stock chart, OHLC, Japanese candlesticks, technical analysis chart, stock price chart">
     <title>Chart Viewer | Stock Scanner</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2563eb">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="StockScreen">
+    
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/luxon@2.3.0/build/global/luxon.min.js"></script>
@@ -70,12 +78,39 @@
                     <span id="chart-data-points">0 data points</span>
                 </div>
             </div>
+
+            <!-- Date Range Selector -->
+            <div class="date-range-selector">
+                <button class="range-btn" data-range="21" title="1 Month">1M</button>
+                <button class="range-btn" data-range="63" title="3 Months">3M</button>
+                <button class="range-btn" data-range="126" title="6 Months">6M</button>
+                <button class="range-btn active" data-range="260" title="1 Year">1Y</button>
+                <button class="range-btn" data-range="0" title="All Data">ALL</button>
+                <button class="alert-btn" id="chart-alert-btn" title="Set Price Alert">
+                    🔔 Alert
+                </button>
+                <button class="fullscreen-btn" onclick="toggleFullscreen()" title="Toggle Fullscreen">
+                    <span id="fullscreen-icon">⛶</span> Fullscreen
+                </button>
+            </div>
             
-            <div class="candlestick-chart-container">
+            <div id="chart-fullscreen-container" class="candlestick-chart-container">
                 <canvas id="candlestickChart"></canvas>
+                <!-- Volume Sub-Chart -->
+                <div id="volume-chart-container" class="volume-chart-container" style="display: none;">
+                    <canvas id="volumeChart"></canvas>
+                </div>
+                <!-- RSI Sub-Chart -->
+                <div id="rsi-chart-container" class="rsi-chart-container" style="display: none;">
+                    <canvas id="rsiChart"></canvas>
+                </div>
+                <!-- Relative Strength vs SPY Sub-Chart -->
+                <div id="rs-chart-container" class="rs-chart-container" style="display: none;">
+                    <canvas id="rsChart"></canvas>
+                </div>
             </div>
 
-            <!-- Stock Statistics -->
+            <!-- Stock Statistics - Enhanced with ATR and Volume -->
             <div class="chart-stats">
                 <div class="stat-item">
                     <div class="stat-label">Current Price</div>
@@ -90,16 +125,32 @@
                     <div class="stat-value" id="sma150-distance">--</div>
                 </div>
                 <div class="stat-item">
+                    <div class="stat-label">ATR (14)</div>
+                    <div class="stat-value" id="current-atr">--</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">ATR %</div>
+                    <div class="stat-value" id="atr-percent">--</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Today's Volume</div>
+                    <div class="stat-value" id="today-volume">--</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Avg Volume (14d)</div>
+                    <div class="stat-value" id="avg-volume">--</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Volume vs Avg</div>
+                    <div class="stat-value" id="volume-ratio">--</div>
+                </div>
+                <div class="stat-item">
                     <div class="stat-label">Period High</div>
                     <div class="stat-value" id="period-high">--</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-label">Period Low</div>
                     <div class="stat-value" id="period-low">--</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-label">Avg Volume</div>
-                    <div class="stat-value" id="avg-volume">--</div>
                 </div>
             </div>
 
@@ -127,6 +178,21 @@
                     <input type="checkbox" id="sma200-checkbox" onchange="toggleSMA('sma200')">
                     <div class="legend-box" style="background: #a855f7;"></div>
                     <span>SMA200</span>
+                </div>
+                <div class="legend-item">
+                    <input type="checkbox" id="volume-checkbox" onchange="toggleVolumeChart()">
+                    <div class="legend-box" style="background: #6366f1;"></div>
+                    <span>Volume</span>
+                </div>
+                <div class="legend-item">
+                    <input type="checkbox" id="rsi-checkbox" onchange="toggleRSIChart()">
+                    <div class="legend-box" style="background: #ec4899;"></div>
+                    <span>RSI (14)</span>
+                </div>
+                <div class="legend-item">
+                    <input type="checkbox" id="rs-checkbox" onchange="toggleRSChart()">
+                    <div class="legend-box" style="background: #14b8a6;"></div>
+                    <span>RS vs SPY</span>
                 </div>
             </div>
         </section>
@@ -157,6 +223,8 @@
     </div>
 
     <script src="common.js"></script>
+    <script src="stock-notes.js"></script>
+    <script src="alerts.js"></script>
     <script src="chart-viewer.js"></script>
 </body>
 </html>

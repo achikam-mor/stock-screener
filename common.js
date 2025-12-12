@@ -2,6 +2,43 @@
 let globalData = null;
 
 // ============================================
+// PWA SERVICE WORKER REGISTRATION
+// ============================================
+
+/**
+ * Register the service worker for PWA functionality
+ */
+function registerServiceWorker() {
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', async () => {
+            try {
+                const registration = await navigator.serviceWorker.register('/service-worker.js');
+                console.log('[PWA] Service Worker registered:', registration.scope);
+                
+                // Listen for updates
+                registration.addEventListener('updatefound', () => {
+                    const newWorker = registration.installing;
+                    console.log('[PWA] New Service Worker installing...');
+                    
+                    newWorker.addEventListener('statechange', () => {
+                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                            // New content is available
+                            console.log('[PWA] New content available, refresh to update');
+                            showNotification('App update available! Refresh to get the latest version.', 'info');
+                        }
+                    });
+                });
+            } catch (error) {
+                console.log('[PWA] Service Worker registration failed:', error);
+            }
+        });
+    }
+}
+
+// Initialize service worker
+registerServiceWorker();
+
+// ============================================
 // FAVORITES MANAGEMENT (localStorage-based)
 // ============================================
 

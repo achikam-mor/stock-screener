@@ -1,23 +1,33 @@
 /**
  * Chart Viewer - Interactive Candlestick Charts with TradingView Lightweight Charts
  * Uses on-demand loading - individual stock files loaded only when requested
+ * Enhanced with ATR/Volume display, fullscreen mode, volume sub-chart, and date range selector
  */
 
 let stockList = null;  // List of available stocks
 let currentChart = null;
+let volumeChart = null;  // Volume sub-chart
+let rsiChart = null;     // RSI sub-chart
+let rsChart = null;      // Relative Strength vs SPY sub-chart
 let resultsData = null;
 let chartCache = {};  // Cache for loaded chart data
+let currentTicker = null;  // Currently displayed ticker
+let currentDateRange = 260;  // Default to 1 year (260 trading days)
+let currentChartData = null;  // Store current chart data for re-rendering
 
 // Load stock list on page load (small file, loads instantly)
 document.addEventListener('DOMContentLoaded', async () => {
+    console.log('[Chart Viewer] Initializing...');
+    
     // Load results.json to check filtered stocks
     try {
         const resultsResponse = await fetch('results.json');
         if (resultsResponse.ok) {
             resultsData = await resultsResponse.json();
+            console.log('[Chart Viewer] Results data loaded');
         }
     } catch (error) {
-        console.log('Could not load results.json');
+        console.log('[Chart Viewer] Could not load results.json:', error);
     }
     
     try {
@@ -39,9 +49,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             // Check if stock list is empty
             if (!stockList || stockList.length === 0) {
                 document.getElementById('last-updated').textContent = 'No chart data available yet';
-                console.log('Stock list is empty');
+                console.log('[Chart Viewer] Stock list is empty');
             } else {
-                console.log(`Stock list loaded: ${stockList.length} stocks available`);
+                console.log(`[Chart Viewer] Stock list loaded: ${stockList.length} stocks available`);
             }
             
             // Check if ticker is in URL parameter
@@ -53,10 +63,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         } else {
             document.getElementById('last-updated').textContent = 'Stock list not found';
-            console.error('Stock list file not found');
+            console.error('[Chart Viewer] Stock list file not found');
         }
     } catch (error) {
-        console.error('Error loading stock list:', error);
+        console.error('[Chart Viewer] Error loading stock list:', error);
         document.getElementById('last-updated').textContent = 'Error loading stock list';
         showNotification('Stock list unavailable. Please run the workflow to generate data.', 'error');
     }
@@ -67,7 +77,77 @@ document.addEventListener('DOMContentLoaded', async () => {
             loadChart();
         }
     });
+    
+    // Initialize date range selector
+    initDateRangeSelector();
+    
+    // Initialize alert button
+    initAlertButton();
+    
+    // Listen for fullscreen changes
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
 });
+
+/**
+ * Initialize alert button in chart header
+ */
+function initAlertButton() {
+    const alertBtn = document.getElementById('chart-alert-btn');
+    if (alertBtn) {
+        alertBtn.addEventListener('click', () => {
+            if (currentTicker) {
+                if (typeof openAlertModal === 'function') {
+                    openAlertModal(currentTicker);
+                    console.log(`[Chart Viewer] Alert modal opened for ${currentTicker}`);
+                } else {
+                    showNotification('Alert feature not available', 'error');
+                }
+            } else {
+                showNotification('Please load a chart first', 'error');
+            }
+        });
+    }
+}
+
+/**
+ * Update alert button state based on current ticker
+ */
+function updateAlertButtonState() {
+    const alertBtn = document.getElementById('chart-alert-btn');
+    if (alertBtn && currentTicker) {
+        if (typeof hasAlert === 'function' && hasAlert(currentTicker)) {
+            alertBtn.classList.add('has-alert');
+            alertBtn.title = `Edit alert for ${currentTicker}`;
+        } else {
+            alertBtn.classList.remove('has-alert');
+            alertBtn.title = `Set alert for ${currentTicker}`;
+        }
+    }
+}
+
+/**
+ * Initialize date range selector buttons
+ */
+function initDateRangeSelector() {
+    const rangeButtons = document.querySelectorAll('.range-btn');
+    rangeButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const range = parseInt(btn.dataset.range);
+            console.log(`[Chart Viewer] Date range changed to: ${range === 0 ? 'ALL' : range + ' days'}`);
+            
+            // Update active state
+            rangeButtons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            // Update current range and re-render chart
+            currentDateRange = range;
+            if (currentChartData && currentTicker) {
+                displayCandlestickChart(currentTicker, currentChartData);
+            }
+        });
+    });
+}
 
 /**
  * Load and display chart for the searched ticker (on-demand)
@@ -104,7 +184,10 @@ async function loadChart() {
     
     // Check cache first
     if (chartCache[ticker]) {
+        currentTicker = ticker;
+        currentChartData = chartCache[ticker];
         displayCandlestickChart(ticker, chartCache[ticker]);
+        updateAlertButtonState();
         return;
     }
     
@@ -114,13 +197,21 @@ async function loadChart() {
         if (response.ok) {
             const chartData = await response.json();
             chartCache[ticker] = chartData;  // Cache for future use
+            currentTicker = ticker;
+            currentChartData = chartData;
+            console.log(`[Chart Viewer] Chart data loaded for ${ticker}:`, {
+                dataPoints: chartData.dates?.length || 0,
+                hasATR: chartData.atr !== undefined,
+                hasVolume: chartData.last_volume !== undefined
+            });
             displayCandlestickChart(ticker, chartData);
+            updateAlertButtonState();
         } else {
             showNotification(`Could not load chart data for ${ticker}`, 'error');
             document.getElementById('chart-section').style.display = 'none';
         }
     } catch (error) {
-        console.error(`Error loading chart for ${ticker}:`, error);
+        console.error(`[Chart Viewer] Error loading chart for ${ticker}:`, error);
         showNotification(`Error loading chart for ${ticker}. Please try again.`, 'error');
         document.getElementById('chart-section').style.display = 'none';
     }
@@ -146,8 +237,8 @@ function displayCandlestickChart(ticker, data) {
         ${ticker} - Candlestick Chart
     `;
     
-    // Limit to last 260 days (approximately 1 trading year)
-    const maxDays = 260;
+    // Determine data range based on currentDateRange setting
+    const maxDays = currentDateRange === 0 ? data.dates.length : currentDateRange;
     const startIndex = Math.max(0, data.dates.length - maxDays);
     const dates = data.dates.slice(startIndex);
     const opens = data.open.slice(startIndex);
@@ -159,6 +250,9 @@ function displayCandlestickChart(ticker, data) {
     const sma150Values = data.sma150 ? data.sma150.slice(startIndex) : [];
     const sma200Values = data.sma200 ? data.sma200.slice(startIndex) : [];
     
+    // Update period label
+    const periodLabels = { 21: '1 Month', 63: '3 Months', 126: '6 Months', 260: '1 Year', 0: 'All Time' };
+    document.getElementById('chart-period').textContent = periodLabels[currentDateRange] || 'Custom';
     document.getElementById('chart-data-points').textContent = `${dates.length} trading days`;
     
     // Calculate statistics for displayed period
@@ -167,11 +261,10 @@ function displayCandlestickChart(ticker, data) {
     const periodLow = Math.min(...lows);
     const avgVolume = Math.round(volumes.reduce((a, b) => a + b, 0) / volumes.length);
     
-    // Update statistics
+    // Update basic statistics
     document.getElementById('current-price').textContent = `$${currentPrice.toFixed(2)}`;
     document.getElementById('period-high').textContent = `$${periodHigh.toFixed(2)}`;
     document.getElementById('period-low').textContent = `$${periodLow.toFixed(2)}`;
-    document.getElementById('avg-volume').textContent = formatVolume(avgVolume);
     
     // Calculate and display SMA150 and distance
     const currentSMA150 = sma150Values.length > 0 ? sma150Values[sma150Values.length - 1] : null;
@@ -189,6 +282,46 @@ function displayCandlestickChart(ticker, data) {
     } else {
         document.getElementById('current-sma150').textContent = 'N/A';
         document.getElementById('sma150-distance').textContent = 'N/A';
+    }
+    
+    // Display ATR metrics (from chart JSON or calculate fallback)
+    const atrValue = data.atr ?? calculateATRFallback(highs, lows, closes);
+    const atrPercent = data.atr_percent ?? (atrValue ? (atrValue / currentPrice * 100) : null);
+    
+    if (atrValue !== null) {
+        document.getElementById('current-atr').textContent = `$${atrValue.toFixed(2)}`;
+        document.getElementById('atr-percent').textContent = `${atrPercent.toFixed(2)}%`;
+        // Color ATR based on volatility level
+        const atrPercentEl = document.getElementById('atr-percent');
+        if (atrPercent < 2) {
+            atrPercentEl.style.color = '#10b981'; // Green - low volatility
+        } else if (atrPercent < 4) {
+            atrPercentEl.style.color = '#f59e0b'; // Amber - moderate volatility
+        } else {
+            atrPercentEl.style.color = '#ef4444'; // Red - high volatility
+        }
+    } else {
+        document.getElementById('current-atr').textContent = 'N/A';
+        document.getElementById('atr-percent').textContent = 'N/A';
+    }
+    
+    // Display volume metrics
+    const lastVolume = data.last_volume ?? volumes[volumes.length - 1];
+    const avgVolume14d = data.avg_volume_14d ?? avgVolume;
+    const volumeRatio = avgVolume14d > 0 ? (lastVolume / avgVolume14d) : 0;
+    
+    document.getElementById('today-volume').textContent = formatVolume(lastVolume);
+    document.getElementById('avg-volume').textContent = formatVolume(avgVolume14d);
+    
+    const volumeRatioEl = document.getElementById('volume-ratio');
+    volumeRatioEl.textContent = `${volumeRatio.toFixed(2)}x`;
+    // Color volume ratio
+    if (volumeRatio > 1.5) {
+        volumeRatioEl.style.color = '#10b981'; // Green - high volume
+    } else if (volumeRatio < 0.5) {
+        volumeRatioEl.style.color = '#ef4444'; // Red - low volume
+    } else {
+        volumeRatioEl.style.color = '#94a3b8'; // Gray - normal
     }
     
     // Color current price based on change
@@ -446,5 +579,520 @@ function toggleSMA(smaType) {
         currentChart.setDatasetVisibility(datasetIndex, isChecked);
         currentChart.update();
     }
+}
+
+/**
+ * Calculate ATR fallback from OHLC data (client-side calculation)
+ */
+function calculateATRFallback(highs, lows, closes, window = 14) {
+    if (highs.length < window + 1) return null;
+    
+    const trueRanges = [];
+    for (let i = 1; i < highs.length; i++) {
+        const highLow = highs[i] - lows[i];
+        const highPrevClose = Math.abs(highs[i] - closes[i - 1]);
+        const lowPrevClose = Math.abs(lows[i] - closes[i - 1]);
+        trueRanges.push(Math.max(highLow, highPrevClose, lowPrevClose));
+    }
+    
+    if (trueRanges.length < window) return null;
+    
+    const recentTRs = trueRanges.slice(-window);
+    return recentTRs.reduce((a, b) => a + b, 0) / window;
+}
+
+/**
+ * Toggle volume sub-chart visibility
+ */
+function toggleVolumeChart() {
+    const checkbox = document.getElementById('volume-checkbox');
+    const volumeContainer = document.getElementById('volume-chart-container');
+    
+    if (checkbox.checked) {
+        volumeContainer.style.display = 'block';
+        if (currentChartData && currentTicker) {
+            renderVolumeChart(currentChartData);
+        }
+    } else {
+        volumeContainer.style.display = 'none';
+        if (volumeChart) {
+            volumeChart.destroy();
+            volumeChart = null;
+        }
+    }
+}
+
+/**
+ * Render volume sub-chart
+ */
+function renderVolumeChart(data) {
+    const maxDays = currentDateRange === 0 ? data.dates.length : currentDateRange;
+    const startIndex = Math.max(0, data.dates.length - maxDays);
+    const dates = data.dates.slice(startIndex);
+    const opens = data.open.slice(startIndex);
+    const closes = data.close.slice(startIndex);
+    const volumes = data.volume.slice(startIndex);
+    
+    // Destroy existing volume chart
+    if (volumeChart) {
+        volumeChart.destroy();
+    }
+    
+    const ctx = document.getElementById('volumeChart').getContext('2d');
+    
+    // Color bars based on price direction
+    const barColors = closes.map((close, i) => {
+        return close >= opens[i] ? 'rgba(16, 185, 129, 0.7)' : 'rgba(239, 68, 68, 0.7)';
+    });
+    
+    volumeChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: dates,
+            datasets: [{
+                label: 'Volume',
+                data: volumes,
+                backgroundColor: barColors,
+                borderColor: barColors.map(c => c.replace('0.7', '1')),
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return 'Volume: ' + formatVolume(context.raw);
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    display: false
+                },
+                y: {
+                    grid: {
+                        color: '#334155'
+                    },
+                    ticks: {
+                        color: '#94a3b8',
+                        callback: function(value) {
+                            return formatVolume(value);
+                        }
+                    }
+                }
+            }
+        }
+    });
+    
+    console.log('[Chart Viewer] Volume chart rendered');
+}
+
+/**
+ * Toggle fullscreen mode
+ */
+function toggleFullscreen() {
+    const container = document.getElementById('chart-fullscreen-container');
+    
+    if (!document.fullscreenElement) {
+        // Enter fullscreen
+        if (container.requestFullscreen) {
+            container.requestFullscreen();
+        } else if (container.webkitRequestFullscreen) {
+            container.webkitRequestFullscreen();
+        } else if (container.msRequestFullscreen) {
+            container.msRequestFullscreen();
+        }
+        console.log('[Chart Viewer] Entering fullscreen mode');
+    } else {
+        // Exit fullscreen
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+        }
+        console.log('[Chart Viewer] Exiting fullscreen mode');
+    }
+}
+
+/**
+ * Handle fullscreen change event
+ */
+function handleFullscreenChange() {
+    const icon = document.getElementById('fullscreen-icon');
+    if (document.fullscreenElement) {
+        icon.textContent = '⛶'; // Exit fullscreen icon
+        // Resize chart for fullscreen
+        if (currentChart) {
+            setTimeout(() => currentChart.resize(), 100);
+        }
+        if (volumeChart) {
+            setTimeout(() => volumeChart.resize(), 100);
+        }
+        if (rsiChart) {
+            setTimeout(() => rsiChart.resize(), 100);
+        }
+    } else {
+        icon.textContent = '⛶'; // Enter fullscreen icon
+        // Resize chart back to normal
+        if (currentChart) {
+            setTimeout(() => currentChart.resize(), 100);
+        }
+        if (volumeChart) {
+            setTimeout(() => volumeChart.resize(), 100);
+        }
+        if (rsiChart) {
+            setTimeout(() => rsiChart.resize(), 100);
+        }
+    }
+}
+
+/**
+ * Toggle RSI sub-chart visibility
+ */
+function toggleRSIChart() {
+    const checkbox = document.getElementById('rsi-checkbox');
+    const rsiContainer = document.getElementById('rsi-chart-container');
+    
+    if (checkbox.checked) {
+        rsiContainer.style.display = 'block';
+        if (currentChartData && currentTicker) {
+            renderRSIChart(currentChartData);
+        }
+    } else {
+        rsiContainer.style.display = 'none';
+        if (rsiChart) {
+            rsiChart.destroy();
+            rsiChart = null;
+        }
+    }
+}
+
+/**
+ * Render RSI sub-chart
+ */
+function renderRSIChart(data) {
+    const maxDays = currentDateRange === 0 ? data.dates.length : currentDateRange;
+    const startIndex = Math.max(0, data.dates.length - maxDays);
+    const dates = data.dates.slice(startIndex);
+    const rsiValues = data.rsi ? data.rsi.slice(startIndex) : [];
+    
+    // If no RSI data, calculate it client-side
+    let rsiData = rsiValues;
+    if (!rsiValues.length || rsiValues.every(v => v === null)) {
+        const closes = data.close.slice(startIndex);
+        rsiData = calculateRSIFallback(closes);
+    }
+    
+    // Destroy existing RSI chart
+    if (rsiChart) {
+        rsiChart.destroy();
+    }
+    
+    const ctx = document.getElementById('rsiChart').getContext('2d');
+    
+    rsiChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: dates,
+            datasets: [{
+                label: 'RSI (14)',
+                data: rsiData,
+                borderColor: '#ec4899',
+                backgroundColor: 'rgba(236, 72, 153, 0.1)',
+                borderWidth: 2,
+                pointRadius: 0,
+                fill: true,
+                tension: 0.1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const value = context.raw;
+                            let status = '';
+                            if (value >= 70) status = ' (Overbought)';
+                            else if (value <= 30) status = ' (Oversold)';
+                            return `RSI: ${value?.toFixed(2) || 'N/A'}${status}`;
+                        }
+                    }
+                },
+                // Draw overbought/oversold zones
+                annotation: {
+                    annotations: {
+                        overbought: {
+                            type: 'line',
+                            yMin: 70,
+                            yMax: 70,
+                            borderColor: 'rgba(239, 68, 68, 0.5)',
+                            borderWidth: 1,
+                            borderDash: [5, 5]
+                        },
+                        oversold: {
+                            type: 'line',
+                            yMin: 30,
+                            yMax: 30,
+                            borderColor: 'rgba(16, 185, 129, 0.5)',
+                            borderWidth: 1,
+                            borderDash: [5, 5]
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    display: false
+                },
+                y: {
+                    min: 0,
+                    max: 100,
+                    grid: {
+                        color: '#334155'
+                    },
+                    ticks: {
+                        color: '#94a3b8',
+                        stepSize: 20
+                    }
+                }
+            }
+        }
+    });
+    
+    // Draw reference lines manually since annotation plugin may not be loaded
+    const yScale = rsiChart.scales.y;
+    const ctx2 = rsiChart.ctx;
+    
+    // Save original after draw
+    const originalDraw = rsiChart.draw;
+    rsiChart.draw = function() {
+        originalDraw.apply(this, arguments);
+        
+        const chartArea = this.chartArea;
+        ctx2.save();
+        ctx2.setLineDash([5, 5]);
+        
+        // Overbought line (70)
+        const y70 = yScale.getPixelForValue(70);
+        ctx2.strokeStyle = 'rgba(239, 68, 68, 0.5)';
+        ctx2.beginPath();
+        ctx2.moveTo(chartArea.left, y70);
+        ctx2.lineTo(chartArea.right, y70);
+        ctx2.stroke();
+        
+        // Oversold line (30)
+        const y30 = yScale.getPixelForValue(30);
+        ctx2.strokeStyle = 'rgba(16, 185, 129, 0.5)';
+        ctx2.beginPath();
+        ctx2.moveTo(chartArea.left, y30);
+        ctx2.lineTo(chartArea.right, y30);
+        ctx2.stroke();
+        
+        ctx2.restore();
+    };
+    
+    rsiChart.update();
+    
+    console.log('[Chart Viewer] RSI chart rendered');
+}
+
+/**
+ * Calculate RSI fallback from closes (client-side calculation)
+ */
+function calculateRSIFallback(closes, window = 14) {
+    if (closes.length < window + 1) return Array(closes.length).fill(null);
+    
+    const rsiValues = Array(window).fill(null);
+    
+    // Calculate price changes
+    const changes = [];
+    for (let i = 1; i < closes.length; i++) {
+        changes.push(closes[i] - closes[i - 1]);
+    }
+    
+    // Calculate initial average gain/loss
+    let avgGain = 0, avgLoss = 0;
+    for (let i = 0; i < window; i++) {
+        if (changes[i] > 0) avgGain += changes[i];
+        else avgLoss += Math.abs(changes[i]);
+    }
+    avgGain /= window;
+    avgLoss /= window;
+    
+    // First RSI
+    if (avgLoss === 0) {
+        rsiValues.push(100);
+    } else {
+        const rs = avgGain / avgLoss;
+        rsiValues.push(100 - (100 / (1 + rs)));
+    }
+    
+    // Subsequent RSI values
+    for (let i = window; i < changes.length; i++) {
+        const change = changes[i];
+        const gain = Math.max(0, change);
+        const loss = Math.abs(Math.min(0, change));
+        
+        avgGain = (avgGain * (window - 1) + gain) / window;
+        avgLoss = (avgLoss * (window - 1) + loss) / window;
+        
+        if (avgLoss === 0) {
+            rsiValues.push(100);
+        } else {
+            const rs = avgGain / avgLoss;
+            rsiValues.push(100 - (100 / (1 + rs)));
+        }
+    }
+    
+    return rsiValues;
+}
+
+/**
+ * Toggle Relative Strength sub-chart visibility
+ */
+function toggleRSChart() {
+    const checkbox = document.getElementById('rs-checkbox');
+    const rsContainer = document.getElementById('rs-chart-container');
+    
+    if (checkbox.checked) {
+        rsContainer.style.display = 'block';
+        if (currentChartData && currentTicker) {
+            renderRSChart(currentChartData);
+        }
+    } else {
+        rsContainer.style.display = 'none';
+        if (rsChart) {
+            rsChart.destroy();
+            rsChart = null;
+        }
+    }
+}
+
+/**
+ * Render Relative Strength vs SPY sub-chart
+ */
+function renderRSChart(data) {
+    const maxDays = currentDateRange === 0 ? data.dates.length : currentDateRange;
+    const startIndex = Math.max(0, data.dates.length - maxDays);
+    const dates = data.dates.slice(startIndex);
+    const rsValues = data.rs_spy ? data.rs_spy.slice(startIndex) : [];
+    
+    // If no RS data available, show placeholder
+    if (!rsValues.length || rsValues.every(v => v === null)) {
+        console.log('[Chart Viewer] No RS vs SPY data available');
+        const container = document.getElementById('rs-chart-container');
+        container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#94a3b8;">RS vs SPY data not available - requires backend update</div>';
+        return;
+    }
+    
+    // Restore canvas if it was replaced with message
+    let canvas = document.getElementById('rsChart');
+    if (!canvas) {
+        const container = document.getElementById('rs-chart-container');
+        container.innerHTML = '<canvas id="rsChart"></canvas>';
+        canvas = document.getElementById('rsChart');
+    }
+    
+    // Destroy existing RS chart
+    if (rsChart) {
+        rsChart.destroy();
+    }
+    
+    const ctx = canvas.getContext('2d');
+    
+    // Determine colors based on trend
+    const lastRS = rsValues.filter(v => v !== null).slice(-1)[0] || 100;
+    const isOutperforming = lastRS > 100;
+    const lineColor = isOutperforming ? '#10b981' : '#ef4444'; // Green if outperforming, red if underperforming
+    const bgColor = isOutperforming ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)';
+    
+    rsChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: dates,
+            datasets: [{
+                label: 'RS vs SPY',
+                data: rsValues,
+                borderColor: '#14b8a6',
+                backgroundColor: bgColor,
+                borderWidth: 2,
+                pointRadius: 0,
+                fill: true,
+                tension: 0.1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const value = context.raw;
+                            let status = '';
+                            if (value > 100) status = ' (Outperforming SPY)';
+                            else if (value < 100) status = ' (Underperforming SPY)';
+                            else status = ' (Equal to SPY)';
+                            return `RS: ${value?.toFixed(2) || 'N/A'}${status}`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    display: false
+                },
+                y: {
+                    grid: {
+                        color: '#334155'
+                    },
+                    ticks: {
+                        color: '#94a3b8',
+                        callback: function(value) {
+                            return value.toFixed(0);
+                        }
+                    }
+                }
+            }
+        }
+    });
+    
+    // Draw 100 line (baseline - equal to SPY)
+    const yScale = rsChart.scales.y;
+    const ctx2 = rsChart.ctx;
+    
+    const originalDraw = rsChart.draw;
+    rsChart.draw = function() {
+        originalDraw.apply(this, arguments);
+        
+        const chartArea = this.chartArea;
+        const y100 = yScale.getPixelForValue(100);
+        
+        if (y100 >= chartArea.top && y100 <= chartArea.bottom) {
+            ctx2.save();
+            ctx2.setLineDash([5, 5]);
+            ctx2.strokeStyle = 'rgba(148, 163, 184, 0.5)';
+            ctx2.beginPath();
+            ctx2.moveTo(chartArea.left, y100);
+            ctx2.lineTo(chartArea.right, y100);
+            ctx2.stroke();
+            ctx2.restore();
+        }
+    };
+    
+    rsChart.update();
+    
+    console.log('[Chart Viewer] RS vs SPY chart rendered');
 }
 

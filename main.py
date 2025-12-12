@@ -9,12 +9,127 @@ import argparse
 import ast
 import json
 import os
+import numpy as np
+import pandas as pd
 from datetime import datetime
 from data_loader import DataLoader
 from stock_analyzer import StockAnalyzer
 from stock_screener import StockScreener
 from results_manager import ResultsManager
 from market_data_fetcher import fetch_and_save_market_data
+
+def calculate_atr_for_chart(highs, lows, closes, window=14):
+    """
+    Calculate ATR (Average True Range) for chart data.
+    Returns current ATR value and ATR as percentage of current price.
+    """
+    if len(highs) < window + 1 or len(lows) < window + 1 or len(closes) < window + 1:
+        return None, None
+    
+    # True Range = max(High-Low, |High-PrevClose|, |Low-PrevClose|)
+    # For simplicity, use High-Low range (common approximation)
+    true_ranges = []
+    for i in range(1, len(highs)):
+        high_low = highs[i] - lows[i]
+        high_prev_close = abs(highs[i] - closes[i-1])
+        low_prev_close = abs(lows[i] - closes[i-1])
+        tr = max(high_low, high_prev_close, low_prev_close)
+        true_ranges.append(tr)
+    
+    # Calculate ATR as average of last 'window' true ranges
+    if len(true_ranges) < window:
+        return None, None
+    
+    atr = sum(true_ranges[-window:]) / window
+    current_price = closes[-1]
+    atr_percent = (atr / current_price) * 100 if current_price > 0 else 0
+    
+    return round(atr, 2), round(atr_percent, 2)
+
+
+def calculate_rsi_for_chart(closes, window=14):
+    """
+    Calculate RSI (Relative Strength Index) for chart data.
+    Returns list of RSI values (None for first 'window' values).
+    """
+    if len(closes) < window + 1:
+        return [None] * len(closes)
+    
+    rsi_values = [None] * window  # First 'window' values are None
+    
+    # Calculate price changes
+    changes = []
+    for i in range(1, len(closes)):
+        changes.append(closes[i] - closes[i-1])
+    
+    # Calculate initial average gain/loss
+    gains = [max(0, c) for c in changes[:window]]
+    losses = [abs(min(0, c)) for c in changes[:window]]
+    
+    avg_gain = sum(gains) / window
+    avg_loss = sum(losses) / window
+    
+    # Calculate first RSI
+    if avg_loss == 0:
+        rsi_values.append(100.0)
+    else:
+        rs = avg_gain / avg_loss
+        rsi_values.append(round(100 - (100 / (1 + rs)), 2))
+    
+    # Calculate subsequent RSI values using smoothed averages
+    for i in range(window, len(changes)):
+        change = changes[i]
+        gain = max(0, change)
+        loss = abs(min(0, change))
+        
+        # Smoothed average
+        avg_gain = (avg_gain * (window - 1) + gain) / window
+        avg_loss = (avg_loss * (window - 1) + loss) / window
+        
+        if avg_loss == 0:
+            rsi_values.append(100.0)
+        else:
+            rs = avg_gain / avg_loss
+            rsi_values.append(round(100 - (100 / (1 + rs)), 2))
+    
+    return rsi_values
+
+
+def calculate_relative_strength(stock_closes, spy_closes, dates, spy_dates):
+    """
+    Calculate Relative Strength (RS) ratio comparing stock performance to SPY.
+    RS = (Stock Price / SPY Price) normalized to 100 at start.
+    Returns list of RS values aligned to stock dates.
+    """
+    if not stock_closes or not spy_closes:
+        return None
+    
+    # Create a date-indexed lookup for SPY prices
+    spy_price_map = {}
+    for i, d in enumerate(spy_dates):
+        spy_price_map[d] = spy_closes[i]
+    
+    rs_values = []
+    base_ratio = None
+    
+    for i, date in enumerate(dates):
+        spy_price = spy_price_map.get(date)
+        stock_price = stock_closes[i]
+        
+        if spy_price and stock_price and spy_price > 0:
+            ratio = stock_price / spy_price
+            
+            # Set base ratio from first valid data point
+            if base_ratio is None:
+                base_ratio = ratio
+            
+            # Normalize to 100 at start
+            rs = round((ratio / base_ratio) * 100, 2) if base_ratio > 0 else None
+            rs_values.append(rs)
+        else:
+            rs_values.append(None)
+    
+    return rs_values
 
 
 def load_tickers_from_file(filepath):
@@ -208,6 +323,22 @@ async def main():
     # Fetch stock data in parallel
     stock_data, fetch_failed_tickers = await data_loader.fetch_all_stocks_data(tickers)
     
+    # Fetch SPY data for Relative Strength calculation
+    print(f"📈 Fetching SPY data for Relative Strength calculation...")
+    spy_data = None
+    spy_dates = []
+    spy_closes = []
+    try:
+        spy_response, _ = await data_loader.fetch_all_stocks_data(["SPY"])
+        if "SPY" in spy_response and spy_response["SPY"] is not None:
+            spy_df = spy_response["SPY"].replace([np.inf, -np.inf], np.nan).dropna()
+            if not spy_df.empty:
+                spy_dates = [idx.strftime('%Y-%m-%d') if hasattr(idx, 'strftime') else str(idx) for idx in spy_df.index]
+                spy_closes = [round(float(c), 2) for c in spy_df['Close'].values]
+                print(f"✅ SPY data loaded: {len(spy_closes)} data points")
+    except Exception as e:
+        print(f"⚠️ Could not fetch SPY data for RS calculation: {e}")
+    
     # Save raw chart data immediately after fetching (before any screening or manipulation)
     print(f"💾 Saving raw chart data for {len(stock_data)} stocks...")
     import pandas as pd
@@ -243,6 +374,21 @@ async def main():
             sma200_values = [round(float(s), 2) if not np.isnan(s) else None for s in sma200.values]
             
             if len(dates) > 0:
+                # Calculate ATR for chart display
+                atr_value, atr_pct = calculate_atr_for_chart(highs, lows, closes)
+                
+                # Calculate RSI for chart display
+                rsi_values = calculate_rsi_for_chart(closes)
+                
+                # Calculate Relative Strength vs SPY
+                rs_values = None
+                if spy_closes and spy_dates:
+                    rs_values = calculate_relative_strength(closes, spy_closes, dates, spy_dates)
+                
+                # Calculate volume metrics
+                last_volume = volumes[-1] if volumes else 0
+                avg_volume_14d = round(sum(volumes[-15:-1]) / 14) if len(volumes) >= 15 else round(sum(volumes) / len(volumes)) if volumes else 0
+                
                 chart_data_raw[symbol] = {
                     "dates": dates,
                     "open": opens,
@@ -252,7 +398,16 @@ async def main():
                     "volume": volumes,
                     "sma50": sma50_values,
                     "sma150": sma150_values,
-                    "sma200": sma200_values
+                    "sma200": sma200_values,
+                    # New fields for enhanced chart display
+                    "atr": atr_value,
+                    "atr_percent": atr_pct,
+                    "last_volume": last_volume,
+                    "avg_volume_14d": avg_volume_14d,
+                    # RSI indicator
+                    "rsi": rsi_values,
+                    # Relative Strength vs SPY
+                    "rs_spy": rs_values
                 }
                 success_count += 1
         except Exception as e:

@@ -1,4 +1,5 @@
 // Stocks page functionality (for hot-stocks and watch-list pages)
+// Enhanced with custom screener filters for SMA%, ATR%, and volume
 let currentPageType = 'hot'; // 'hot' or 'watch'
 let allStocks = [];
 let filteredStocks = [];
@@ -113,7 +114,12 @@ async function loadStocksPage() {
 function applyFilters() {
     const sectorFilter = document.getElementById('sector-filter').value;
     const favoritesFilter = document.getElementById('favorites-filter').value;
+    const smaFilter = document.getElementById('sma-filter')?.value || 'all';
+    const atrFilter = document.getElementById('atr-filter')?.value || 'all';
+    const volumeFilter = document.getElementById('volume-filter')?.value || 'all';
     const favorites = getFavorites();
+    
+    console.log('[Stocks Page] Applying filters:', { sectorFilter, favoritesFilter, smaFilter, atrFilter, volumeFilter });
     
     filteredStocks = allStocks.filter(stock => {
         // Sector filter
@@ -130,6 +136,28 @@ function applyFilters() {
             if (favorites.includes(stock.symbol)) return false;
         }
         
+        // SMA Distance filter (absolute value)
+        if (smaFilter !== 'all') {
+            const absDistance = Math.abs(stock.distance_percent);
+            const [min, max] = smaFilter.split('-').map(Number);
+            if (absDistance < min || absDistance >= max) return false;
+        }
+        
+        // ATR % filter
+        if (atrFilter !== 'all') {
+            const atrPct = stock.atr_percent || 0;
+            const [min, max] = atrFilter.split('-').map(Number);
+            if (atrPct < min || atrPct >= max) return false;
+        }
+        
+        // Volume filter
+        if (volumeFilter !== 'all') {
+            const volumeRatio = stock.avg_volume_14d > 0 ? (stock.last_volume / stock.avg_volume_14d) : 0;
+            if (volumeFilter === 'above' && volumeRatio < 1) return false;
+            if (volumeFilter === 'below' && volumeRatio >= 1) return false;
+            if (volumeFilter === 'high' && volumeRatio < 1.5) return false;
+        }
+        
         return true;
     });
     
@@ -139,6 +167,8 @@ function applyFilters() {
     // Update total count
     document.getElementById('total-stocks').textContent = filteredStocks.length;
     
+    console.log(`[Stocks Page] Filtered to ${filteredStocks.length} stocks`);
+    
     displayCurrentPage();
     setupPagination();
 }
@@ -146,6 +176,17 @@ function applyFilters() {
 function resetFilters() {
     document.getElementById('sector-filter').value = 'all';
     document.getElementById('favorites-filter').value = 'all';
+    
+    // Reset new filters if they exist
+    const smaFilter = document.getElementById('sma-filter');
+    const atrFilter = document.getElementById('atr-filter');
+    const volumeFilter = document.getElementById('volume-filter');
+    
+    if (smaFilter) smaFilter.value = 'all';
+    if (atrFilter) atrFilter.value = 'all';
+    if (volumeFilter) volumeFilter.value = 'all';
+    
+    console.log('[Stocks Page] Filters reset');
     applyFilters();
 }
 
@@ -171,11 +212,23 @@ function createCompactStockCard(stock, type) {
         ? (stock.last_volume / stock.avg_volume_14d).toFixed(2) 
         : '0.00';
     
+    // Create note icon HTML (function from stock-notes.js if available)
+    const noteIconHTML = typeof createNoteIconHTML === 'function' 
+        ? createNoteIconHTML(stock.symbol) 
+        : '';
+    
+    // Create alert icon HTML (function from alerts.js if available)
+    const alertIconHTML = typeof createAlertIconHTML === 'function' 
+        ? createAlertIconHTML(stock.symbol) 
+        : '';
+    
     return `
         <div class="stock-card-compact" data-ticker="${stock.symbol}">
             <div class="stock-header">
                 <div class="stock-symbol">
                     ${createFavoriteStarHTML(stock.symbol)}
+                    ${noteIconHTML}
+                    ${alertIconHTML}
                     <input type="checkbox" class="compare-checkbox" value="${stock.symbol}" 
                            onchange="toggleCompareStock('${stock.symbol}')" 
                            title="Select for comparison">

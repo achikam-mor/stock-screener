@@ -17,6 +17,14 @@
     <meta name="description" content="Watch list of stocks trading below SMA150 - Find potential reversal opportunities and support level plays. Technical analysis for swing trading and value investing.">
     <meta name="keywords" content="watch list stocks, stocks below SMA, support levels, reversal opportunities, swing trading, value stocks, bounce plays, oversold stocks">
     <title>Watch List Stocks Below SMA150 | Swing Trading Opportunities</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2563eb">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="StockScreen">
+    
     <link rel="stylesheet" href="styles.css">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9520776475659458"
      crossorigin="anonymous"></script>
@@ -72,6 +80,34 @@
                         <option value="non-favorites">Non-Favorites</option>
                     </select>
                 </div>
+                <div class="filter-group">
+                    <label for="sma-filter">SMA Distance:</label>
+                    <select id="sma-filter" onchange="applyFilters()">
+                        <option value="all">All</option>
+                        <option value="0-1">0-1% (Tight)</option>
+                        <option value="1-2">1-2%</option>
+                        <option value="2-3">2-3%</option>
+                        <option value="3-4">3-4%</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="atr-filter">ATR %:</label>
+                    <select id="atr-filter" onchange="applyFilters()">
+                        <option value="all">All</option>
+                        <option value="0-2">< 2% (Low)</option>
+                        <option value="2-4">2-4% (Med)</option>
+                        <option value="4-100">> 4% (High)</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="volume-filter">Volume:</label>
+                    <select id="volume-filter" onchange="applyFilters()">
+                        <option value="all">All</option>
+                        <option value="above">Above Avg</option>
+                        <option value="below">Below Avg</option>
+                        <option value="high">High (>1.5x)</option>
+                    </select>
+                </div>
                 <button class="filter-reset-btn" onclick="resetFilters()">Reset Filters</button>
             </div>
         </header>
@@ -100,6 +136,8 @@
     </div>
 
     <script src="common.js"></script>
+    <script src="stock-notes.js"></script>
+    <script src="alerts.js"></script>
     <script src="stocks-page.js"></script>
     <script>
         // Initialize page with 'watch' type
