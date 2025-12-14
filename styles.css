@@ -2092,6 +2092,31 @@ footer p {
     color: #f59e0b;
 }
 
+/* Golden Cross / Death Cross Icons */
+.cross-icon {
+    font-size: 1.1rem;
+    margin-right: 4px;
+    display: inline-block;
+    vertical-align: middle;
+    cursor: help;
+}
+
+.cross-icon.golden-cross {
+    color: #fbbf24;
+    text-shadow: 0 0 6px rgba(251, 191, 36, 0.6);
+    animation: golden-glow 2s ease-in-out infinite;
+}
+
+.cross-icon.death-cross {
+    color: #ef4444;
+    text-shadow: 0 0 6px rgba(239, 68, 68, 0.5);
+}
+
+@keyframes golden-glow {
+    0%, 100% { text-shadow: 0 0 6px rgba(251, 191, 36, 0.6); }
+    50% { text-shadow: 0 0 12px rgba(251, 191, 36, 0.9); }
+}
+
 /* Chart page favorite star (larger) */
 .chart-favorite-star {
     font-size: 1.5rem;
@@ -2570,6 +2595,40 @@ footer p {
 
 #chart-fullscreen-container:fullscreen .volume-chart-container {
     height: 150px;
+}
+
+/* CSS-based fullscreen for mobile devices */
+#chart-fullscreen-container.mobile-fullscreen {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: 9999 !important;
+    background: var(--bg-dark) !important;
+    padding: 15px !important;
+    margin: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: auto !important;
+}
+
+#chart-fullscreen-container.mobile-fullscreen #candlestickChart {
+    flex: 1;
+    min-height: 60vh;
+}
+
+#chart-fullscreen-container.mobile-fullscreen .volume-chart-container {
+    height: 120px;
+}
+
+#chart-fullscreen-container.mobile-fullscreen .rsi-chart-container {
+    height: 100px;
+}
+
+/* Hide body scroll when mobile fullscreen is active */
+body.fullscreen-active {
+    overflow: hidden !important;
 }
 
 /* Enhanced Stats Grid */

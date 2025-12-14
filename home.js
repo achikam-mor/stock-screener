@@ -78,23 +78,19 @@ function displayMarketSummary(data, container) {
         const assetParts = [];
         
         if (data.assets.gold && data.assets.gold.available) {
-            const changeSign = data.assets.gold.change >= 0 ? '+' : '';
-            assetParts.push(`<span class="highlight-gold">Gold</span> at <strong>$${data.assets.gold.price.toLocaleString()}</strong> (${changeSign}${data.assets.gold.change_percent}%)`);
+            assetParts.push(`<span class="highlight-gold">Gold</span> at <strong>$${data.assets.gold.price.toLocaleString()}</strong>`);
         }
         
         if (data.assets.silver && data.assets.silver.available) {
-            const changeSign = data.assets.silver.change >= 0 ? '+' : '';
-            assetParts.push(`<span class="highlight-silver">Silver</span> at <strong>$${data.assets.silver.price.toLocaleString()}</strong> (${changeSign}${data.assets.silver.change_percent}%)`);
+            assetParts.push(`<span class="highlight-silver">Silver</span> at <strong>$${data.assets.silver.price.toLocaleString()}</strong>`);
         }
         
         if (data.assets.bitcoin && data.assets.bitcoin.available) {
-            const changeSign = data.assets.bitcoin.change >= 0 ? '+' : '';
-            assetParts.push(`<span class="highlight-bitcoin">Bitcoin</span> at <strong>$${data.assets.bitcoin.price.toLocaleString()}</strong> (${changeSign}${data.assets.bitcoin.change_percent}%)`);
+            assetParts.push(`<span class="highlight-bitcoin">Bitcoin</span> at <strong>$${data.assets.bitcoin.price.toLocaleString()}</strong>`);
         }
         
         if (data.assets.ethereum && data.assets.ethereum.available) {
-            const changeSign = data.assets.ethereum.change >= 0 ? '+' : '';
-            assetParts.push(`<span class="highlight-ethereum">Ethereum</span> at <strong>$${data.assets.ethereum.price.toLocaleString()}</strong> (${changeSign}${data.assets.ethereum.change_percent}%)`);
+            assetParts.push(`<span class="highlight-ethereum">Ethereum</span> at <strong>$${data.assets.ethereum.price.toLocaleString()}</strong>`);
         }
         
         if (assetParts.length > 0) {

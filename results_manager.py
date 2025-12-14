@@ -68,7 +68,9 @@ class ResultsManager:
                 "atr": round(stock.atr, 2),
                 "atr_percent": round(stock.atr_percent, 2),
                 "last_volume": int(stock.last_volume),
-                "avg_volume_14d": int(stock.avg_volume_14d)
+                "avg_volume_14d": int(stock.avg_volume_14d),
+                "golden_cross": stock.golden_cross,
+                "death_cross": stock.death_cross
             })
 
         # Sort watch list by distance from SMA (same as hot stocks)
@@ -88,7 +90,9 @@ class ResultsManager:
                 "atr": round(stock.atr, 2),
                 "atr_percent": round(stock.atr_percent, 2),
                 "last_volume": int(stock.last_volume),
-                "avg_volume_14d": int(stock.avg_volume_14d)
+                "avg_volume_14d": int(stock.avg_volume_14d),
+                "golden_cross": stock.golden_cross,
+                "death_cross": stock.death_cross
             })
 
         output = {

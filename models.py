@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Dict, Any
+from typing import Dict, Any, Optional
 
 @dataclass
 class StockData:
@@ -10,6 +10,8 @@ class StockData:
     atr_percent: float
     last_volume: float
     avg_volume_14d: float
+    golden_cross: bool = False  # 50 SMA crossed above 200 SMA recently
+    death_cross: bool = False   # 50 SMA crossed below 200 SMA recently
 
 @dataclass
 class ScreenerResults:

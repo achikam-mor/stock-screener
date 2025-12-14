@@ -117,9 +117,10 @@ function applyFilters() {
     const smaFilter = document.getElementById('sma-filter')?.value || 'all';
     const atrFilter = document.getElementById('atr-filter')?.value || 'all';
     const volumeFilter = document.getElementById('volume-filter')?.value || 'all';
+    const crossFilter = document.getElementById('cross-filter')?.value || 'all';
     const favorites = getFavorites();
     
-    console.log('[Stocks Page] Applying filters:', { sectorFilter, favoritesFilter, smaFilter, atrFilter, volumeFilter });
+    console.log('[Stocks Page] Applying filters:', { sectorFilter, favoritesFilter, smaFilter, atrFilter, volumeFilter, crossFilter });
     
     filteredStocks = allStocks.filter(stock => {
         // Sector filter
@@ -158,6 +159,13 @@ function applyFilters() {
             if (volumeFilter === 'high' && volumeRatio < 1.5) return false;
         }
         
+        // Golden/Death Cross filter
+        if (crossFilter !== 'all') {
+            if (crossFilter === 'golden' && !stock.golden_cross) return false;
+            if (crossFilter === 'death' && !stock.death_cross) return false;
+            if (crossFilter === 'any' && !stock.golden_cross && !stock.death_cross) return false;
+        }
+        
         return true;
     });
     
@@ -181,10 +189,12 @@ function resetFilters() {
     const smaFilter = document.getElementById('sma-filter');
     const atrFilter = document.getElementById('atr-filter');
     const volumeFilter = document.getElementById('volume-filter');
+    const crossFilter = document.getElementById('cross-filter');
     
     if (smaFilter) smaFilter.value = 'all';
     if (atrFilter) atrFilter.value = 'all';
     if (volumeFilter) volumeFilter.value = 'all';
+    if (crossFilter) crossFilter.value = 'all';
     
     console.log('[Stocks Page] Filters reset');
     applyFilters();
@@ -222,6 +232,14 @@ function createCompactStockCard(stock, type) {
         ? createAlertIconHTML(stock.symbol) 
         : '';
     
+    // Create cross icon HTML
+    let crossIconHTML = '';
+    if (stock.golden_cross) {
+        crossIconHTML = '<span class="cross-icon golden-cross" title="Golden Cross (50 SMA crossed above 200 SMA)">✨</span>';
+    } else if (stock.death_cross) {
+        crossIconHTML = '<span class="cross-icon death-cross" title="Death Cross (50 SMA crossed below 200 SMA)">💀</span>';
+    }
+    
     return `
         <div class="stock-card-compact" data-ticker="${stock.symbol}">
             <div class="stock-header">
@@ -229,6 +247,7 @@ function createCompactStockCard(stock, type) {
                     ${createFavoriteStarHTML(stock.symbol)}
                     ${noteIconHTML}
                     ${alertIconHTML}
+                    ${crossIconHTML}
                     <input type="checkbox" class="compare-checkbox" value="${stock.symbol}" 
                            onchange="toggleCompareStock('${stock.symbol}')" 
                            title="Select for comparison">

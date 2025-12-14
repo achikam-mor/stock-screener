@@ -134,11 +134,20 @@ function createFavoriteStockCard(stock) {
         categoryBadge = '<span class="stock-badge watch-badge">👀 Watch</span>';
     }
     
+    // Create cross icon HTML
+    let crossIconHTML = '';
+    if (stock.golden_cross) {
+        crossIconHTML = '<span class="cross-icon golden-cross" title="Golden Cross (50 SMA crossed above 200 SMA)">✨</span>';
+    } else if (stock.death_cross) {
+        crossIconHTML = '<span class="cross-icon death-cross" title="Death Cross (50 SMA crossed below 200 SMA)">💀</span>';
+    }
+    
     return `
         <div class="stock-card-compact ${categoryClass}" data-ticker="${stock.symbol}">
             <div class="stock-header">
                 <div class="stock-symbol">
                     ${createFavoriteStarHTML(stock.symbol)}
+                    ${crossIconHTML}
                     <input type="checkbox" class="compare-checkbox" value="${stock.symbol}" 
                            onchange="toggleCompareStock('${stock.symbol}')" 
                            title="Select for comparison">

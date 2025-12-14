@@ -693,32 +693,86 @@ function renderVolumeChart(data) {
 }
 
 /**
- * Toggle fullscreen mode
+ * Check if native fullscreen is supported
+ */
+function isFullscreenSupported() {
+    return document.fullscreenEnabled || 
+           document.webkitFullscreenEnabled || 
+           document.mozFullScreenEnabled ||
+           document.msFullscreenEnabled;
+}
+
+/**
+ * Check if currently in fullscreen mode (native or CSS)
+ */
+function isInFullscreen() {
+    const container = document.getElementById('chart-fullscreen-container');
+    return document.fullscreenElement || 
+           document.webkitFullscreenElement || 
+           document.mozFullScreenElement ||
+           document.msFullscreenElement ||
+           container.classList.contains('mobile-fullscreen');
+}
+
+/**
+ * Toggle fullscreen mode - supports both native and CSS-based fullscreen for mobile
  */
 function toggleFullscreen() {
     const container = document.getElementById('chart-fullscreen-container');
     
-    if (!document.fullscreenElement) {
+    if (!isInFullscreen()) {
         // Enter fullscreen
-        if (container.requestFullscreen) {
-            container.requestFullscreen();
-        } else if (container.webkitRequestFullscreen) {
-            container.webkitRequestFullscreen();
-        } else if (container.msRequestFullscreen) {
-            container.msRequestFullscreen();
+        // Try native fullscreen first
+        if (isFullscreenSupported()) {
+            if (container.requestFullscreen) {
+                container.requestFullscreen().catch(() => {
+                    // Fallback to CSS fullscreen if native fails
+                    enableCSSFullscreen(container);
+                });
+            } else if (container.webkitRequestFullscreen) {
+                container.webkitRequestFullscreen();
+            } else if (container.msRequestFullscreen) {
+                container.msRequestFullscreen();
+            }
+        } else {
+            // Use CSS-based fullscreen for mobile devices
+            enableCSSFullscreen(container);
         }
         console.log('[Chart Viewer] Entering fullscreen mode');
     } else {
         // Exit fullscreen
-        if (document.exitFullscreen) {
-            document.exitFullscreen();
-        } else if (document.webkitExitFullscreen) {
-            document.webkitExitFullscreen();
-        } else if (document.msExitFullscreen) {
-            document.msExitFullscreen();
+        if (document.fullscreenElement || document.webkitFullscreenElement) {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            }
+        } else {
+            // Exit CSS-based fullscreen
+            disableCSSFullscreen(container);
         }
         console.log('[Chart Viewer] Exiting fullscreen mode');
     }
+}
+
+/**
+ * Enable CSS-based fullscreen (for mobile devices)
+ */
+function enableCSSFullscreen(container) {
+    container.classList.add('mobile-fullscreen');
+    document.body.classList.add('fullscreen-active');
+    handleFullscreenChange();
+}
+
+/**
+ * Disable CSS-based fullscreen
+ */
+function disableCSSFullscreen(container) {
+    container.classList.remove('mobile-fullscreen');
+    document.body.classList.remove('fullscreen-active');
+    handleFullscreenChange();
 }
 
 /**
@@ -726,8 +780,11 @@ function toggleFullscreen() {
  */
 function handleFullscreenChange() {
     const icon = document.getElementById('fullscreen-icon');
-    if (document.fullscreenElement) {
-        icon.textContent = '⛶'; // Exit fullscreen icon
+    const container = document.getElementById('chart-fullscreen-container');
+    const inFullscreen = isInFullscreen();
+    
+    if (inFullscreen) {
+        icon.textContent = '✕'; // Exit fullscreen icon (X)
         // Resize chart for fullscreen
         if (currentChart) {
             setTimeout(() => currentChart.resize(), 100);

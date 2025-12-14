@@ -108,6 +108,15 @@
                         <option value="high">High (>1.5x)</option>
                     </select>
                 </div>
+                <div class="filter-group">
+                    <label for="cross-filter">Cross:</label>
+                    <select id="cross-filter" onchange="applyFilters()">
+                        <option value="all">All</option>
+                        <option value="golden">✨ Golden Cross</option>
+                        <option value="death">💀 Death Cross</option>
+                        <option value="any">Any Cross</option>
+                    </select>
+                </div>
                 <button class="filter-reset-btn" onclick="resetFilters()">Reset Filters</button>
             </div>
         </header>

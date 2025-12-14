@@ -132,6 +132,57 @@ def calculate_relative_strength(stock_closes, spy_closes, dates, spy_dates):
     return rs_values
 
 
+def detect_golden_death_cross(sma50_values, sma200_values, lookback_days=5):
+    """
+    Detect Golden Cross (50 SMA crosses above 200 SMA) and Death Cross (50 SMA crosses below 200 SMA).
+    
+    Args:
+        sma50_values: List of SMA50 values
+        sma200_values: List of SMA200 values
+        lookback_days: Number of days to look back for a recent cross (default 5)
+    
+    Returns:
+        Tuple of (golden_cross: bool, death_cross: bool)
+        - golden_cross: True if 50 SMA crossed above 200 SMA within lookback period
+        - death_cross: True if 50 SMA crossed below 200 SMA within lookback period
+    """
+    golden_cross = False
+    death_cross = False
+    
+    if not sma50_values or not sma200_values:
+        return golden_cross, death_cross
+    
+    # Need at least 2 data points to detect a cross
+    if len(sma50_values) < 2 or len(sma200_values) < 2:
+        return golden_cross, death_cross
+    
+    # Look at the last 'lookback_days' days for a cross
+    end_idx = len(sma50_values)
+    start_idx = max(0, end_idx - lookback_days - 1)  # +1 because we need previous day to compare
+    
+    for i in range(start_idx + 1, end_idx):
+        curr_sma50 = sma50_values[i]
+        prev_sma50 = sma50_values[i - 1]
+        curr_sma200 = sma200_values[i]
+        prev_sma200 = sma200_values[i - 1]
+        
+        # Skip if any value is None
+        if None in (curr_sma50, prev_sma50, curr_sma200, prev_sma200):
+            continue
+        
+        # Golden Cross: 50 SMA was below 200 SMA, now above
+        if prev_sma50 <= prev_sma200 and curr_sma50 > curr_sma200:
+            golden_cross = True
+            death_cross = False  # Can't have both at same time
+            
+        # Death Cross: 50 SMA was above 200 SMA, now below
+        elif prev_sma50 >= prev_sma200 and curr_sma50 < curr_sma200:
+            death_cross = True
+            golden_cross = False  # Can't have both at same time
+    
+    return golden_cross, death_cross
+
+
 def load_tickers_from_file(filepath):
     """Load tickers from a file formatted as a Python list."""
     if not os.path.exists(filepath):
@@ -385,6 +436,9 @@ async def main():
                 if spy_closes and spy_dates:
                     rs_values = calculate_relative_strength(closes, spy_closes, dates, spy_dates)
                 
+                # Calculate Golden Cross / Death Cross
+                golden_cross, death_cross = detect_golden_death_cross(sma50_values, sma200_values)
+                
                 # Calculate volume metrics
                 last_volume = volumes[-1] if volumes else 0
                 avg_volume_14d = round(sum(volumes[-15:-1]) / 14) if len(volumes) >= 15 else round(sum(volumes) / len(volumes)) if volumes else 0
@@ -407,7 +461,10 @@ async def main():
                     # RSI indicator
                     "rsi": rsi_values,
                     # Relative Strength vs SPY
-                    "rs_spy": rs_values
+                    "rs_spy": rs_values,
+                    # Golden Cross / Death Cross indicators
+                    "golden_cross": golden_cross,
+                    "death_cross": death_cross
                 }
                 success_count += 1
         except Exception as e:
