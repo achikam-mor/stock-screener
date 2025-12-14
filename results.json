@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-12-14T13:35:49.185547",
+  "timestamp": "2025-12-14T15:02:58.295492",
   "scan_mode": "manual",
   "hot_stocks": [
     {
@@ -201,7 +201,7 @@
       "distance_percent": 0.61,
       "atr": 0.76,
       "atr_percent": 1.79,
-      "last_volume": 1852300,
+      "last_volume": 2384753,
       "avg_volume_14d": 3525857,
       "golden_cross": false,
       "death_cross": false
@@ -273,7 +273,7 @@
       "distance_percent": 0.76,
       "atr": 10.51,
       "atr_percent": 4.04,
-      "last_volume": 773858,
+      "last_volume": 666568,
       "avg_volume_14d": 1550614,
       "golden_cross": false,
       "death_cross": false
@@ -897,7 +897,7 @@
       "distance_percent": 1.91,
       "atr": 1.87,
       "atr_percent": 2.28,
-      "last_volume": 1224174,
+      "last_volume": 1268072,
       "avg_volume_14d": 1209207,
       "golden_cross": false,
       "death_cross": false
@@ -1137,7 +1137,7 @@
       "distance_percent": 2.29,
       "atr": 2.72,
       "atr_percent": 1.48,
-      "last_volume": 1135685,
+      "last_volume": 830487,
       "avg_volume_14d": 1092085,
       "golden_cross": false,
       "death_cross": false
@@ -1773,7 +1773,7 @@
       "distance_percent": 3.69,
       "atr": 1.89,
       "atr_percent": 1.83,
-      "last_volume": 1706720,
+      "last_volume": 1459062,
       "avg_volume_14d": 1819421,
       "golden_cross": false,
       "death_cross": false
@@ -2267,7 +2267,7 @@
       "distance_percent": -0.52,
       "atr": 0.87,
       "atr_percent": 3.36,
-      "last_volume": 14179591,
+      "last_volume": 16197622,
       "avg_volume_14d": 20845428,
       "golden_cross": false,
       "death_cross": false
@@ -2615,7 +2615,7 @@
       "distance_percent": -1.71,
       "atr": 0.9,
       "atr_percent": 5.33,
-      "last_volume": 9650424,
+      "last_volume": 8674942,
       "avg_volume_14d": 13183021,
       "golden_cross": false,
       "death_cross": false
@@ -2699,7 +2699,7 @@
       "distance_percent": -1.98,
       "atr": 7.72,
       "atr_percent": 2.39,
-      "last_volume": 1428725,
+      "last_volume": 1306801,
       "avg_volume_14d": 1595192,
       "golden_cross": false,
       "death_cross": false
@@ -3083,7 +3083,7 @@
       "distance_percent": -3.15,
       "atr": 20.42,
       "atr_percent": 2.53,
-      "last_volume": 603909,
+      "last_volume": 708415,
       "avg_volume_14d": 820892,
       "golden_cross": false,
       "death_cross": false
@@ -3167,7 +3167,7 @@
       "distance_percent": -3.42,
       "atr": 0.24,
       "atr_percent": 1.32,
-      "last_volume": 2190694,
+      "last_volume": 1945210,
       "avg_volume_14d": 3049621,
       "golden_cross": false,
       "death_cross": false
