@@ -1,8 +1,7 @@
 {
   "industries": {
     "Advertising Agencies": [
-      "APP",
-      "IPG"
+      "APP"
     ],
     "Aerospace & Defense": [
       "ACHR",
@@ -51,7 +50,6 @@
     ],
     "Apparel Manufacturing": [
       "GIL",
-      "HBI",
       "KTB",
       "LEVI"
     ],
@@ -735,7 +733,6 @@
       "BNH",
       "BNJ",
       "BWNB",
-      "BWSN",
       "CIMN",
       "CMSA",
       "CMSC",
@@ -941,7 +938,6 @@
       "SAH",
       "SAM",
       "SAN",
-      "SAND",
       "SAP",
       "SARO",
       "SBAC",
@@ -1002,7 +998,6 @@
       "SPHR",
       "SPNT",
       "SPOT",
-      "SPR",
       "SPXC",
       "SQM",
       "SR",
@@ -1212,7 +1207,6 @@
       "WMB",
       "WMS",
       "WMT",
-      "WNS",
       "WOR",
       "WPC",
       "WPM",
@@ -1496,7 +1490,6 @@
       "FTNT",
       "GDDY",
       "GEN",
-      "INFA",
       "IOT",
       "MSFT",
       "NET",
@@ -1916,7 +1909,6 @@
     "BVN": "Other Precious Metals & Mining",
     "BWA": "Auto Parts",
     "BWNB": "Other",
-    "BWSN": "Other",
     "BWXT": "Aerospace & Defense",
     "BX": "Asset Management",
     "BXMT": "REIT - Mortgage",
@@ -2300,7 +2292,6 @@
     "HASI": "Asset Management",
     "HAYW": "Electrical Equipment & Parts",
     "HBAN": "Banks - Regional",
-    "HBI": "Apparel Manufacturing",
     "HBM": "Copper",
     "HCA": "Medical Care Facilities",
     "HCC": "Coking Coal",
@@ -2363,7 +2354,6 @@
     "IHG": "Lodging",
     "IHS": "Real Estate Services",
     "INCY": "Biotechnology",
-    "INFA": "Software - Infrastructure",
     "INFY": "Information Technology Services",
     "ING": "Banks - Diversified",
     "INGM": "Information Technology Services",
@@ -2376,7 +2366,6 @@
     "IONQ": "Computer Hardware",
     "IOT": "Software - Infrastructure",
     "IP": "Packaging & Containers",
-    "IPG": "Advertising Agencies",
     "IQV": "Diagnostics & Research",
     "IR": "Specialty Industrial Machinery",
     "IREN": "Capital Markets",
@@ -2786,7 +2775,6 @@
     "SAH": "Other",
     "SAM": "Other",
     "SAN": "Other",
-    "SAND": "Other",
     "SAP": "Other",
     "SARO": "Other",
     "SBAC": "Other",
@@ -2847,7 +2835,6 @@
     "SPHR": "Other",
     "SPNT": "Other",
     "SPOT": "Other",
-    "SPR": "Other",
     "SPXC": "Other",
     "SQM": "Other",
     "SR": "Other",
@@ -3057,7 +3044,6 @@
     "WMB": "Other",
     "WMS": "Other",
     "WMT": "Other",
-    "WNS": "Other",
     "WOR": "Other",
     "WPC": "Other",
     "WPM": "Other",

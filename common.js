@@ -196,10 +196,12 @@ async function searchTicker() {
         return;
     }
 
-    // Search in failed tickers
+    // Search in failed tickers - show message but don't offer redirect to failed page
     const inFailed = globalData.failed_tickers.includes(ticker);
     if (inFailed) {
-        handleSearchResult('failed', ticker, 'Failed Tickers');
+        // Just show a notification that this stock's data couldn't be fetched
+        // Don't offer to redirect to failed stocks page
+        showNotification(`Ticker "${ticker}" data unavailable (failed to fetch)`, 'error');
         return;
     }
 

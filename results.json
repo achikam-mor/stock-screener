@@ -1123,16 +1123,6 @@
       "avg_volume_14d": 17100
     },
     {
-      "symbol": "SPR",
-      "last_close": 39.5,
-      "sma150": 38.51,
-      "distance_percent": 2.56,
-      "atr": 0.95,
-      "atr_percent": 2.6,
-      "last_volume": 11351164,
-      "avg_volume_14d": 2365588
-    },
-    {
       "symbol": "KO",
       "last_close": 70.52,
       "sma150": 68.73,
@@ -2395,16 +2385,6 @@
       "avg_volume_14d": 6450157
     },
     {
-      "symbol": "IPG",
-      "last_close": 24.57,
-      "sma150": 25.16,
-      "distance_percent": -2.35,
-      "atr": 0.63,
-      "atr_percent": 2.5,
-      "last_volume": 82081278,
-      "avg_volume_14d": 7060385
-    },
-    {
       "symbol": "HAFN",
       "last_close": 5.6,
       "sma150": 5.74,
@@ -3000,7 +2980,6 @@
     "BVN",
     "BWA",
     "BWNB",
-    "BWSN",
     "BWXT",
     "BXMT",
     "BYD",
@@ -3308,7 +3287,6 @@
     "HASI",
     "HAYW",
     "HBAN",
-    "HBI",
     "HBM",
     "HCA",
     "HCC",
@@ -3361,7 +3339,6 @@
     "IHG",
     "IHS",
     "INCY",
-    "INFA",
     "ING",
     "INGM",
     "INGR",
@@ -3699,7 +3676,6 @@
     "SAH",
     "SAM",
     "SAN",
-    "SAND",
     "SAP",
     "SARO",
     "SBAC",
@@ -3916,7 +3892,6 @@
     "WM",
     "WMS",
     "WMT",
-    "WNS",
     "WPM",
     "WPP",
     "WRB",
@@ -3954,6 +3929,8 @@
     "watch_list_count": 112,
     "failed_count": 0,
     "filtered_by_sma_count": 1131,
-    "total_analyzed": 1412
+    "total_analyzed": 1412,
+    "hot_count": 168,
+    "watch_count": 111
   }
 }

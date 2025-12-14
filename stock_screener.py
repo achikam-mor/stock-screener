@@ -1,13 +1,17 @@
 from typing import Dict, List, Tuple
 import pandas as pd
 import numpy as np
+import logging
 from models import StockData, ScreenerResults
 from stock_analyzer import StockAnalyzer
+
+logger = logging.getLogger(__name__)
 
 class StockScreener:
     def __init__(self, analyzer: StockAnalyzer, charts_dir: str = 'charts'):
         self.analyzer = analyzer
         self.charts_dir = charts_dir
+        self.failure_reasons = {}  # Track why each stock failed screening
 
     def _get_cross_data_from_chart(self, symbol: str) -> Tuple[bool, bool]:
         """Load golden/death cross data from chart file."""
@@ -30,11 +34,15 @@ class StockScreener:
         watch_list: Dict[str, StockData] = {}
         failed_tickers: List[str] = []
         filtered_by_sma: List[str] = []
+        self.failure_reasons = {}  # Reset failure reasons
 
         for symbol, data in stock_data.items():
             try:
                 if not self.analyzer.validate_min_data(data, 150):
                     failed_tickers.append(symbol)
+                    reason = f"Insufficient data: only {len(data)} rows, need 150"
+                    self.failure_reasons[symbol] = reason
+                    logger.debug(f"{symbol}: {reason}")
                     continue
 
                 # Calculate SMA and prepare data
@@ -76,5 +84,26 @@ class StockScreener:
 
             except Exception as e:
                 failed_tickers.append(symbol)
+                reason = f"Exception during screening: {str(e)}"
+                self.failure_reasons[symbol] = reason
+                logger.warning(f"{symbol}: {reason}")
+
+        # Log summary of screening failures
+        if failed_tickers:
+            logger.info(f"Screening completed: {len(failed_tickers)} tickers failed screening")
+            # Group by reason type
+            reason_counts = {}
+            for ticker in failed_tickers:
+                reason = self.failure_reasons.get(ticker, "Unknown")
+                # Simplify reason for grouping
+                if "Insufficient data" in reason:
+                    key = "Insufficient data (< 150 rows)"
+                elif "Exception" in reason:
+                    key = "Exception during screening"
+                else:
+                    key = reason
+                reason_counts[key] = reason_counts.get(key, 0) + 1
+            for reason, count in reason_counts.items():
+                logger.info(f"   - {reason}: {count} tickers")
 
         return ScreenerResults(hot_stocks, watch_list, failed_tickers, filtered_by_sma)
