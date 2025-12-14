@@ -227,11 +227,6 @@ function createCompactStockCard(stock, type) {
         ? createNoteIconHTML(stock.symbol) 
         : '';
     
-    // Create alert icon HTML (function from alerts.js if available)
-    const alertIconHTML = typeof createAlertIconHTML === 'function' 
-        ? createAlertIconHTML(stock.symbol) 
-        : '';
-    
     // Create cross icon HTML
     let crossIconHTML = '';
     if (stock.golden_cross) {
@@ -246,7 +241,6 @@ function createCompactStockCard(stock, type) {
                 <div class="stock-symbol">
                     ${createFavoriteStarHTML(stock.symbol)}
                     ${noteIconHTML}
-                    ${alertIconHTML}
                     ${crossIconHTML}
                     <input type="checkbox" class="compare-checkbox" value="${stock.symbol}" 
                            onchange="toggleCompareStock('${stock.symbol}')" 

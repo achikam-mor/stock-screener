@@ -81,50 +81,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Initialize date range selector
     initDateRangeSelector();
     
-    // Initialize alert button
-    initAlertButton();
-    
     // Listen for fullscreen changes
     document.addEventListener('fullscreenchange', handleFullscreenChange);
     document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
 });
-
-/**
- * Initialize alert button in chart header
- */
-function initAlertButton() {
-    const alertBtn = document.getElementById('chart-alert-btn');
-    if (alertBtn) {
-        alertBtn.addEventListener('click', () => {
-            if (currentTicker) {
-                if (typeof openAlertModal === 'function') {
-                    openAlertModal(currentTicker);
-                    console.log(`[Chart Viewer] Alert modal opened for ${currentTicker}`);
-                } else {
-                    showNotification('Alert feature not available', 'error');
-                }
-            } else {
-                showNotification('Please load a chart first', 'error');
-            }
-        });
-    }
-}
-
-/**
- * Update alert button state based on current ticker
- */
-function updateAlertButtonState() {
-    const alertBtn = document.getElementById('chart-alert-btn');
-    if (alertBtn && currentTicker) {
-        if (typeof hasAlert === 'function' && hasAlert(currentTicker)) {
-            alertBtn.classList.add('has-alert');
-            alertBtn.title = `Edit alert for ${currentTicker}`;
-        } else {
-            alertBtn.classList.remove('has-alert');
-            alertBtn.title = `Set alert for ${currentTicker}`;
-        }
-    }
-}
 
 /**
  * Initialize date range selector buttons
@@ -187,7 +147,6 @@ async function loadChart() {
         currentTicker = ticker;
         currentChartData = chartCache[ticker];
         displayCandlestickChart(ticker, chartCache[ticker]);
-        updateAlertButtonState();
         return;
     }
     
@@ -205,7 +164,6 @@ async function loadChart() {
                 hasVolume: chartData.last_volume !== undefined
             });
             displayCandlestickChart(ticker, chartData);
-            updateAlertButtonState();
         } else {
             showNotification(`Could not load chart data for ${ticker}`, 'error');
             document.getElementById('chart-section').style.display = 'none';

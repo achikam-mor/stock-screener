@@ -28,8 +28,7 @@ const STATIC_ASSETS = [
     '/compare.js',
     '/favorites.js',
     '/market-overview.js',
-    '/stock-notes.js',
-    '/alerts.js'
+    '/stock-notes.js'
 ];
 
 // External CDN resources to cache
@@ -201,45 +200,12 @@ self.addEventListener('message', (event) => {
     }
 });
 
-// Background sync for offline alert checking (if supported)
-self.addEventListener('sync', (event) => {
-    console.log('[Service Worker] Sync event:', event.tag);
-    
-    if (event.tag === 'check-alerts') {
-        event.waitUntil(checkAlertsInBackground());
-    }
-});
-
-/**
- * Check alerts in background (for background sync)
- */
-async function checkAlertsInBackground() {
-    try {
-        // Fetch latest results
-        const response = await fetch('/results.json');
-        if (!response.ok) return;
-        
-        const results = await response.json();
-        
-        // Get alerts from IndexedDB or send message to client
-        const clients = await self.clients.matchAll();
-        clients.forEach(client => {
-            client.postMessage({
-                type: 'CHECK_ALERTS',
-                data: results
-            });
-        });
-    } catch (error) {
-        console.log('[Service Worker] Background alert check failed:', error);
-    }
-}
-
 // Push notification handling (for future server-side push)
 self.addEventListener('push', (event) => {
     console.log('[Service Worker] Push received');
     
     const options = {
-        body: event.data ? event.data.text() : 'Stock alert!',
+        body: event.data ? event.data.text() : 'Stock update!',
         icon: '/favicon.ico',
         badge: '/favicon.ico',
         vibrate: [100, 50, 100],
@@ -260,8 +226,9 @@ self.addEventListener('push', (event) => {
     };
     
     event.waitUntil(
-        self.registration.showNotification('Stock Screener Alert', options)
+        self.registration.showNotification('Stock Screener', options)
     );
+});
 });
 
 // Notification click handling
