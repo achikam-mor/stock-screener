@@ -55,6 +55,20 @@
                 <button id="search-button" onclick="searchTicker()">🔎 Search</button>
             </div>
             <div id="search-notification" class="search-notification"></div>
+            
+            <!-- Cross Filter -->
+            <div class="filter-row" style="margin-top: 10px; display: flex; gap: 15px; align-items: center; justify-content: center;">
+                <div class="filter-group">
+                    <label for="cross-filter">Cross:</label>
+                    <select id="cross-filter" onchange="applyFilters()">
+                        <option value="all">All</option>
+                        <option value="golden">✨ Golden Cross</option>
+                        <option value="death">💀 Death Cross</option>
+                        <option value="any">Any Cross</option>
+                    </select>
+                </div>
+                <button class="filter-reset-btn" onclick="resetFilters()">Reset</button>
+            </div>
         </header>
 
         <div class="page-info">

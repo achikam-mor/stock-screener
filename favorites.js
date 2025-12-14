@@ -4,6 +4,7 @@
  */
 
 let allFavoriteStocks = [];
+let filteredFavoriteStocks = [];
 let currentPage = 1;
 let stocksPerPage = 20;
 
@@ -80,9 +81,10 @@ async function loadFavoritesPage() {
     }
     
     allFavoriteStocks = Array.from(uniqueStocks.values());
+    filteredFavoriteStocks = [...allFavoriteStocks];
 
     // Update total count
-    document.getElementById('total-stocks').textContent = allFavoriteStocks.length;
+    document.getElementById('total-stocks').textContent = filteredFavoriteStocks.length;
 
     // Show/hide no favorites message
     const noFavoritesMessage = document.getElementById('no-favorites-message');
@@ -94,19 +96,49 @@ async function loadFavoritesPage() {
     } else {
         noFavoritesMessage.style.display = 'none';
         stocksContainer.style.display = '';
-        displayCurrentPage();
-        setupPagination();
+        applyFilters();
     }
+}
+
+// Apply cross filter
+function applyFilters() {
+    const crossFilter = document.getElementById('cross-filter')?.value || 'all';
+    
+    filteredFavoriteStocks = allFavoriteStocks.filter(stock => {
+        // Golden/Death Cross filter
+        if (crossFilter !== 'all') {
+            if (crossFilter === 'golden' && !stock.golden_cross) return false;
+            if (crossFilter === 'death' && !stock.death_cross) return false;
+            if (crossFilter === 'any' && !stock.golden_cross && !stock.death_cross) return false;
+        }
+        return true;
+    });
+    
+    // Reset to page 1 when filters change
+    currentPage = 1;
+    
+    // Update total count
+    document.getElementById('total-stocks').textContent = filteredFavoriteStocks.length;
+    
+    displayCurrentPage();
+    setupPagination();
+}
+
+// Reset filters
+function resetFilters() {
+    const crossFilter = document.getElementById('cross-filter');
+    if (crossFilter) crossFilter.value = 'all';
+    applyFilters();
 }
 
 function displayCurrentPage() {
     const container = document.getElementById('stocks-container');
     const startIndex = (currentPage - 1) * stocksPerPage;
-    const endIndex = Math.min(startIndex + stocksPerPage, allFavoriteStocks.length);
-    const pageStocks = allFavoriteStocks.slice(startIndex, endIndex);
+    const endIndex = Math.min(startIndex + stocksPerPage, filteredFavoriteStocks.length);
+    const pageStocks = filteredFavoriteStocks.slice(startIndex, endIndex);
 
     if (pageStocks.length === 0) {
-        container.innerHTML = '<div class="loading">No favorite stocks on this page</div>';
+        container.innerHTML = '<div class="loading">No favorite stocks matching your filters</div>';
         return;
     }
 
@@ -191,7 +223,7 @@ function createFavoriteStockCard(stock) {
 }
 
 function setupPagination() {
-    const totalPages = Math.ceil(allFavoriteStocks.length / stocksPerPage);
+    const totalPages = Math.ceil(filteredFavoriteStocks.length / stocksPerPage);
     document.getElementById('total-pages').textContent = totalPages || 1;
 
     const paginationContainer = document.getElementById('pagination-controls');

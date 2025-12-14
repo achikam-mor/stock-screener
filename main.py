@@ -475,6 +475,17 @@ async def main():
     
     print(f"📊 Chart data extraction: {success_count} successful, {error_count} errors")
     
+    # Log stocks with Golden Cross or Death Cross
+    golden_cross_stocks = [sym for sym, data in chart_data_raw.items() if data.get('golden_cross', False)]
+    death_cross_stocks = [sym for sym, data in chart_data_raw.items() if data.get('death_cross', False)]
+    
+    if golden_cross_stocks:
+        print(f"✨ Golden Cross detected ({len(golden_cross_stocks)}): {', '.join(sorted(golden_cross_stocks))}")
+    if death_cross_stocks:
+        print(f"💀 Death Cross detected ({len(death_cross_stocks)}): {', '.join(sorted(death_cross_stocks))}")
+    if not golden_cross_stocks and not death_cross_stocks:
+        print(f"📈 No crosses detected in this batch")
+    
     # Merge with existing chart data if not a full scan
     if is_full_scan:
         final_chart_data = chart_data_raw
