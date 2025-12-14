@@ -1,16 +1,1 @@
-['AAP', 'ABCB', 'ABR', 'ACI', 'AIR', 'AIZ', 'AJG', 'ALG', 'ALSN', 'APD', 'APG', 'APH', 'ATR', 'AUB', 'AVTR', 
-'AYI', 'AZO', 'BABA', 'BAC', 'BBD', 'BBDO', 'BBUC', 'BDX', 'BEPC', 'BFAM', 'BG', 'BHP', 'BILL', 'BIO', 'BIPC', 
-'BKE', 'BLD', 'BLDR', 'BMO', 'BMY', 'BRO', 'BSBR', 'BSM', 'BTI', 'BWA', 'CACI', 'CBZ', 'CDW', 'CII', 'CLVT', 
-'CLX', 'CMCSA', 'CNH', 'CNK', 'CNR', 'CNS', 'COF', 'COIN', 'COLD', 'COO', 'COR', 'CPNG', 'CSCO', 'CSX', 'CTRE', 
-'CTSH', 'CVE', 'CVS', 'CWK', 'CXT', 'DB', 'DEO', 'DHR', 'DOV', 'DTM', 'DVN', 'DXCM', 'ELP', 'ELPC', 'ENIC', 
-'ERIE', 'ERJ', 'EVR', 'FCX', 'FFIV', 'FICO', 'FITB', 'FLUT', 'FNB', 'FR', 'G', 'GBTG', 'GEF', 'GEHC', 'GIL', 
-'GLOB', 'GME', 'GOLF', 'GPOR', 'GTLS', 'GVA', 'H', 'HBI', 'HCI', 'HHH', 'HIW', 'HOLX', 'HPE', 'HST', 'IBM', 
-'IHG', 'IHS', 'ING', 'INGM', 'INSW', 'INVH', 'IP', 'IRM', 'JKHY', 'KAR', 'KBH', 'KN', 'KNSL', 'LEA', 'LU', 
-'LXP', 'LYB', 'LYG', 'MAC', 'MAR', 'MATX', 'MDLZ', 'MDU', 'MFC', 'MIR', 'MKL', 'MNST', 'MPW', 'MPWR', 'MSGS', 
-'MSI', 'NATL', 'NLY', 'NOG', 'NTRS', 'NVO', 'NVST', 'NVT', 'NWG', 'OC', 'OHI', 'OII', 'OWL', 'PAC', 'PAGS', 
-'PAYX', 'PBF', 'PBH', 'PCAR', 'PFG', 'PFS', 'PHIN', 'PIPR', 'PLD', 'PLTR', 'PNC', 'POR', 'PRU', 'PSX', 'PUK', 
-'PYPL', 'QCOM', 'R', 'REVG', 'RF', 'RKT', 'ROP', 'RSI', 'RTO', 'RTX', 'S', 'SAH', 'SAP', 'SBS', 'SLB', 
-'SLGN', 'SNAP', 'SNDR', 'SNPS', 'SOLV', 'SPOT', 'ST', 'STN', 'STVN', 'SU', 'SVV', 'SW', 'TECK', 'TEF', 'TEL', 
-'TFC', 'TFII', 'TME', 'TNET', 'TOST', 'TRGP', 'TSN', 'TTAM', 'TWLO', 'UGP', 'UHS', 'UPS', 'VAL', 'VIRT', 'VIST', 
-'VLO', 'VMI', 'VRSN', 'VRT', 'VTR', 'VVV', 'WBS', 'WELL', 'WFC', 'WFG', 'WHD', 'WK', 'WMS', 'WNS', 'WSO', 
-'WTM', 'WYNN', 'XPO', 'ZGN', 'ZTO', 'ZWS']
+['HBI', 'WNS']
