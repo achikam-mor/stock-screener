@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-12-14T12:18:57.694352",
+  "timestamp": "2025-12-14T13:09:30.280218",
   "scan_mode": "manual",
   "hot_stocks": [],
   "watch_list": [],
@@ -236,7 +236,6 @@
     "BVN",
     "BWA",
     "BWNB",
-    "BWSN",
     "BWXT",
     "BX",
     "BXMT",
@@ -620,7 +619,6 @@
     "HASI",
     "HAYW",
     "HBAN",
-    "HBI",
     "HBM",
     "HCA",
     "HCC",
@@ -683,7 +681,6 @@
     "IHG",
     "IHS",
     "INCY",
-    "INFA",
     "INFY",
     "ING",
     "INGM",
@@ -696,7 +693,6 @@
     "IONQ",
     "IOT",
     "IP",
-    "IPG",
     "IQV",
     "IR",
     "IREN",
@@ -1106,7 +1102,6 @@
     "SAH",
     "SAM",
     "SAN",
-    "SAND",
     "SAP",
     "SARO",
     "SBAC",
@@ -1167,7 +1162,6 @@
     "SPHR",
     "SPNT",
     "SPOT",
-    "SPR",
     "SPXC",
     "SQM",
     "SR",
@@ -1377,7 +1371,6 @@
     "WMB",
     "WMS",
     "WMT",
-    "WNS",
     "WOR",
     "WPC",
     "WPM",
@@ -1421,8 +1414,8 @@
   "summary": {
     "hot_stocks_count": 0,
     "watch_list_count": 0,
-    "failed_count": 1412,
+    "failed_count": 1405,
     "filtered_by_sma_count": 0,
-    "total_analyzed": 1412
+    "total_analyzed": 1405
   }
 }
