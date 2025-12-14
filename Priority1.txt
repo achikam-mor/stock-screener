@@ -1,1 +1,1 @@
-['INFA', 'IPG', 'SPR']
+['AAPL', 'TSLA', 'VRNS', 'BLK', 'NVDA']
