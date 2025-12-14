@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-12-14T15:02:58.295492",
+  "timestamp": "2025-12-14T16:25:15.367698",
   "scan_mode": "manual",
   "hot_stocks": [
     {
@@ -141,7 +141,7 @@
       "distance_percent": 0.49,
       "atr": 4.39,
       "atr_percent": 5.61,
-      "last_volume": 5260245,
+      "last_volume": 5256815,
       "avg_volume_14d": 6399128,
       "golden_cross": false,
       "death_cross": false
@@ -153,7 +153,7 @@
       "distance_percent": 0.53,
       "atr": 1.22,
       "atr_percent": 3.4,
-      "last_volume": 3861474,
+      "last_volume": 3860004,
       "avg_volume_14d": 5938600,
       "golden_cross": false,
       "death_cross": false
@@ -201,7 +201,7 @@
       "distance_percent": 0.61,
       "atr": 0.76,
       "atr_percent": 1.79,
-      "last_volume": 2384753,
+      "last_volume": 1852300,
       "avg_volume_14d": 3525857,
       "golden_cross": false,
       "death_cross": false
@@ -249,7 +249,7 @@
       "distance_percent": 0.73,
       "atr": 2.24,
       "atr_percent": 1.49,
-      "last_volume": 5803670,
+      "last_volume": 4635927,
       "avg_volume_14d": 9302092,
       "golden_cross": false,
       "death_cross": false
@@ -261,7 +261,7 @@
       "distance_percent": 0.75,
       "atr": 1.35,
       "atr_percent": 2.22,
-      "last_volume": 6752301,
+      "last_volume": 5666559,
       "avg_volume_14d": 6683585,
       "golden_cross": false,
       "death_cross": false
@@ -321,7 +321,7 @@
       "distance_percent": 0.9,
       "atr": 2.0,
       "atr_percent": 2.57,
-      "last_volume": 2513061,
+      "last_volume": 1485679,
       "avg_volume_14d": 2432614,
       "golden_cross": false,
       "death_cross": false
@@ -345,7 +345,7 @@
       "distance_percent": 0.93,
       "atr": 2.48,
       "atr_percent": 3.27,
-      "last_volume": 3247147,
+      "last_volume": 2732503,
       "avg_volume_14d": 5097200,
       "golden_cross": false,
       "death_cross": false
@@ -381,7 +381,7 @@
       "distance_percent": 1.0,
       "atr": 2.05,
       "atr_percent": 1.95,
-      "last_volume": 1051954,
+      "last_volume": 738049,
       "avg_volume_14d": 1348992,
       "golden_cross": false,
       "death_cross": false
@@ -549,7 +549,7 @@
       "distance_percent": 1.36,
       "atr": 1.94,
       "atr_percent": 3.3,
-      "last_volume": 8510662,
+      "last_volume": 6345784,
       "avg_volume_14d": 8592214,
       "golden_cross": false,
       "death_cross": false
@@ -561,7 +561,7 @@
       "distance_percent": 1.39,
       "atr": 8.4,
       "atr_percent": 8.73,
-      "last_volume": 15653756,
+      "last_volume": 15581746,
       "avg_volume_14d": 12020271,
       "golden_cross": false,
       "death_cross": false
@@ -645,7 +645,7 @@
       "distance_percent": 1.47,
       "atr": 0.74,
       "atr_percent": 1.3,
-      "last_volume": 5135738,
+      "last_volume": 4149019,
       "avg_volume_14d": 6337300,
       "golden_cross": false,
       "death_cross": false
@@ -681,7 +681,7 @@
       "distance_percent": 1.54,
       "atr": 0.06,
       "atr_percent": 2.4,
-      "last_volume": 1070214,
+      "last_volume": 1020904,
       "avg_volume_14d": 1669464,
       "golden_cross": false,
       "death_cross": false
@@ -777,7 +777,7 @@
       "distance_percent": 1.73,
       "atr": 9.14,
       "atr_percent": 4.24,
-      "last_volume": 1189132,
+      "last_volume": 1187420,
       "avg_volume_14d": 2363250,
       "golden_cross": false,
       "death_cross": false
@@ -825,7 +825,7 @@
       "distance_percent": 1.78,
       "atr": 2.97,
       "atr_percent": 4.98,
-      "last_volume": 7195046,
+      "last_volume": 7186498,
       "avg_volume_14d": 6684750,
       "golden_cross": false,
       "death_cross": false
@@ -897,7 +897,7 @@
       "distance_percent": 1.91,
       "atr": 1.87,
       "atr_percent": 2.28,
-      "last_volume": 1268072,
+      "last_volume": 1224174,
       "avg_volume_14d": 1209207,
       "golden_cross": false,
       "death_cross": false
@@ -921,7 +921,7 @@
       "distance_percent": 1.95,
       "atr": 1.21,
       "atr_percent": 4.81,
-      "last_volume": 2509621,
+      "last_volume": 2161585,
       "avg_volume_14d": 2772892,
       "golden_cross": false,
       "death_cross": false
@@ -957,7 +957,7 @@
       "distance_percent": 2.09,
       "atr": 0.28,
       "atr_percent": 2.62,
-      "last_volume": 4533636,
+      "last_volume": 3051424,
       "avg_volume_14d": 3764457,
       "golden_cross": false,
       "death_cross": false
@@ -1173,7 +1173,7 @@
       "distance_percent": 2.34,
       "atr": 0.12,
       "atr_percent": 2.74,
-      "last_volume": 5614452,
+      "last_volume": 5472490,
       "avg_volume_14d": 6106092,
       "golden_cross": false,
       "death_cross": false
@@ -1197,7 +1197,7 @@
       "distance_percent": 2.42,
       "atr": 3.8,
       "atr_percent": 2.46,
-      "last_volume": 3658157,
+      "last_volume": 3490680,
       "avg_volume_14d": 4075157,
       "golden_cross": false,
       "death_cross": false
@@ -1209,7 +1209,7 @@
       "distance_percent": 2.42,
       "atr": 1.02,
       "atr_percent": 1.71,
-      "last_volume": 7516659,
+      "last_volume": 5797431,
       "avg_volume_14d": 6110607,
       "golden_cross": false,
       "death_cross": false
@@ -1257,7 +1257,7 @@
       "distance_percent": 2.46,
       "atr": 2.62,
       "atr_percent": 1.64,
-      "last_volume": 960367,
+      "last_volume": 761359,
       "avg_volume_14d": 1262028,
       "golden_cross": false,
       "death_cross": false
@@ -1293,7 +1293,7 @@
       "distance_percent": 2.49,
       "atr": 3.94,
       "atr_percent": 1.58,
-      "last_volume": 967277,
+      "last_volume": 758500,
       "avg_volume_14d": 1086178,
       "golden_cross": false,
       "death_cross": false
@@ -1377,7 +1377,7 @@
       "distance_percent": 2.65,
       "atr": 5.47,
       "atr_percent": 3.02,
-      "last_volume": 1550966,
+      "last_volume": 1357762,
       "avg_volume_14d": 1305685,
       "golden_cross": false,
       "death_cross": false
@@ -1677,7 +1677,7 @@
       "distance_percent": 3.53,
       "atr": 10.18,
       "atr_percent": 1.83,
-      "last_volume": 616307,
+      "last_volume": 484557,
       "avg_volume_14d": 705735,
       "golden_cross": false,
       "death_cross": false
@@ -1701,7 +1701,7 @@
       "distance_percent": 3.62,
       "atr": 0.54,
       "atr_percent": 1.39,
-      "last_volume": 1279572,
+      "last_volume": 968890,
       "avg_volume_14d": 1368200,
       "golden_cross": false,
       "death_cross": false
@@ -1893,7 +1893,7 @@
       "distance_percent": 3.83,
       "atr": 2.71,
       "atr_percent": 1.83,
-      "last_volume": 1777546,
+      "last_volume": 1501814,
       "avg_volume_14d": 2300092,
       "golden_cross": false,
       "death_cross": true
@@ -2159,7 +2159,7 @@
       "distance_percent": -0.39,
       "atr": 5.5,
       "atr_percent": 3.5,
-      "last_volume": 874511,
+      "last_volume": 734951,
       "avg_volume_14d": 766221,
       "golden_cross": false,
       "death_cross": false
@@ -2243,7 +2243,7 @@
       "distance_percent": -0.48,
       "atr": 0.73,
       "atr_percent": 2.17,
-      "last_volume": 2325181,
+      "last_volume": 2151798,
       "avg_volume_14d": 3186835,
       "golden_cross": false,
       "death_cross": false
@@ -2267,7 +2267,7 @@
       "distance_percent": -0.52,
       "atr": 0.87,
       "atr_percent": 3.36,
-      "last_volume": 16197622,
+      "last_volume": 14179591,
       "avg_volume_14d": 20845428,
       "golden_cross": false,
       "death_cross": false
@@ -2423,7 +2423,7 @@
       "distance_percent": -0.97,
       "atr": 1.68,
       "atr_percent": 2.59,
-      "last_volume": 14703594,
+      "last_volume": 14434230,
       "avg_volume_14d": 12336107,
       "golden_cross": false,
       "death_cross": false
@@ -2435,7 +2435,7 @@
       "distance_percent": -1.02,
       "atr": 0.63,
       "atr_percent": 4.98,
-      "last_volume": 1377659,
+      "last_volume": 1141253,
       "avg_volume_14d": 2424228,
       "golden_cross": false,
       "death_cross": true
@@ -2507,7 +2507,7 @@
       "distance_percent": -1.36,
       "atr": 139.79,
       "atr_percent": 1.87,
-      "last_volume": 22330,
+      "last_volume": 17008,
       "avg_volume_14d": 19121,
       "golden_cross": false,
       "death_cross": true
@@ -2567,7 +2567,7 @@
       "distance_percent": -1.58,
       "atr": 9.94,
       "atr_percent": 1.81,
-      "last_volume": 621546,
+      "last_volume": 508656,
       "avg_volume_14d": 726000,
       "golden_cross": false,
       "death_cross": false
@@ -2675,7 +2675,7 @@
       "distance_percent": -1.94,
       "atr": 2.37,
       "atr_percent": 1.87,
-      "last_volume": 837878,
+      "last_volume": 626220,
       "avg_volume_14d": 686050,
       "golden_cross": false,
       "death_cross": false
@@ -2747,7 +2747,7 @@
       "distance_percent": -2.08,
       "atr": 0.11,
       "atr_percent": 0.61,
-      "last_volume": 3313083,
+      "last_volume": 3298077,
       "avg_volume_14d": 2457157,
       "golden_cross": false,
       "death_cross": false
@@ -2891,7 +2891,7 @@
       "distance_percent": -2.38,
       "atr": 1.67,
       "atr_percent": 3.02,
-      "last_volume": 990572,
+      "last_volume": 990521,
       "avg_volume_14d": 714871,
       "golden_cross": false,
       "death_cross": false
@@ -3011,7 +3011,7 @@
       "distance_percent": -2.83,
       "atr": 6.38,
       "atr_percent": 4.41,
-      "last_volume": 1000342,
+      "last_volume": 898725,
       "avg_volume_14d": 1558914,
       "golden_cross": false,
       "death_cross": false
@@ -3023,7 +3023,7 @@
       "distance_percent": -2.84,
       "atr": 0.98,
       "atr_percent": 3.31,
-      "last_volume": 1081789,
+      "last_volume": 921206,
       "avg_volume_14d": 1230607,
       "golden_cross": false,
       "death_cross": false
@@ -3035,7 +3035,7 @@
       "distance_percent": -2.85,
       "atr": 7.73,
       "atr_percent": 3.24,
-      "last_volume": 3881642,
+      "last_volume": 3369350,
       "avg_volume_14d": 7688157,
       "golden_cross": false,
       "death_cross": false
@@ -3083,7 +3083,7 @@
       "distance_percent": -3.15,
       "atr": 20.42,
       "atr_percent": 2.53,
-      "last_volume": 708415,
+      "last_volume": 603909,
       "avg_volume_14d": 820892,
       "golden_cross": false,
       "death_cross": false
@@ -3119,7 +3119,7 @@
       "distance_percent": -3.25,
       "atr": 1.24,
       "atr_percent": 1.66,
-      "last_volume": 2195406,
+      "last_volume": 1415636,
       "avg_volume_14d": 3418650,
       "golden_cross": false,
       "death_cross": false
@@ -3179,7 +3179,7 @@
       "distance_percent": -3.46,
       "atr": 2.98,
       "atr_percent": 2.65,
-      "last_volume": 870396,
+      "last_volume": 601267,
       "avg_volume_14d": 894164,
       "golden_cross": false,
       "death_cross": false
@@ -3191,7 +3191,7 @@
       "distance_percent": -3.48,
       "atr": 1.69,
       "atr_percent": 1.43,
-      "last_volume": 2868999,
+      "last_volume": 2297777,
       "avg_volume_14d": 3433721,
       "golden_cross": false,
       "death_cross": false
@@ -3215,7 +3215,7 @@
       "distance_percent": -3.6,
       "atr": 3.26,
       "atr_percent": 4.07,
-      "last_volume": 761085,
+      "last_volume": 596855,
       "avg_volume_14d": 1115792,
       "golden_cross": false,
       "death_cross": false
@@ -3227,7 +3227,7 @@
       "distance_percent": -3.62,
       "atr": 0.54,
       "atr_percent": 2.18,
-      "last_volume": 8857578,
+      "last_volume": 7579677,
       "avg_volume_14d": 6137321,
       "golden_cross": false,
       "death_cross": false
@@ -3251,7 +3251,7 @@
       "distance_percent": -3.65,
       "atr": 1.93,
       "atr_percent": 1.97,
-      "last_volume": 4202700,
+      "last_volume": 3977677,
       "avg_volume_14d": 5137185,
       "golden_cross": false,
       "death_cross": false
