@@ -36,6 +36,15 @@ class StockScreener:
         filtered_by_sma: List[str] = []
         self.failure_reasons = {}  # Reset failure reasons
 
+        logger.info(f"screen_stocks: Starting screening of {len(stock_data)} stocks")
+        
+        # Log sample stock data for debugging
+        sample_symbols = list(stock_data.keys())[:3]
+        for sym in sample_symbols:
+            df = stock_data[sym]
+            logger.info(f"SAMPLE {sym}: shape={df.shape}, columns={df.columns.tolist()}, index_type={type(df.index)}")
+            logger.debug(f"SAMPLE {sym}: first 3 rows:\n{df.head(3)}")
+
         for symbol, data in stock_data.items():
             try:
                 if not self.analyzer.validate_min_data(data, 150):
@@ -48,9 +57,12 @@ class StockScreener:
                 # Calculate SMA and prepare data
                 data["SMA150"] = self.analyzer.calculate_sma(data, 150)
                 updated_data = data.iloc[::-1].copy()
+                
+                logger.debug(f"{symbol}: Data prepared, shape={updated_data.shape}, has SMA150={('SMA150' in updated_data.columns)}")
 
                 # Check conditions
                 condition_met, last_close, last_sma = self.analyzer.check_sma_conditions(updated_data)
+                logger.debug(f"{symbol}: condition_met={condition_met}, last_close={last_close}, last_sma={last_sma}")
 
                 if condition_met:
                     # Calculate ATR

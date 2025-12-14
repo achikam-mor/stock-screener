@@ -19,8 +19,16 @@ from stock_screener import StockScreener
 from results_manager import ResultsManager
 from market_data_fetcher import fetch_and_save_market_data
 
-# Configure logging
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(name)s - %(message)s')
+# Configure logging - write to file (overwrite each scan) and console
+log_file = 'LastExecutionLog.txt'
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(levelname)s - %(name)s - %(message)s',
+    handlers=[
+        logging.FileHandler(log_file, mode='w', encoding='utf-8'),  # Overwrite file each run
+        logging.StreamHandler()  # Also output to console
+    ]
+)
 logger = logging.getLogger(__name__)
 
 def calculate_atr_for_chart(highs, lows, closes, window=14):
