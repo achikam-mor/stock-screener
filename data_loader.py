@@ -80,8 +80,6 @@ class DataLoader:
         else:
             existing_df_filtered = pd.DataFrame()
         
-        logger.debug(f"existing_df_filtered shape: {existing_df_filtered.shape}")
-        
         # Concatenate and sort by date
         if not existing_df_filtered.empty:
             merged_df = pd.concat([existing_df_filtered, new_df])
