@@ -9,7 +9,6 @@ import argparse
 import ast
 import json
 import os
-import logging
 import numpy as np
 import pandas as pd
 from datetime import datetime
@@ -18,18 +17,6 @@ from stock_analyzer import StockAnalyzer
 from stock_screener import StockScreener
 from results_manager import ResultsManager
 from market_data_fetcher import fetch_and_save_market_data
-
-# Configure logging - write to file (overwrite each scan) and console
-log_file = 'LastExecutionLog.txt'
-logging.basicConfig(
-    level=logging.DEBUG,
-    format='%(asctime)s - %(levelname)s - %(name)s - %(message)s',
-    handlers=[
-        logging.FileHandler(log_file, mode='w', encoding='utf-8'),  # Overwrite file each run
-        logging.StreamHandler()  # Also output to console
-    ]
-)
-logger = logging.getLogger(__name__)
 
 def calculate_atr_for_chart(highs, lows, closes, window=14):
     """
@@ -384,43 +371,27 @@ async def main():
         tickers = all_tickers
         is_full_scan = True
 
-    logger.info(f"=== STARTING FETCH for {len(tickers)} tickers ===")
-    
     # Fetch stock data in parallel
     stock_data, fetch_failed_tickers = await data_loader.fetch_all_stocks_data(tickers)
     
-    logger.info(f"=== FETCH COMPLETE: {len(stock_data)} stocks returned data, {len(fetch_failed_tickers)} failed ===")
-    
-    # Log sample of what we got back
-    sample_symbols = list(stock_data.keys())[:5]
-    for sym in sample_symbols:
-        df = stock_data[sym]
-        logger.info(f"Sample stock {sym}: shape={df.shape}, columns={df.columns.tolist()}, index_type={type(df.index)}")
-    
     # Fetch SPY data for Relative Strength calculation
     print(f"📈 Fetching SPY data for Relative Strength calculation...")
-    logger.info("Fetching SPY data for RS calculation...")
     spy_data = None
     spy_dates = []
     spy_closes = []
     try:
         spy_response, _ = await data_loader.fetch_all_stocks_data(["SPY"])
-        logger.info(f"SPY response keys: {spy_response.keys()}")
         if "SPY" in spy_response and spy_response["SPY"] is not None:
             spy_df = spy_response["SPY"].replace([np.inf, -np.inf], np.nan).dropna()
-            logger.info(f"SPY df after clean: shape={spy_df.shape}, empty={spy_df.empty}")
             if not spy_df.empty:
                 spy_dates = [idx.strftime('%Y-%m-%d') if hasattr(idx, 'strftime') else str(idx) for idx in spy_df.index]
                 spy_closes = [round(float(c), 2) for c in spy_df['Close'].values]
                 print(f"✅ SPY data loaded: {len(spy_closes)} data points")
-                logger.info(f"SPY data loaded: {len(spy_closes)} data points")
     except Exception as e:
         print(f"⚠️ Could not fetch SPY data for RS calculation: {e}")
-        logger.error(f"SPY fetch exception: {type(e).__name__}: {e}")
     
     # Save raw chart data immediately after fetching (before any screening or manipulation)
     print(f"💾 Saving raw chart data for {len(stock_data)} stocks...")
-    logger.info(f"=== STARTING CHART DATA EXTRACTION for {len(stock_data)} stocks ===")
     # Note: pandas and numpy are already imported at module level
     
     chart_data_raw = {}
@@ -429,21 +400,14 @@ async def main():
     
     for symbol, data in stock_data.items():
         if data is None:
-            logger.warning(f"{symbol}: data is None in chart extraction loop")
             continue
         if data.empty:
-            logger.warning(f"{symbol}: data is empty in chart extraction loop")
             continue
         try:
-            logger.debug(f"{symbol}: Starting chart extraction, data shape={data.shape}, columns={data.columns.tolist()}")
-            
             # Remove rows with NaN or inf values
             data_clean = data.replace([np.inf, -np.inf], np.nan).dropna()
             if data_clean.empty:
-                logger.warning(f"{symbol}: data_clean is empty after removing NaN/inf")
                 continue
-            
-            logger.debug(f"{symbol}: After cleaning, shape={data_clean.shape}")
             
             # Calculate SMAs
             sma50 = data_clean['Close'].rolling(window=50).mean()
@@ -504,25 +468,18 @@ async def main():
                     "death_cross": death_cross
                 }
                 success_count += 1
-                logger.debug(f"{symbol}: Chart extraction SUCCESS - {len(dates)} dates")
-            else:
-                logger.warning(f"{symbol}: No dates after extraction")
         except Exception as e:
             error_count += 1
             print(f"⚠️ Could not save chart data for {symbol}: {str(e)}")
-            logger.error(f"{symbol}: Chart extraction EXCEPTION: {type(e).__name__}: {e}")
             continue
     
     print(f"📊 Chart data extraction: {success_count} successful, {error_count} errors")
-    logger.info(f"=== CHART EXTRACTION COMPLETE: {success_count} success, {error_count} errors ===")
     
     # Merge with existing chart data if not a full scan
     if is_full_scan:
         final_chart_data = chart_data_raw
-        logger.info(f"Full scan mode - using {len(final_chart_data)} extracted charts")
     else:
         final_chart_data = merge_existing_chart_data(chart_data_raw)
-        logger.info(f"Partial scan mode - merged to {len(final_chart_data)} charts")
     
     # Save individual chart files for each stock (for on-demand loading)
     print(f"💾 Saving individual chart files...")
@@ -588,10 +545,8 @@ async def main():
         print(f"   Priority 3: {len(updated_p3)} stocks")
     
     # Screen stocks to identify which ones pass
-    logger.info("=== STARTING STOCK SCREENING ===")
     results = screener.screen_stocks(stock_data)
     results.failed_tickers.extend(fetch_failed_tickers)
-    logger.info(f"=== SCREENING COMPLETE: {len(results.hot_stocks)} hot, {len(results.watch_list)} watch, {len(results.failed_tickers)} failed ===")
     
     # Display results
     results_manager.print_results(results)
@@ -602,18 +557,6 @@ async def main():
     # Fetch and save market sentiment data (Fear & Greed indices)
     print("\n📈 Fetching market sentiment data...")
     fetch_and_save_market_data()
-    
-    # Final summary log
-    logger.info("=" * 60)
-    logger.info("=== FINAL SUMMARY ===")
-    logger.info(f"Tickers requested: {len(tickers)}")
-    logger.info(f"Stock data returned: {len(stock_data)}")
-    logger.info(f"Chart extraction success: {success_count}")
-    logger.info(f"Chart extraction errors: {error_count}")
-    logger.info(f"Hot stocks: {len(results.hot_stocks)}")
-    logger.info(f"Watch list: {len(results.watch_list)}")
-    logger.info(f"Failed tickers total: {len(results.failed_tickers)}")
-    logger.info("=" * 60)
 
 if __name__ == "__main__":
     asyncio.run(main())

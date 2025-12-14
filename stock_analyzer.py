@@ -1,9 +1,6 @@
 import pandas as pd
 import numpy as np
 from typing import Tuple
-import logging
-
-logger = logging.getLogger(__name__)
 
 class StockAnalyzer:
     @staticmethod
@@ -61,22 +58,16 @@ class StockAnalyzer:
         
         last_close = float(close_col.iloc[0])
         last_sma = float(sma.iloc[0])
-        
-        logger.debug(f"check_sma_conditions: last_close={last_close}, last_sma={last_sma}")
 
         # Condition 1: last close within ±tolerance% of SMA
         lower_bound = last_sma * (1 - tolerance)
         upper_bound = last_sma * (1 + tolerance)
         condition1 = lower_bound <= last_close <= upper_bound
-        
-        logger.debug(f"check_sma_conditions: bounds=[{lower_bound:.2f}, {upper_bound:.2f}], condition1={condition1}")
 
         # Condition 2: SMA trending or flat (average slope over last 14 days)
         recent_sma = sma.iloc[:14]
         slope = -recent_sma.diff().mean()
         condition2 = slope >= 0
-        
-        logger.debug(f"check_sma_conditions: slope={slope:.4f}, condition2={condition2}")
 
         return condition1 and condition2, last_close, last_sma
 
