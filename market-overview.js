@@ -182,7 +182,7 @@ function displayAssetPrices(assets) {
         gold: '🥇',
         silver: '🥈',
         bitcoin: '₿',
-        ethereum: 'Ξ'
+        ethereum: '⬙'
     };
     
     const container = document.getElementById('assets-grid');
@@ -192,17 +192,11 @@ function displayAssetPrices(assets) {
     
     for (const [key, asset] of Object.entries(assets)) {
         if (asset.available) {
-            const changeColor = asset.change >= 0 ? '#10b981' : '#ef4444';
-            const changeSign = asset.change >= 0 ? '+' : '';
-            
             html += `
                 <div class="asset-card">
                     <div class="asset-icon">${icons[key] || '💰'}</div>
                     <div class="asset-name">${asset.name}</div>
                     <div class="asset-price">$${asset.price.toLocaleString()}</div>
-                    <div class="asset-change" style="color: ${changeColor};">
-                        ${changeSign}$${asset.change.toLocaleString()} (${changeSign}${asset.change_percent}%)
-                    </div>
                 </div>
             `;
         } else {
