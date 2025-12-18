@@ -805,7 +805,7 @@ h1 {
     color: var(--text-primary);
 }
 
-/* Ad Placeholders */
+/* Ad Containers - Google AdSense */
 .ad-container {
     display: flex;
     justify-content: center;
@@ -817,12 +817,18 @@ h1 {
 
 .ad-banner {
     min-height: 90px;
-    background: var(--bg-card);
-    border: 1px dashed var(--border-color);
+    background: transparent;
     border-radius: 8px;
+    width: 100%;
+    max-width: 970px;
+}
+
+.ad-banner .adsbygoogle {
+    display: block;
     width: 100%;
 }
 
+/* Fallback placeholder style (no longer used, kept for reference) */
 .ad-placeholder {
     color: var(--text-secondary);
     font-size: 0.9rem;
