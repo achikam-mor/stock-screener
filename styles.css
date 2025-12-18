@@ -810,22 +810,26 @@ h1 {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 20px 0;
-    padding: 10px;
+    margin: 15px auto;
+    padding: 5px;
     width: 100%;
+    max-width: 728px;
+    box-sizing: border-box;
 }
 
 .ad-banner {
-    min-height: 90px;
+    min-height: 50px;
+    max-height: 90px;
     background: transparent;
     border-radius: 8px;
     width: 100%;
-    max-width: 970px;
+    overflow: hidden;
 }
 
 .ad-banner .adsbygoogle {
     display: block;
     width: 100%;
+    max-height: 90px;
 }
 
 /* Fallback placeholder style (no longer used, kept for reference) */
@@ -1186,9 +1190,19 @@ footer p {
         padding-left: 25px;
     }
     
+    .ad-container {
+        max-width: 100%;
+        margin: 10px auto;
+        padding: 5px;
+    }
+    
     .ad-container.ad-banner {
         min-height: 50px;
-        margin: 15px 0;
+        max-height: 60px;
+    }
+    
+    .ad-banner .adsbygoogle {
+        max-height: 60px;
     }
     
     .ad-placeholder {
