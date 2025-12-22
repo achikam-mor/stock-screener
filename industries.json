@@ -21,16 +21,14 @@
       "KRMN",
       "LHX",
       "LMT",
-      "LOAR",
-      "NOC"
+      "LOAR"
     ],
     "Agricultural Inputs": [
       "CF",
       "CTVA",
       "FMC",
       "ICL",
-      "MOS",
-      "NTR"
+      "MOS"
     ],
     "Airlines": [
       "ALK",
@@ -90,9 +88,7 @@
       "IVZ",
       "JHG",
       "KKR",
-      "MAIN",
-      "NAN",
-      "NTRS"
+      "MAIN"
     ],
     "Auto & Truck Dealerships": [
       "ABG",
@@ -106,8 +102,7 @@
     "Auto Manufacturers": [
       "F",
       "GM",
-      "HMC",
-      "NIO"
+      "HMC"
     ],
     "Auto Parts": [
       "AAP",
@@ -180,8 +175,7 @@
       "KEY",
       "LYG",
       "MFG",
-      "MTB",
-      "NU"
+      "MTB"
     ],
     "Beverages - Brewers": [
       "ABEV",
@@ -231,8 +225,7 @@
       "JEF",
       "LAZ",
       "MC",
-      "MS",
-      "NMR"
+      "MS"
     ],
     "Chemicals": [
       "CE",
@@ -247,8 +240,7 @@
       "CIEN",
       "CSCO",
       "HPE",
-      "MSI",
-      "NOK"
+      "MSI"
     ],
     "Computer Hardware": [
       "ANET",
@@ -286,8 +278,7 @@
       "COF",
       "ENVA",
       "LU",
-      "MA",
-      "NNI"
+      "MA"
     ],
     "Department Stores": [
       "DDS",
@@ -378,8 +369,7 @@
       "FOXA",
       "LYV",
       "MANU",
-      "MSGS",
-      "NFLX"
+      "MSGS"
     ],
     "Farm & Heavy Construction Machinery": [
       "AGCO",
@@ -403,13 +393,11 @@
       "FDS",
       "ICE",
       "MCO",
-      "MSCI",
-      "NDAQ"
+      "MSCI"
     ],
     "Footwear & Accessories": [
       "BIRK",
-      "DECK",
-      "NKE"
+      "DECK"
     ],
     "Furnishings, Fixtures & Appliances": [
       "HNI",
@@ -433,8 +421,7 @@
       "GFI",
       "HMY",
       "IAG",
-      "KGC",
-      "NEM"
+      "KGC"
     ],
     "Grocery Stores": [
       "ACI",
@@ -652,8 +639,7 @@
       "MLI"
     ],
     "Oil & Gas Drilling": [
-      "HP",
-      "NE"
+      "HP"
     ],
     "Oil & Gas E&P": [
       "APA",
@@ -661,8 +647,6 @@
       "BSM",
       "CIVI",
       "CNQ",
-      "CNX",
-      "COP",
       "CRC",
       "CRGY",
       "CRK",
@@ -675,8 +659,7 @@
       "GPOR",
       "MGY",
       "MTDR",
-      "MUR",
-      "NOG"
+      "MUR"
     ],
     "Oil & Gas Equipment & Services": [
       "AROC",
@@ -684,8 +667,7 @@
       "FTI",
       "HAL",
       "KGS",
-      "LB",
-      "NOV"
+      "LB"
     ],
     "Oil & Gas Integrated": [
       "BP",
@@ -693,8 +675,7 @@
       "CVX",
       "E",
       "EC",
-      "EQNR",
-      "NFG"
+      "EQNR"
     ],
     "Oil & Gas Midstream": [
       "AM",
@@ -737,6 +718,8 @@
       "CMSA",
       "CMSC",
       "CMSD",
+      "CNX",
+      "COP",
       "DTB",
       "DTG",
       "DTW",
@@ -751,6 +734,44 @@
       "MFAN",
       "MFAO",
       "MSTY",
+      "MWA",
+      "NAN",
+      "NATL",
+      "NCLH",
+      "NDAQ",
+      "NDSN",
+      "NE",
+      "NEE",
+      "NEM",
+      "NET",
+      "NEU",
+      "NFG",
+      "NFLX",
+      "NGG",
+      "NGVT",
+      "NHI",
+      "NI",
+      "NIO",
+      "NJR",
+      "NKE",
+      "NLY",
+      "NMR",
+      "NNE",
+      "NNI",
+      "NNN",
+      "NOC",
+      "NOG",
+      "NOK",
+      "NOV",
+      "NOW",
+      "NPO",
+      "NRG",
+      "NSA",
+      "NSC",
+      "NTAP",
+      "NTR",
+      "NTRS",
+      "NU",
       "NUE",
       "NVDA",
       "NVO",
@@ -1295,8 +1316,7 @@
       "CTRE",
       "DOC",
       "HR",
-      "MPW",
-      "NHI"
+      "MPW"
     ],
     "REIT - Hotel & Motel": [
       "APLE",
@@ -1308,13 +1328,11 @@
       "EGP",
       "EXR",
       "FR",
-      "LXP",
-      "NSA"
+      "LXP"
     ],
     "REIT - Mortgage": [
       "ABR",
-      "BXMT",
-      "NLY"
+      "BXMT"
     ],
     "REIT - Office": [
       "ARE",
@@ -1348,8 +1366,7 @@
       "IVT",
       "KIM",
       "KRG",
-      "MAC",
-      "NNN"
+      "MAC"
     ],
     "REIT - Specialty": [
       "AMT",
@@ -1362,8 +1379,7 @@
     "Railroads": [
       "CNI",
       "CP",
-      "CSX",
-      "NSC"
+      "CSX"
     ],
     "Real Estate - Development": [
       "HHH"
@@ -1472,11 +1488,10 @@
       "HUBS",
       "INTU",
       "KVYO",
-      "MSTR",
-      "NATL",
-      "NOW"
+      "MSTR"
     ],
     "Software - Infrastructure": [
+      "AFRM",
       "AI",
       "AKAM",
       "BB",
@@ -1491,9 +1506,7 @@
       "GDDY",
       "GEN",
       "IOT",
-      "MSFT",
-      "NET",
-      "NTAP"
+      "MSFT"
     ],
     "Solar": [
       "FSLR"
@@ -1526,9 +1539,7 @@
       "IFF",
       "KWR",
       "LIN",
-      "LYB",
-      "NEU",
-      "NGVT"
+      "LYB"
     ],
     "Specialty Industrial Machinery": [
       "AME",
@@ -1556,11 +1567,7 @@
       "ITW",
       "JBTM",
       "KAI",
-      "MIR",
-      "MWA",
-      "NDSN",
-      "NNE",
-      "NPO"
+      "MIR"
     ],
     "Specialty Retail": [
       "BBWI",
@@ -1603,14 +1610,14 @@
       "CCL",
       "CUK",
       "EXPE",
-      "GBTG",
-      "NCLH"
+      "GBTG"
     ],
     "Trucking": [
       "KNX"
     ],
     "Uranium": [
-      "CCJ"
+      "CCJ",
+      "LEU"
     ],
     "Utilities - Diversified": [
       "AES",
@@ -1622,8 +1629,7 @@
     ],
     "Utilities - Independent Power Producers": [
       "CEG",
-      "KEN",
-      "NRG"
+      "KEN"
     ],
     "Utilities - Regulated Electric": [
       "AEE",
@@ -1647,18 +1653,14 @@
       "FTS",
       "IDA",
       "KEP",
-      "LNT",
-      "NEE",
-      "NGG"
+      "LNT"
     ],
     "Utilities - Regulated Gas": [
       "ATO",
       "BIPC",
       "BKH",
       "CPK",
-      "MDU",
-      "NI",
-      "NJR"
+      "MDU"
     ],
     "Utilities - Regulated Water": [
       "AWK",
@@ -1713,6 +1715,7 @@
     "AES": "Utilities - Diversified",
     "AFG": "Insurance - Property & Casualty",
     "AFL": "Insurance - Life",
+    "AFRM": "Software - Infrastructure",
     "AG": "Silver",
     "AGCO": "Farm & Heavy Construction Machinery",
     "AGI": "Gold",
@@ -1992,7 +1995,7 @@
     "CNQ": "Oil & Gas E&P",
     "CNR": "Thermal Coal",
     "CNS": "Asset Management",
-    "CNX": "Oil & Gas E&P",
+    "CNX": "Other",
     "COF": "Credit Services",
     "COHR": "Scientific & Technical Instruments",
     "COIN": "Financial Data & Stock Exchanges",
@@ -2000,7 +2003,7 @@
     "COMP": "Real Estate Services",
     "CON": "Medical Care Facilities",
     "COO": "Medical Instruments & Supplies",
-    "COP": "Oil & Gas E&P",
+    "COP": "Other",
     "COR": "Medical Distribution",
     "COST": "Discount Stores",
     "COTY": "Household & Personal Products",
@@ -2445,6 +2448,7 @@
     "LDOS": "Information Technology Services",
     "LEA": "Auto Parts",
     "LEN": "Residential Construction",
+    "LEU": "Uranium",
     "LEVI": "Apparel Manufacturing",
     "LH": "Diagnostics & Research",
     "LHX": "Aerospace & Defense",
@@ -2550,44 +2554,44 @@
     "MUFG": "Banks - Diversified",
     "MUR": "Oil & Gas E&P",
     "MUSA": "Specialty Retail",
-    "MWA": "Specialty Industrial Machinery",
-    "NAN": "Asset Management",
-    "NATL": "Software - Application",
-    "NCLH": "Travel Services",
-    "NDAQ": "Financial Data & Stock Exchanges",
-    "NDSN": "Specialty Industrial Machinery",
-    "NE": "Oil & Gas Drilling",
-    "NEE": "Utilities - Regulated Electric",
-    "NEM": "Gold",
-    "NET": "Software - Infrastructure",
-    "NEU": "Specialty Chemicals",
-    "NFG": "Oil & Gas Integrated",
-    "NFLX": "Entertainment",
-    "NGG": "Utilities - Regulated Electric",
-    "NGVT": "Specialty Chemicals",
-    "NHI": "REIT - Healthcare Facilities",
-    "NI": "Utilities - Regulated Gas",
-    "NIO": "Auto Manufacturers",
-    "NJR": "Utilities - Regulated Gas",
-    "NKE": "Footwear & Accessories",
-    "NLY": "REIT - Mortgage",
-    "NMR": "Capital Markets",
-    "NNE": "Specialty Industrial Machinery",
-    "NNI": "Credit Services",
-    "NNN": "REIT - Retail",
-    "NOC": "Aerospace & Defense",
-    "NOG": "Oil & Gas E&P",
-    "NOK": "Communication Equipment",
-    "NOV": "Oil & Gas Equipment & Services",
-    "NOW": "Software - Application",
-    "NPO": "Specialty Industrial Machinery",
-    "NRG": "Utilities - Independent Power Producers",
-    "NSA": "REIT - Industrial",
-    "NSC": "Railroads",
-    "NTAP": "Software - Infrastructure",
-    "NTR": "Agricultural Inputs",
-    "NTRS": "Asset Management",
-    "NU": "Banks - Regional",
+    "MWA": "Other",
+    "NAN": "Other",
+    "NATL": "Other",
+    "NCLH": "Other",
+    "NDAQ": "Other",
+    "NDSN": "Other",
+    "NE": "Other",
+    "NEE": "Other",
+    "NEM": "Other",
+    "NET": "Other",
+    "NEU": "Other",
+    "NFG": "Other",
+    "NFLX": "Other",
+    "NGG": "Other",
+    "NGVT": "Other",
+    "NHI": "Other",
+    "NI": "Other",
+    "NIO": "Other",
+    "NJR": "Other",
+    "NKE": "Other",
+    "NLY": "Other",
+    "NMR": "Other",
+    "NNE": "Other",
+    "NNI": "Other",
+    "NNN": "Other",
+    "NOC": "Other",
+    "NOG": "Other",
+    "NOK": "Other",
+    "NOV": "Other",
+    "NOW": "Other",
+    "NPO": "Other",
+    "NRG": "Other",
+    "NSA": "Other",
+    "NSC": "Other",
+    "NTAP": "Other",
+    "NTR": "Other",
+    "NTRS": "Other",
+    "NU": "Other",
     "NUE": "Other",
     "NVDA": "Other",
     "NVO": "Other",
@@ -3220,7 +3224,7 @@
     "Utilities - Renewable",
     "Waste Management"
   ],
-  "last_updated": "2025-12-11T06:54:27.049981",
-  "total_stocks": 1412,
-  "success_count": 885
+  "last_updated": "2025-12-22T05:05:50.187018",
+  "total_stocks": 1407,
+  "success_count": 844
 }
