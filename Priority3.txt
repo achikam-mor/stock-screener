@@ -22,5 +22,5 @@
 'SE', 'SEE', 'SEI', 'SHAK', 'SII', 'SKE', 'SKY', 'SLG', 'SM', 'SMCI', 'SMFG', 'SMR', 'SPHR', 'SQM', 'STLD', 
 'STT', 'STX', 'SVV', 'SYF', 'TBBB', 'TD', 'TDC', 'TEF', 'TEO', 'TER', 'TEVA', 'TFII', 'TFPM', 'TGLS', 'TGS', 
 'TKO', 'TME', 'TMO', 'TNL', 'TPC', 'TPR', 'TREX', 'TSLA', 'TTAM', 'TTD', 'TU', 'TV', 'TWLO', 'U', 'UAA', 
-'UAL', 'UBS', 'UHS', 'ULTA', 'USB', 'VAC', 'VALE', 'VEEV', 'VFC', 'VG', 'VIK', 'VRNS', 'VRSK', 'VSCO', 'VTRS', 
-'VVV', 'W', 'WBD', 'WCC', 'WD', 'WDC', 'WPM', 'WPP', 'WWW', 'YETI', 'YOU', 'ZGN', 'ZTS']
+'UAL', 'UBS', 'UHS', 'ULTA', 'UNF', 'USB', 'VAC', 'VALE', 'VEEV', 'VFC', 'VG', 'VIK', 'VRNS', 'VRSK', 'VSCO', 
+'VTRS', 'VVV', 'W', 'WBD', 'WCC', 'WD', 'WDC', 'WPM', 'WPP', 'WWW', 'YETI', 'YOU', 'ZGN', 'ZTS']
