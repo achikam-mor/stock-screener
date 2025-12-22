@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-12-21T13:38:14.826221",
+  "timestamp": "2025-12-22T05:19:49.068978",
   "scan_mode": "manual",
   "hot_stocks": [
     {
@@ -3456,6 +3456,7 @@
     "AES",
     "AFG",
     "AFL",
+    "AFRM",
     "AG",
     "AGI",
     "AGO",
@@ -4035,6 +4036,7 @@
     "LDOS",
     "LEA",
     "LEN",
+    "LEU",
     "LEVI",
     "LH",
     "LHX",
@@ -4552,7 +4554,7 @@
     "hot_stocks_count": 163,
     "watch_list_count": 122,
     "failed_count": 0,
-    "filtered_by_sma_count": 1120,
-    "total_analyzed": 1405
+    "filtered_by_sma_count": 1122,
+    "total_analyzed": 1407
   }
 }
