@@ -22,6 +22,6 @@
 'RL', 'ROST', 'RTO', 'RTX', 'RXO', 'RY', 'SA', 'SAN', 'SBSW', 'SCCO', 'SE', 'SEE', 'SEI', 'SF', 'SHAK', 
 'SII', 'SKE', 'SKY', 'SLG', 'SM', 'SMCI', 'SMFG', 'SMR', 'SPHR', 'SPNT', 'SQM', 'STLD', 'STT', 'STX', 'SYF', 
 'TBBB', 'TD', 'TDC', 'TECK', 'TEF', 'TEO', 'TER', 'TEVA', 'TFC', 'TFII', 'TFPM', 'TGLS', 'TKO', 'TME', 'TMO', 
-'TNL', 'TPC', 'TPR', 'TREX', 'TSLA', 'TTD', 'TU', 'TV', 'TWLO', 'U', 'UAA', 'UAL', 'UBS', 'UHS', 'ULTA', 
-'USB', 'VALE', 'VEEV', 'VFC', 'VG', 'VIK', 'VRNS', 'VRSK', 'VSCO', 'VTRS', 'VVV', 'W', 'WBD', 'WCC', 'WD', 
-'WDC', 'WFC', 'WPM', 'WPP', 'WWW', 'YETI', 'YOU', 'ZBRA', 'ZGN']
+'TNL', 'TPC', 'TPL', 'TPR', 'TREX', 'TSLA', 'TTD', 'TU', 'TV', 'TWLO', 'U', 'UAA', 'UAL', 'UBS', 'UHS', 
+'ULTA', 'USB', 'VALE', 'VEEV', 'VFC', 'VG', 'VIK', 'VRNS', 'VRSK', 'VSCO', 'VTRS', 'VVV', 'W', 'WBD', 'WCC', 
+'WD', 'WDC', 'WFC', 'WPM', 'WPP', 'WWW', 'YETI', 'YOU', 'ZBRA', 'ZGN']
