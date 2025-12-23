@@ -6,9 +6,9 @@
 'FNB', 'FR', 'FSK', 'G', 'GE', 'GEF', 'GEHC', 'GEV', 'GME', 'GNRC', 'GNW', 'GPOR', 'H', 'HCA', 'HIW', 
 'HPE', 'HPQ', 'HRB', 'HST', 'HWM', 'IBP', 'INGR', 'INVH', 'IP', 'ISRG', 'JBL', 'JCI', 'JEF', 'JHG', 'JKHY', 
 'JOE', 'JPM', 'KBR', 'KTB', 'KWR', 'L', 'LB', 'LEN', 'LU', 'LXP', 'MAC', 'MDLZ', 'MDU', 'MFC', 'MKL', 
-'MPWR', 'MSI', 'NATL', 'NLY', 'NNE', 'NNI', 'NOG', 'NTRS', 'NVO', 'NVS', 'OC', 'OSCR', 'PAYX', 'PCAR', 'PFG', 
-'PFS', 'PIPR', 'PLD', 'PNC', 'PVH', 'PYPL', 'R', 'RBC', 'RELX', 'REZI', 'RF', 'RKT', 'RNR', 'ROK', 'ROP', 
-'RYAN', 'SAH', 'SAP', 'SBS', 'SGI', 'SLGN', 'SN', 'SNDR', 'SPOT', 'STN', 'STVN', 'SVV', 'SXI', 'TEL', 'TEX', 
-'TJX', 'TKR', 'TLK', 'TM', 'TMUS', 'TNET', 'TRGP', 'TTAM', 'TX', 'TXT', 'TYL', 'UBER', 'UHAL', 'UNF', 'VAC', 
-'VICI', 'VIPS', 'VIRT', 'VMI', 'VNO', 'VRT', 'VST', 'VTR', 'WAT', 'WBS', 'WELL', 'WFG', 'WHD', 'WHR', 'WK', 
-'WLYB', 'WMS', 'WOR', 'WRBY', 'WSO', 'WST', 'WTM', 'WYNN', 'YPF', 'ZGN', 'ZTO', 'ZTS', 'ZWS']
+'MPWR', 'MSI', 'NATL', 'NLY', 'NNE', 'NNI', 'NOG', 'NSA', 'NTRS', 'NVO', 'NVS', 'OC', 'OSCR', 'PAYX', 'PCAR', 
+'PFG', 'PFS', 'PIPR', 'PLD', 'PNC', 'PVH', 'PYPL', 'R', 'RBC', 'RELX', 'REZI', 'RF', 'RKT', 'RNR', 'ROK', 
+'ROP', 'RYAN', 'SAH', 'SAP', 'SBS', 'SGI', 'SLGN', 'SN', 'SNDR', 'SPOT', 'STN', 'STVN', 'SVV', 'SXI', 'TEL', 
+'TEX', 'TJX', 'TKR', 'TLK', 'TM', 'TMUS', 'TNET', 'TRGP', 'TTAM', 'TX', 'TXT', 'TYL', 'UBER', 'UHAL', 'UNF', 
+'VAC', 'VICI', 'VIPS', 'VIRT', 'VMI', 'VNO', 'VRT', 'VST', 'VTMX', 'VTR', 'WAT', 'WBS', 'WELL', 'WFG', 'WHD', 
+'WHR', 'WK', 'WLYB', 'WMS', 'WOR', 'WRBY', 'WSO', 'WST', 'WTM', 'WYNN', 'YPF', 'ZGN', 'ZTO', 'ZTS', 'ZWS']
