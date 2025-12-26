@@ -1,6 +1,6 @@
 {
-  "timestamp": "2025-12-25T21:32:30.533798",
-  "scan_mode": "all",
+  "timestamp": "2025-12-26T10:20:10.781652",
+  "scan_mode": "manual",
   "hot_stocks": [
     {
       "symbol": "AB",
@@ -921,7 +921,7 @@
       "distance_percent": 2.05,
       "atr": 0.72,
       "atr_percent": 1.0,
-      "last_volume": 1020506,
+      "last_volume": 1021045,
       "avg_volume_14d": 4021595,
       "golden_cross": false,
       "death_cross": false
