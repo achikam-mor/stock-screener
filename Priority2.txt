@@ -9,8 +9,8 @@
 'LB', 'LEA', 'LEN', 'LU', 'LXP', 'LYB', 'MAC', 'MCK', 'MDLZ', 'MDU', 'MFC', 'MKL', 'MPWR', 'MRNA', 'MSI', 
 'NATL', 'NDAQ', 'NKE', 'NLY', 'NOG', 'NTRS', 'NVS', 'NVT', 'OC', 'OHI', 'OKLO', 'OSCR', 'OWL', 'PAYX', 'PCAR', 
 'PFG', 'PLD', 'PLTR', 'PNC', 'PVH', 'PYPL', 'QBTS', 'R', 'RBC', 'RELX', 'REZI', 'RF', 'RKT', 'RNR', 'ROK', 
-'ROP', 'RYAN', 'S', 'SAH', 'SBS', 'SF', 'SGI', 'SLGN', 'SNDR', 'SPOT', 'SPXC', 'STVN', 'SVV', 'SXI', 'TEL', 
-'TEX', 'TFC', 'TGS', 'TJX', 'TKR', 'TLK', 'TM', 'TMUS', 'TNET', 'TRGP', 'TTAM', 'TX', 'TXT', 'TYL', 'UBER', 
-'UHAL', 'UNF', 'UPS', 'VAC', 'VIPS', 'VIRT', 'VMI', 'VNO', 'VRT', 'VST', 'VTMX', 'VTR', 'WAT', 'WBS', 'WELL', 
-'WF', 'WFG', 'WHR', 'WK', 'WLYB', 'WMS', 'WOR', 'WPP', 'WSO', 'WTM', 'WU', 'YOU', 'YPF', 'ZGN', 'ZTO', 
-'ZTS', 'ZWS']
+'ROP', 'RYAN', 'S', 'SAH', 'SF', 'SGI', 'SLGN', 'SNDR', 'SPOT', 'SPXC', 'STVN', 'SVV', 'SXI', 'TEL', 'TEX', 
+'TFC', 'TGS', 'TJX', 'TKR', 'TLK', 'TM', 'TMUS', 'TNET', 'TRGP', 'TTAM', 'TX', 'TXT', 'TYL', 'UBER', 'UHAL', 
+'UNF', 'UPS', 'VAC', 'VIPS', 'VIRT', 'VMI', 'VNO', 'VRT', 'VST', 'VTMX', 'VTR', 'WAT', 'WBS', 'WELL', 'WF', 
+'WFG', 'WHR', 'WK', 'WLYB', 'WMS', 'WOR', 'WPP', 'WSO', 'WTM', 'WU', 'YOU', 'YPF', 'ZGN', 'ZTO', 'ZTS', 
+'ZWS']
