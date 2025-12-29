@@ -17,10 +17,10 @@
 'MSTR', 'MSTY', 'MT', 'MTRN', 'MTZ', 'MU', 'MUR', 'NEM', 'NFLX', 'NGVT', 'NMR', 'NNE', 'NOK', 'NOV', 'NOW', 
 'NU', 'NUE', 'NWG', 'NXE', 'NYT', 'OGN', 'OMF', 'ONTO', 'OR', 'ORA', 'ORCL', 'ORI', 'OUT', 'PAAS', 'PAC', 
 'PAM', 'PATH', 'PAYC', 'PEN', 'PFSI', 'PH', 'PHIN', 'PII', 'PINS', 'PL', 'POOL', 'PRGO', 'PRIM', 'PRKS', 'PRM', 
-'PRMB', 'PSN', 'PUK', 'RACE', 'RBLX', 'RDDT', 'REGN', 'REVG', 'RHI', 'RIG', 'RIO', 'RL', 'ROST', 'RTO', 'RTX', 
-'RXO', 'RY', 'SA', 'SAN', 'SBSW', 'SCCO', 'SE', 'SEE', 'SEI', 'SHAK', 'SII', 'SKE', 'SKY', 'SLG', 'SM', 
-'SMCI', 'SMFG', 'SMR', 'SPHR', 'SPNT', 'SQM', 'STLD', 'STT', 'STX', 'SYF', 'TBBB', 'TD', 'TDC', 'TECK', 'TEF', 
-'TEO', 'TER', 'TEVA', 'TFII', 'TFPM', 'TGLS', 'TKO', 'TME', 'TMO', 'TNL', 'TPC', 'TPL', 'TPR', 'TREX', 'TSLA', 
-'TSM', 'TTD', 'TU', 'TV', 'TWLO', 'U', 'UAA', 'UAL', 'UBS', 'UHS', 'ULTA', 'USB', 'VALE', 'VEEV', 'VFC', 
-'VG', 'VIK', 'VRNS', 'VRSK', 'VSCO', 'VTRS', 'VVV', 'W', 'WBD', 'WCC', 'WD', 'WDC', 'WFC', 'WPM', 'WWW', 
-'YETI', 'ZBRA', 'ZETA']
+'PRMB', 'PSN', 'PUK', 'QBTS', 'RACE', 'RBLX', 'RDDT', 'REGN', 'REVG', 'RHI', 'RIG', 'RIO', 'RL', 'ROST', 'RTO', 
+'RTX', 'RXO', 'RY', 'SA', 'SAN', 'SBSW', 'SCCO', 'SE', 'SEE', 'SEI', 'SHAK', 'SII', 'SKE', 'SKY', 'SLG', 
+'SM', 'SMCI', 'SMFG', 'SMR', 'SPHR', 'SPNT', 'SQM', 'STLD', 'STT', 'STX', 'SYF', 'TBBB', 'TD', 'TDC', 'TECK', 
+'TEF', 'TEO', 'TER', 'TEVA', 'TFII', 'TFPM', 'TGLS', 'TGS', 'TKO', 'TME', 'TMO', 'TNL', 'TPC', 'TPL', 'TPR', 
+'TREX', 'TSLA', 'TSM', 'TTD', 'TU', 'TV', 'TWLO', 'U', 'UAA', 'UAL', 'UBS', 'UHS', 'ULTA', 'USB', 'VALE', 
+'VEEV', 'VFC', 'VG', 'VIK', 'VRNS', 'VRSK', 'VSCO', 'VTRS', 'VVV', 'W', 'WBD', 'WCC', 'WD', 'WDC', 'WFC', 
+'WPM', 'WWW', 'YETI', 'ZBRA', 'ZETA']
