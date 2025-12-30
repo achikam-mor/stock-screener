@@ -404,6 +404,26 @@ function displayCandlestickChart(ticker, data) {
                     axis: 'x'
                 },
                 plugins: {
+                    crosshair: {
+                        line: {
+                            color: '#94a3b8',
+                            width: 1,
+                            dashPattern: [5, 5]
+                        },
+                        sync: {
+                            enabled: false
+                        },
+                        zoom: {
+                            enabled: false
+                        },
+                        snap: {
+                            enabled: true
+                        },
+                        callbacks: {
+                            beforeZoom: () => false,
+                            afterZoom: () => false
+                        }
+                    },
                     legend: {
                         display: false
                     },

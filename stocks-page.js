@@ -244,7 +244,7 @@ function renderPatternDots(patterns) {
     const sortedPatterns = [...patterns].sort((a, b) => a.date.localeCompare(b.date));
     
     return sortedPatterns.map(pattern => {
-        const { signal, status, confidence, days_ago, pattern: patternName } = pattern;
+        const { signal, status, confidence, days_ago, pattern: patternName, date } = pattern;
         
         // Determine color class
         let colorClass = '';
@@ -257,10 +257,14 @@ function renderPatternDots(patterns) {
         const displayName = patternName.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
         const statusIcon = status === 'confirmed' ? '✅' : '⏳';
         
-        // Create tooltip
-        const tooltip = `Pattern: ${displayName} | Signal: ${signal.charAt(0).toUpperCase() + signal.slice(1)} | Status: ${status.charAt(0).toUpperCase() + status.slice(1)} ${statusIcon} | ${days_ago} day${days_ago !== 1 ? 's' : ''} ago | Confidence: ${confidence}%`;
+        // Format date (MM/DD)
+        const dateObj = new Date(date);
+        const formattedDate = `${dateObj.getMonth() + 1}/${dateObj.getDate()}`;
         
-        return `<span class="pattern-dot ${colorClass}" title="${tooltip}"></span>`;
+        // Create tooltip
+        const tooltip = `Pattern: ${displayName} | Signal: ${signal.charAt(0).toUpperCase() + signal.slice(1)} | Status: ${status.charAt(0).toUpperCase() + status.slice(1)} ${statusIcon} | Date: ${date} | Confidence: ${confidence}%`;
+        
+        return `<div class="pattern-item"><span class="pattern-dot ${colorClass}" title="${tooltip}"></span><span class="pattern-date">${formattedDate}</span></div>`;
     }).join('');
 }
 
