@@ -13,4 +13,4 @@
 'RSI', 'RYAN', 'S', 'SAH', 'SAP', 'SF', 'SGI', 'SLG', 'SLGN', 'SNDR', 'SPNT', 'SPOT', 'STVN', 'SVV', 'SWKS', 
 'SXI', 'TEL', 'TFC', 'TGS', 'TJX', 'TKR', 'TLK', 'TM', 'TMUS', 'TRGP', 'TTAM', 'TV', 'TX', 'TYL', 'UAA', 
 'UBER', 'UHAL', 'UHS', 'UNF', 'UWMC', 'VAC', 'VIPS', 'VNO', 'VRSK', 'VRT', 'VST', 'VTR', 'WAT', 'WBS', 'WELL', 
-'WF', 'WFG', 'WHR', 'WLYB', 'WMS', 'WMT', 'WOR', 'WPP', 'WSO', 'WTM', 'YPF', 'ZGN', 'ZTO', 'ZTS']
+'WF', 'WFG', 'WHR', 'WMS', 'WMT', 'WOR', 'WPP', 'WSO', 'WTM', 'YPF', 'ZGN', 'ZTO', 'ZTS']
