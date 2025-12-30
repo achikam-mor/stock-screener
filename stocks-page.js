@@ -166,6 +166,20 @@ function applyFilters() {
             if (crossFilter === 'any' && !stock.golden_cross && !stock.death_cross) return false;
         }
         
+        // Candlestick Pattern filter
+        const patternFilter = document.getElementById('pattern-filter')?.value || 'all';
+        if (patternFilter !== 'all' && stock.patterns) {
+            const hasPattern = stock.patterns.some(p => {
+                const category = `${p.status === 'confirmed' ? '' : 'pending_'}${p.signal}`;
+                if (patternFilter === 'bullish_confirmed') return p.signal === 'bullish' && p.status === 'confirmed';
+                if (patternFilter === 'pending_bullish') return p.signal === 'bullish' && p.status === 'pending';
+                if (patternFilter === 'pending_bearish') return p.signal === 'bearish' && p.status === 'pending';
+                if (patternFilter === 'bearish_confirmed') return p.signal === 'bearish' && p.status === 'confirmed';
+                return false;
+            });
+            if (!hasPattern) return false;
+        }
+        
         return true;
     });
     
@@ -190,11 +204,13 @@ function resetFilters() {
     const atrFilter = document.getElementById('atr-filter');
     const volumeFilter = document.getElementById('volume-filter');
     const crossFilter = document.getElementById('cross-filter');
+    const patternFilter = document.getElementById('pattern-filter');
     
     if (smaFilter) smaFilter.value = 'all';
     if (atrFilter) atrFilter.value = 'all';
     if (volumeFilter) volumeFilter.value = 'all';
     if (crossFilter) crossFilter.value = 'all';
+    if (patternFilter) patternFilter.value = 'all';
     
     console.log('[Stocks Page] Filters reset');
     applyFilters();
@@ -217,6 +233,35 @@ function displayCurrentPage() {
     document.getElementById('current-page').textContent = currentPage;
 }
 
+function renderPatternDots(patterns) {
+    if (!patterns || patterns.length === 0) {
+        return '<span class="no-patterns">—</span>';
+    }
+    
+    // Sort patterns by date (oldest first) for left-to-right chronological display
+    const sortedPatterns = [...patterns].sort((a, b) => a.date.localeCompare(b.date));
+    
+    return sortedPatterns.map(pattern => {
+        const { signal, status, confidence, days_ago, pattern: patternName } = pattern;
+        
+        // Determine color class
+        let colorClass = '';
+        if (signal === 'bullish' && status === 'confirmed') colorClass = 'pattern-dot-green';
+        else if (signal === 'bullish' && status === 'pending') colorClass = 'pattern-dot-yellow';
+        else if (signal === 'bearish' && status === 'pending') colorClass = 'pattern-dot-orange';
+        else if (signal === 'bearish' && status === 'confirmed') colorClass = 'pattern-dot-red';
+        
+        // Format pattern name for display
+        const displayName = patternName.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+        const statusIcon = status === 'confirmed' ? '✅' : '⏳';
+        
+        // Create tooltip
+        const tooltip = `Pattern: ${displayName} | Signal: ${signal.charAt(0).toUpperCase() + signal.slice(1)} | Status: ${status.charAt(0).toUpperCase() + status.slice(1)} ${statusIcon} | ${days_ago} day${days_ago !== 1 ? 's' : ''} ago | Confidence: ${confidence}%`;
+        
+        return `<span class="pattern-dot ${colorClass}" title="${tooltip}"></span>`;
+    }).join('');
+}
+
 function createCompactStockCard(stock, type) {
     const volumeRatio = stock.avg_volume_14d > 0 
         ? (stock.last_volume / stock.avg_volume_14d).toFixed(2) 
@@ -234,6 +279,9 @@ function createCompactStockCard(stock, type) {
     } else if (stock.death_cross) {
         crossIconHTML = '<span class="cross-icon death-cross" title="Death Cross (50 SMA crossed below 200 SMA)">💀</span>';
     }
+    
+    // Create pattern dots HTML
+    const patternDotsHTML = renderPatternDots(stock.patterns);
     
     return `
         <div class="stock-card-compact" data-ticker="${stock.symbol}">
@@ -277,6 +325,10 @@ function createCompactStockCard(stock, type) {
                 <div class="data-row">
                     <span class="label">Avg Vol 14d</span>
                     <span class="value">${(stock.avg_volume_14d / 1000000).toFixed(2)}M (${volumeRatio}x)</span>
+                </div>
+                <div class="data-row">
+                    <span class="label">Patterns (7d)</span>
+                    <span class="value pattern-dots-container">${patternDotsHTML}</span>
                 </div>
             </div>
         </div>

@@ -484,6 +484,11 @@ function displayCandlestickChart(ticker, data) {
         
         console.log(`Chart created successfully for ${ticker} with ${candlestickData.length} candles`);
         
+        // Add candlestick pattern markers if available
+        if (data.candlestick_patterns && data.candlestick_patterns.length > 0) {
+            addPatternMarkers(data.candlestick_patterns, dates, highs, lows);
+        }
+        
     } catch (error) {
         console.error('Error creating chart:', error);
         console.error('Error details:', error.message);
@@ -505,6 +510,96 @@ function formatVolume(volume) {
         return (volume / 1000).toFixed(2) + 'K';
     }
     return volume.toString();
+}
+
+/**
+ * Add candlestick pattern markers to the chart
+ */
+function addPatternMarkers(patterns, dates, highs, lows) {
+    if (!currentChart || !patterns || patterns.length === 0) return;
+    
+    const canvas = document.getElementById('candlestickChart');
+    const existingOverlay = document.getElementById('pattern-markers-overlay');
+    if (existingOverlay) {
+        existingOverlay.remove();
+    }
+    
+    // Create overlay container for pattern markers
+    const overlay = document.createElement('div');
+    overlay.id = 'pattern-markers-overlay';
+    overlay.style.position = 'absolute';
+    overlay.style.top = '0';
+    overlay.style.left = '0';
+    overlay.style.width = '100%';
+    overlay.style.height = '100%';
+    overlay.style.pointerEvents = 'none';
+    overlay.style.zIndex = '10';
+    
+    canvas.parentElement.style.position = 'relative';
+    canvas.parentElement.appendChild(overlay);
+    
+    // Map pattern dates to chart positions
+    patterns.forEach(pattern => {
+        const dateIndex = dates.findIndex(d => d === pattern.date);
+        if (dateIndex === -1) return;
+        
+        // Get chart coordinates for this date
+        const chartArea = currentChart.chartArea;
+        const xScale = currentChart.scales.x;
+        const yScale = currentChart.scales.y;
+        
+        if (!xScale || !yScale) return;
+        
+        const dateObj = new Date(pattern.date);
+        const xPos = xScale.getPixelForValue(dateObj.getTime());
+        
+        // Position marker above high for bullish, below low for bearish
+        let yPos;
+        if (pattern.signal === 'bullish') {
+            yPos = yScale.getPixelForValue(highs[dateIndex]) - 20;
+        } else {
+            yPos = yScale.getPixelForValue(lows[dateIndex]) + 20;
+        }
+        
+        // Create marker element
+        const marker = document.createElement('div');
+        marker.className = 'pattern-marker';
+        marker.style.position = 'absolute';
+        marker.style.left = `${xPos}px`;
+        marker.style.top = `${yPos}px`;
+        marker.style.transform = 'translate(-50%, -50%)';
+        marker.style.pointerEvents = 'auto';
+        marker.style.cursor = 'help';
+        marker.style.width = '16px';
+        marker.style.height = '16px';
+        marker.style.borderRadius = '50%';
+        marker.style.border = '2px solid white';
+        marker.style.boxShadow = '0 2px 6px rgba(0, 0, 0, 0.5)';
+        marker.style.zIndex = '20';
+        
+        // Color based on signal and status
+        if (pattern.signal === 'bullish' && pattern.status === 'confirmed') {
+            marker.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+        } else if (pattern.signal === 'bullish' && pattern.status === 'pending') {
+            marker.style.background = 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)';
+        } else if (pattern.signal === 'bearish' && pattern.status === 'pending') {
+            marker.style.background = 'linear-gradient(135deg, #fb923c 0%, #f97316 100%)';
+        } else if (pattern.signal === 'bearish' && pattern.status === 'confirmed') {
+            marker.style.background = 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)';
+        }
+        
+        // Format pattern name for display
+        const displayName = pattern.pattern.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+        const statusIcon = pattern.status === 'confirmed' ? '✅' : '⏳';
+        
+        // Tooltip
+        const tooltip = `${displayName}\n${pattern.signal.charAt(0).toUpperCase() + pattern.signal.slice(1)} ${statusIcon}\n${pattern.status.charAt(0).toUpperCase() + pattern.status.slice(1)}\n${pattern.days_ago} day${pattern.days_ago !== 1 ? 's' : ''} ago\nConfidence: ${pattern.confidence}%`;
+        marker.title = tooltip;
+        
+        overlay.appendChild(marker);
+    });
+    
+    console.log(`Added ${patterns.length} pattern markers to chart`);
 }
 
 /**

@@ -112,6 +112,16 @@
                         <option value="any">Any Cross</option>
                     </select>
                 </div>
+                <div class="filter-group">
+                    <label for="pattern-filter">Patterns (7d):</label>
+                    <select id="pattern-filter" onchange="applyFilters()">
+                        <option value="all">All</option>
+                        <option value="bullish_confirmed">🟢 Bullish Confirmed</option>
+                        <option value="pending_bullish">🟡 Pending Bullish</option>
+                        <option value="pending_bearish">🟠 Pending Bearish</option>
+                        <option value="bearish_confirmed">🔴 Bearish Confirmed</option>
+                    </select>
+                </div>
                 <button class="filter-reset-btn" onclick="resetFilters()">Reset Filters</button>
             </div>
         </header>

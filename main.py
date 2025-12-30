@@ -17,6 +17,7 @@ from stock_analyzer import StockAnalyzer
 from stock_screener import StockScreener
 from results_manager import ResultsManager
 from market_data_fetcher import fetch_and_save_market_data
+from candlestick_patterns import scan_patterns_last_7days
 
 def calculate_atr_for_chart(highs, lows, closes, window=14):
     """
@@ -554,6 +555,56 @@ async def main():
         print(f"   Priority 1: {len(updated_p1)} stocks")
         print(f"   Priority 2: {len(updated_p2)} stocks")
         print(f"   Priority 3: {len(updated_p3)} stocks")
+        
+        # Update priority1 variable for pattern detection
+        priority1 = updated_p1
+    
+    # Detect candlestick patterns for Priority1 stocks (within ±10% of SMA150)
+    print(f"\n🕯️ Detecting candlestick patterns for {len(priority1)} Priority 1 stocks...")
+    priority1_set = set(priority1)  # Convert to set for O(1) lookup
+    pattern_count = 0
+    stocks_with_patterns = 0
+    
+    for symbol in chart_data_raw.keys():
+        if symbol in priority1_set:
+            chart_data = chart_data_raw[symbol]
+            
+            try:
+                # Get OHLC data for pattern detection
+                opens = chart_data.get('open', [])
+                highs = chart_data.get('high', [])
+                lows = chart_data.get('low', [])
+                closes = chart_data.get('close', [])
+                volumes = chart_data.get('volume', [])
+                dates = chart_data.get('dates', [])
+                atr = chart_data.get('atr')
+                
+                # Detect patterns in last 7 days
+                patterns = scan_patterns_last_7days(opens, highs, lows, closes, volumes, atr, dates)
+                
+                # Store patterns in chart data
+                chart_data_raw[symbol]['candlestick_patterns'] = patterns
+                
+                if patterns:
+                    pattern_count += len(patterns)
+                    stocks_with_patterns += 1
+            
+            except Exception as e:
+                print(f"⚠️ Could not detect patterns for {symbol}: {str(e)}")
+                chart_data_raw[symbol]['candlestick_patterns'] = []
+    
+    print(f"✅ Pattern detection complete: {pattern_count} patterns detected across {stocks_with_patterns} stocks")
+    
+    # Re-save chart files with pattern data for Priority1 stocks
+    if pattern_count > 0:
+        print(f"💾 Updating chart files with pattern data...")
+        for symbol in priority1_set:
+            if symbol in chart_data_raw:
+                final_chart_data[symbol] = chart_data_raw[symbol]
+        
+        # Save updated individual chart files
+        updated_files = save_individual_chart_files(final_chart_data)
+        print(f"✅ Updated {updated_files} chart files with pattern data")
     
     # Screen stocks to identify which ones pass
     results = screener.screen_stocks(stock_data)
