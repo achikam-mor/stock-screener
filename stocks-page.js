@@ -118,9 +118,10 @@ function applyFilters() {
     const atrFilter = document.getElementById('atr-filter')?.value || 'all';
     const volumeFilter = document.getElementById('volume-filter')?.value || 'all';
     const crossFilter = document.getElementById('cross-filter')?.value || 'all';
+    const patternFilter = document.getElementById('pattern-filter')?.value || 'all';
     const favorites = getFavorites();
     
-    console.log('[Stocks Page] Applying filters:', { sectorFilter, favoritesFilter, smaFilter, atrFilter, volumeFilter, crossFilter });
+    console.log('[Stocks Page] Applying filters:', { sectorFilter, favoritesFilter, smaFilter, atrFilter, volumeFilter, crossFilter, patternFilter });
     
     filteredStocks = allStocks.filter(stock => {
         // Sector filter
@@ -167,10 +168,11 @@ function applyFilters() {
         }
         
         // Candlestick Pattern filter
-        const patternFilter = document.getElementById('pattern-filter')?.value || 'all';
-        if (patternFilter !== 'all' && stock.patterns) {
+        if (patternFilter !== 'all') {
+            // If no patterns array or empty, filter out
+            if (!stock.patterns || stock.patterns.length === 0) return false;
+            
             const hasPattern = stock.patterns.some(p => {
-                const category = `${p.status === 'confirmed' ? '' : 'pending_'}${p.signal}`;
                 if (patternFilter === 'bullish_confirmed') return p.signal === 'bullish' && p.status === 'confirmed';
                 if (patternFilter === 'pending_bullish') return p.signal === 'bullish' && p.status === 'pending';
                 if (patternFilter === 'pending_bearish') return p.signal === 'bearish' && p.status === 'pending';
