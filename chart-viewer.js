@@ -407,21 +407,13 @@ function displayCandlestickChart(ticker, data) {
                     crosshair: {
                         line: {
                             color: '#94a3b8',
-                            width: 1,
-                            dashPattern: [5, 5]
+                            width: 1
                         },
                         sync: {
                             enabled: false
                         },
                         zoom: {
                             enabled: false
-                        },
-                        snap: {
-                            enabled: true
-                        },
-                        callbacks: {
-                            beforeZoom: () => false,
-                            afterZoom: () => false
                         }
                     },
                     legend: {
@@ -612,8 +604,8 @@ function addPatternMarkers(patterns, dates, highs, lows) {
         const displayName = pattern.pattern.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
         const statusIcon = pattern.status === 'confirmed' ? '✅' : '⏳';
         
-        // Tooltip
-        const tooltip = `${displayName}\n${pattern.signal.charAt(0).toUpperCase() + pattern.signal.slice(1)} ${statusIcon}\n${pattern.status.charAt(0).toUpperCase() + pattern.status.slice(1)}\n${pattern.days_ago} day${pattern.days_ago !== 1 ? 's' : ''} ago\nConfidence: ${pattern.confidence}%`;
+        // Tooltip with date
+        const tooltip = `${displayName}\nDate: ${pattern.date}\n${pattern.signal.charAt(0).toUpperCase() + pattern.signal.slice(1)} ${statusIcon}\n${pattern.status.charAt(0).toUpperCase() + pattern.status.slice(1)}\nConfidence: ${pattern.confidence}%`;
         marker.title = tooltip;
         
         overlay.appendChild(marker);
