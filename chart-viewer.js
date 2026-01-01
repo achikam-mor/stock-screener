@@ -336,6 +336,22 @@ function displayCandlestickChart(ticker, data) {
                 ctx.lineWidth = 1;
                 ctx.strokeStyle = '#94a3b8';
                 ctx.stroke();
+                
+                // Draw price label on Y-axis
+                const price = y.getValueForPixel(yPos);
+                const label = price.toFixed(2);
+                
+                // Label background
+                ctx.fillStyle = '#1e293b';
+                ctx.fillRect(right, yPos - 10, 50, 20);
+                
+                // Label text
+                ctx.fillStyle = '#ffffff';
+                ctx.font = '11px sans-serif';
+                ctx.textAlign = 'left';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(label, right + 5, yPos);
+                
                 ctx.restore();
             }
         }
