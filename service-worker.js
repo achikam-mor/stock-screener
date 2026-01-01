@@ -101,6 +101,11 @@ self.addEventListener('fetch', (event) => {
         return;
     }
     
+    // Skip chrome-extension and other unsupported schemes
+    if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+        return;
+    }
+    
     // Handle different types of requests
     if (url.pathname.endsWith('.json')) {
         // JSON data files - Network first, cache fallback

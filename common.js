@@ -12,11 +12,11 @@ let globalData = null;
 function lazyLoadAdSense() {
     // Wait for page to be fully loaded and interactive
     if (document.readyState === 'complete') {
-        loadAdSenseScript();
+        setTimeout(loadAdSenseScript, 100);
     } else {
         window.addEventListener('load', () => {
-            // Add small delay to let critical content render first
-            setTimeout(loadAdSenseScript, 1500);
+            // Small delay to let critical content render first
+            setTimeout(loadAdSenseScript, 500);
         });
     }
 }
@@ -35,22 +35,30 @@ function loadAdSenseScript() {
     script.crossOrigin = 'anonymous';
     script.onload = () => {
         console.log('[AdSense] Script loaded, initializing ads');
-        // Wait a moment for AdSense to be ready
-        setTimeout(() => {
-            try {
-                // Initialize all ad slots on the page
-                const ads = document.querySelectorAll('.adsbygoogle');
-                console.log(`[AdSense] Found ${ads.length} ad slots`);
-                ads.forEach((ad, index) => {
-                    if (!ad.dataset.adsbygoogleStatus) {
+        // Initialize immediately - AdSense script is now loaded
+        try {
+            const ads = document.querySelectorAll('.adsbygoogle');
+            console.log(`[AdSense] Found ${ads.length} ad slots`);
+            
+            if (ads.length === 0) {
+                console.warn('[AdSense] No ad slots found on this page');
+                return;
+            }
+            
+            // Initialize each ad slot
+            ads.forEach((ad, index) => {
+                if (!ad.dataset.adsbygoogleStatus) {
+                    try {
                         (window.adsbygoogle = window.adsbygoogle || []).push({});
                         console.log(`[AdSense] Initialized ad ${index + 1}`);
+                    } catch (adError) {
+                        console.error(`[AdSense] Failed to initialize ad ${index + 1}:`, adError);
                     }
-                });
-            } catch (e) {
-                console.error('[AdSense] Error initializing ads:', e);
-            }
-        }, 100);
+                }
+            });
+        } catch (e) {
+            console.error('[AdSense] Error initializing ads:', e);
+        }
     };
     script.onerror = () => {
         console.log('[AdSense] Failed to load (ad blocker?)');
