@@ -24,8 +24,10 @@ async function loadMarketData() {
             // Update timestamp
             if (data.last_updated) {
                 const date = new Date(data.last_updated);
-                document.getElementById('last-updated').textContent = 
-                    `Last updated: ${date.toLocaleString()}`;
+                const lastUpdatedEl = document.getElementById('last-updated');
+                if (lastUpdatedEl) {
+                    lastUpdatedEl.textContent = `Last updated: ${date.toLocaleString()}`;
+                }
             }
             
             // Load CNN Fear & Greed
