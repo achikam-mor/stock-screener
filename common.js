@@ -108,7 +108,6 @@ function registerServiceWorker() {
                         }
                     });
                 });
-                });
             } catch (error) {
                 console.log('[PWA] Service Worker registration failed:', error);
             }
