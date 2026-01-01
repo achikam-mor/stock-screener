@@ -62,10 +62,22 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (ticker) {
                 console.log('[Chart Viewer] Auto-loading chart for ticker:', ticker);
                 document.getElementById('chart-ticker-search').value = ticker.toUpperCase();
-                // Small delay to ensure DOM is fully ready
+                // Wait for Chart.js and other libraries to load (they're deferred)
+                const waitForLibraries = setInterval(() => {
+                    if (typeof Chart !== 'undefined' && typeof luxon !== 'undefined') {
+                        clearInterval(waitForLibraries);
+                        console.log('[Chart Viewer] Libraries loaded, triggering chart load');
+                        loadChart();
+                    }
+                }, 50); // Check every 50ms
+                
+                // Timeout after 5 seconds
                 setTimeout(() => {
-                    loadChart();
-                }, 100);
+                    clearInterval(waitForLibraries);
+                    if (typeof Chart === 'undefined') {
+                        console.error('[Chart Viewer] Chart.js failed to load');
+                    }
+                }, 5000);
             }
         } else {
             document.getElementById('last-updated').textContent = 'Stock list not found';
@@ -302,23 +314,38 @@ function displayCandlestickChart(ticker, data) {
     const canvas = document.getElementById('candlestickChart');
     const ctx = canvas.getContext('2d');
     
+    // Store mouse position for crosshair
+    let mouseX = null;
+    let mouseY = null;
+    
     // Define custom horizontal crosshair plugin
     const horizontalCrosshairPlugin = {
         id: 'horizontalCrosshair',
-        afterDatasetsDraw(chart, args, options) {
-            const { ctx, chartArea: { left, right, top, bottom }, scales: { x, y } } = chart;
+        afterInit(chart) {
+            // Add mouse move listener to track position
+            canvas.addEventListener('mousemove', (e) => {
+                const rect = canvas.getBoundingClientRect();
+                mouseX = e.clientX - rect.left;
+                mouseY = e.clientY - rect.top;
+                chart.render();
+            });
             
-            // Get mouse position from chart
-            if (chart.tooltip && chart.tooltip._active && chart.tooltip._active.length) {
-                const activePoint = chart.tooltip._active[0];
-                const yPos = activePoint.element.y;
-                
-                // Draw horizontal line
+            canvas.addEventListener('mouseleave', () => {
+                mouseX = null;
+                mouseY = null;
+                chart.render();
+            });
+        },
+        afterDatasetsDraw(chart, args, options) {
+            const { ctx, chartArea: { left, right, top, bottom } } = chart;
+            
+            // Draw horizontal line at mouse Y position
+            if (mouseY !== null && mouseY >= top && mouseY <= bottom) {
                 ctx.save();
                 ctx.setLineDash([5, 5]);
                 ctx.beginPath();
-                ctx.moveTo(left, yPos);
-                ctx.lineTo(right, yPos);
+                ctx.moveTo(left, mouseY);
+                ctx.lineTo(right, mouseY);
                 ctx.lineWidth = 1;
                 ctx.strokeStyle = '#94a3b8';
                 ctx.stroke();
