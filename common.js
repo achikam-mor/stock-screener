@@ -34,18 +34,23 @@ function loadAdSenseScript() {
     script.async = true;
     script.crossOrigin = 'anonymous';
     script.onload = () => {
-        console.log('[AdSense] Script loaded');
-        // Initialize ads on page
-        const ads = document.querySelectorAll('.adsbygoogle');
-        ads.forEach(ad => {
-            if (!ad.dataset.adsbygoogleStatus) {
-                try {
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                } catch (e) {
-                    console.log('[AdSense] Ad initialization delayed');
-                }
+        console.log('[AdSense] Script loaded, initializing ads');
+        // Wait a moment for AdSense to be ready
+        setTimeout(() => {
+            try {
+                // Initialize all ad slots on the page
+                const ads = document.querySelectorAll('.adsbygoogle');
+                console.log(`[AdSense] Found ${ads.length} ad slots`);
+                ads.forEach((ad, index) => {
+                    if (!ad.dataset.adsbygoogleStatus) {
+                        (window.adsbygoogle = window.adsbygoogle || []).push({});
+                        console.log(`[AdSense] Initialized ad ${index + 1}`);
+                    }
+                });
+            } catch (e) {
+                console.error('[AdSense] Error initializing ads:', e);
             }
-        });
+        }, 100);
     };
     script.onerror = () => {
         console.log('[AdSense] Failed to load (ad blocker?)');
