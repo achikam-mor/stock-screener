@@ -381,7 +381,7 @@ function displayCandlestickChart(ticker, data) {
         }
     };
 
-    // Custom plugin to draw dynamic support and resistance levels
+    // Custom plugin to draw dynamic support and resistance levels with history-based coloring
     const keyLevelsPlugin = {
         id: 'keyLevels',
         beforeDatasetsDraw(chart, args, options) {
@@ -389,9 +389,9 @@ function displayCandlestickChart(ticker, data) {
             const checkbox = document.getElementById('sr-checkbox');
             if (checkbox && !checkbox.checked) return;
 
-            const { ctx, chartArea: { left, right, top, bottom }, scales: { y } } = chart;
+            const { ctx, chartArea: { left, right, top, bottom }, scales: { x, y } } = chart;
             
-            // Get current price (last close)
+            // Get candlestick dataset
             const datasets = chart.data.datasets;
             if (!datasets || datasets.length === 0) return;
             
@@ -399,37 +399,70 @@ function displayCandlestickChart(ticker, data) {
             const candleDataset = datasets.find(d => d.type === 'candlestick');
             if (!candleDataset || !candleDataset.data || candleDataset.data.length === 0) return;
             
-            const lastPoint = candleDataset.data[candleDataset.data.length - 1];
-            const currentPrice = lastPoint.c;
-            
-            // Get key levels from data
-            // We need to access the original data object. 
-            // Since we don't have direct access to 'data' variable here, we rely on it being in scope 
-            // OR we attach it to the chart config.
-            // Better approach: The 'data' variable from displayCandlestickChart scope is available here due to closure.
+            const candles = candleDataset.data;
             
             if (data.key_levels && data.key_levels.length > 0) {
                 ctx.save();
                 ctx.lineWidth = 1;
                 ctx.setLineDash([5, 5]); // Dashed line
                 
+                // Optimization: Find visible candles range once
+                const minTime = x.getValueForPixel(left);
+                
+                // Find start index (include one before left edge for continuity)
+                let startIndex = candles.findIndex(c => c.x >= minTime);
+                if (startIndex === -1) startIndex = 0;
+                if (startIndex > 0) startIndex--;
+                
                 data.key_levels.forEach(level => {
                     const yPos = y.getPixelForValue(level);
                     
-                    // Only draw if visible
-                    if (yPos >= top && yPos <= bottom) {
-                        // Determine color: Green if Support (Price > Level), Red if Resistance (Price < Level)
-                        if (currentPrice > level) {
-                            ctx.strokeStyle = 'rgba(16, 185, 129, 0.6)'; // Green (Support)
-                        } else {
-                            ctx.strokeStyle = 'rgba(239, 68, 68, 0.6)'; // Red (Resistance)
+                    // Only draw if visible in Y axis
+                    if (yPos < top || yPos > bottom) return;
+                    
+                    let currentPathColor = null;
+                    
+                    // Helper to start a new segment
+                    const startSegment = (color, xStart) => {
+                        if (currentPathColor) {
+                            ctx.stroke();
                         }
-                        
                         ctx.beginPath();
-                        ctx.moveTo(left, yPos);
-                        ctx.lineTo(right, yPos);
-                        ctx.stroke();
+                        ctx.strokeStyle = color;
+                        ctx.moveTo(xStart, yPos);
+                        currentPathColor = color;
+                    };
+                    
+                    // Determine initial color based on the first visible candle
+                    const firstCandle = candles[startIndex];
+                    // If price > level, it's Support (Green). If price < level, it's Resistance (Red).
+                    const initialIsSupport = firstCandle.c > level;
+                    const initialColor = initialIsSupport ? 'rgba(16, 185, 129, 0.6)' : 'rgba(239, 68, 68, 0.6)';
+                    
+                    // Start drawing from the left edge
+                    startSegment(initialColor, left);
+                    
+                    // Iterate through visible candles to check for crossovers
+                    for (let i = startIndex; i < candles.length; i++) {
+                        const candle = candles[i];
+                        const candleX = x.getPixelForValue(candle.x);
+                        
+                        // Stop if we are past the right edge
+                        if (candleX > right) break;
+                        
+                        const isSupport = candle.c > level;
+                        const color = isSupport ? 'rgba(16, 185, 129, 0.6)' : 'rgba(239, 68, 68, 0.6)';
+                        
+                        // If state changes, end current segment and start new one
+                        if (color !== currentPathColor) {
+                            ctx.lineTo(candleX, yPos);
+                            startSegment(color, candleX);
+                        }
                     }
+                    
+                    // Finish line to the right edge
+                    ctx.lineTo(right, yPos);
+                    ctx.stroke();
                 });
                 ctx.restore();
             }
@@ -551,8 +584,8 @@ function displayCandlestickChart(ticker, data) {
                     },
                     tooltip: {
                         enabled: true,
-                        mode: 'index',
-                        intersect: false,
+                        mode: 'nearest',
+                        intersect: true,
                         backgroundColor: 'rgba(30, 41, 59, 0.95)',
                         titleColor: '#f1f5f9',
                         bodyColor: '#f1f5f9',
