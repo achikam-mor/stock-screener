@@ -88,10 +88,10 @@ class StockAnalyzer:
         return last_volume, avg_volume_14d
 
     @staticmethod
-    def find_key_levels(data: pd.DataFrame, window: int = 5, tolerance: float = 0.02, max_crossings: int = 20) -> list:
+    def find_key_levels(data: pd.DataFrame, window: int = 5, tolerance: float = 0.02, max_crossings: int = 20, min_touches: int = 2) -> list:
         """
         Find key price levels (support/resistance) using local extrema and clustering.
-        Filters out levels that are crossed too frequently (noise).
+        Filters out levels that are crossed too frequently (noise) or not tested enough.
         """
         # Handle MultiIndex columns if necessary
         highs = data["High"]
@@ -132,14 +132,21 @@ class StockAnalyzer:
                 current_cluster = [levels_sorted[i]]
         clusters.append(float(np.mean(current_cluster)))
         
-        # Filter noisy levels
+        # Filter levels
         valid_levels = []
         for level in clusters:
-            # Count how many times price crossed this level
-            # A cross is when (Low < Level < High)
+            # 1. Noise Filter: Count crossings (Low < Level < High)
             crossings = ((lows < level) & (highs > level)).sum()
             
-            if crossings <= max_crossings:
+            # 2. Strength Filter: Count touches (High or Low within tolerance of Level)
+            # A touch is when the price action came close to the level
+            # We check if the High reached the level (from below) or Low reached it (from above)
+            upper_zone = level * (1 + tolerance/2)
+            lower_zone = level * (1 - tolerance/2)
+            
+            touches = ((highs >= lower_zone) & (lows <= upper_zone)).sum()
+            
+            if crossings <= max_crossings and touches >= min_touches:
                 valid_levels.append(round(level, 2))
                 
         return valid_levels

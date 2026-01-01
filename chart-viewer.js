@@ -40,15 +40,23 @@ document.addEventListener('DOMContentLoaded', async () => {
             // Update timestamp
             if (data.last_updated) {
                 const date = new Date(data.last_updated);
-                document.getElementById('last-updated').textContent = 
-                    `Last updated: ${date.toLocaleString()}`;
+                const lastUpdatedEl = document.getElementById('last-updated');
+                if (lastUpdatedEl) {
+                    lastUpdatedEl.textContent = `Last updated: ${date.toLocaleString()}`;
+                }
             } else {
-                document.getElementById('last-updated').textContent = 'Ready to search';
+                const lastUpdatedEl = document.getElementById('last-updated');
+                if (lastUpdatedEl) {
+                    lastUpdatedEl.textContent = 'Ready to search';
+                }
             }
             
             // Check if stock list is empty
             if (!stockList || stockList.length === 0) {
-                document.getElementById('last-updated').textContent = 'No chart data available yet';
+                const lastUpdatedEl = document.getElementById('last-updated');
+                if (lastUpdatedEl) {
+                    lastUpdatedEl.textContent = 'No chart data available yet';
+                }
                 console.log('[Chart Viewer] Stock list is empty');
             } else {
                 console.log(`[Chart Viewer] Stock list loaded: ${stockList.length} stocks available`);
@@ -68,12 +76,18 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }, 100);
             }
         } else {
-            document.getElementById('last-updated').textContent = 'Stock list not found';
+            const lastUpdatedEl = document.getElementById('last-updated');
+            if (lastUpdatedEl) {
+                lastUpdatedEl.textContent = 'Stock list not found';
+            }
             console.error('[Chart Viewer] Stock list file not found');
         }
     } catch (error) {
         console.error('[Chart Viewer] Error loading stock list:', error);
-        document.getElementById('last-updated').textContent = 'Error loading stock list';
+        const lastUpdatedEl = document.getElementById('last-updated');
+        if (lastUpdatedEl) {
+            lastUpdatedEl.textContent = 'Error loading stock list';
+        }
         showNotification('Stock list unavailable. Please run the workflow to generate data.', 'error');
     }
     
