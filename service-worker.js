@@ -229,7 +229,6 @@ self.addEventListener('push', (event) => {
         self.registration.showNotification('Stock Screener', options)
     );
 });
-});
 
 // Notification click handling
 self.addEventListener('notificationclick', (event) => {
