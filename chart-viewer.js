@@ -607,6 +607,7 @@ function displayCandlestickChart(ticker, data) {
                         }
                     },
                     y: {
+                        position: 'right',
                         min: priceMin,
                         max: priceMax,
                         grid: {
@@ -695,13 +696,9 @@ function addPatternMarkers(patterns, dates, highs, lows) {
         const dateObj = new Date(pattern.date);
         const xPos = xScale.getPixelForValue(dateObj.getTime());
         
-        // Position marker above high for bullish, below low for bearish
-        let yPos;
-        if (pattern.signal === 'bullish') {
-            yPos = yScale.getPixelForValue(highs[dateIndex]) - 20;
-        } else {
-            yPos = yScale.getPixelForValue(lows[dateIndex]) + 20;
-        }
+        // Position marker near the bottom of the chart (above X-axis)
+        // Use a fixed position relative to the chart area bottom
+        const yPos = chartArea.bottom - 10;
         
         // Create marker element
         const marker = document.createElement('div');
@@ -712,11 +709,11 @@ function addPatternMarkers(patterns, dates, highs, lows) {
         marker.style.transform = 'translate(-50%, -50%)';
         marker.style.pointerEvents = 'auto';
         marker.style.cursor = 'help';
-        marker.style.width = '16px';
-        marker.style.height = '16px';
+        marker.style.width = '10px';
+        marker.style.height = '10px';
         marker.style.borderRadius = '50%';
-        marker.style.border = '2px solid white';
-        marker.style.boxShadow = '0 2px 6px rgba(0, 0, 0, 0.5)';
+        marker.style.border = '1px solid white';
+        marker.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.5)';
         marker.style.zIndex = '20';
         
         // Color based on signal and status
