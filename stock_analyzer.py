@@ -86,3 +86,60 @@ class StockAnalyzer:
         last_volume = float(volume_col.iloc[0])  # Most recent day
         avg_volume_14d = float(volume_col.iloc[1:15].mean())  # Previous 14 days average
         return last_volume, avg_volume_14d
+
+    @staticmethod
+    def find_key_levels(data: pd.DataFrame, window: int = 5, tolerance: float = 0.02, max_crossings: int = 20) -> list:
+        """
+        Find key price levels (support/resistance) using local extrema and clustering.
+        Filters out levels that are crossed too frequently (noise).
+        """
+        # Handle MultiIndex columns if necessary
+        highs = data["High"]
+        lows = data["Low"]
+        closes = data["Close"]
+        
+        if hasattr(highs, 'iloc') and len(highs.shape) > 1 and highs.shape[1] > 0:
+            highs = highs.iloc[:, 0]
+        if hasattr(lows, 'iloc') and len(lows.shape) > 1 and lows.shape[1] > 0:
+            lows = lows.iloc[:, 0]
+        if hasattr(closes, 'iloc') and len(closes.shape) > 1 and closes.shape[1] > 0:
+            closes = closes.iloc[:, 0]
+            
+        # Find local maxima (Resistance candidates)
+        rolling_max = highs.rolling(window=window*2+1, center=True).max()
+        resistances = highs[highs == rolling_max].dropna()
+        
+        # Find local minima (Support candidates)
+        rolling_min = lows.rolling(window=window*2+1, center=True).min()
+        supports = lows[lows == rolling_min].dropna()
+        
+        # Combine all candidates
+        all_levels = pd.concat([resistances, supports])
+        
+        # Cluster levels
+        if len(all_levels) == 0:
+            return []
+            
+        levels_sorted = sorted(all_levels.values)
+        clusters = []
+        current_cluster = [levels_sorted[0]]
+        
+        for i in range(1, len(levels_sorted)):
+            if levels_sorted[i] <= current_cluster[-1] * (1 + tolerance):
+                current_cluster.append(levels_sorted[i])
+            else:
+                clusters.append(float(np.mean(current_cluster)))
+                current_cluster = [levels_sorted[i]]
+        clusters.append(float(np.mean(current_cluster)))
+        
+        # Filter noisy levels
+        valid_levels = []
+        for level in clusters:
+            # Count how many times price crossed this level
+            # A cross is when (Low < Level < High)
+            crossings = ((lows < level) & (highs > level)).sum()
+            
+            if crossings <= max_crossings:
+                valid_levels.append(round(level, 2))
+                
+        return valid_levels

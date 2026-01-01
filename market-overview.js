@@ -184,11 +184,19 @@ function displayAssetPrices(assets) {
         gold: '🥇',
         silver: '🥈',
         bitcoin: '₿',
-        ethereum: '⬙'
+        ethereum: 'Ξ'
     };
     
     const container = document.getElementById('assets-grid');
-    if (!container) return;
+    if (!container) {
+        console.warn('Asset grid container not found');
+        return;
+    }
+    
+    if (!assets || Object.keys(assets).length === 0) {
+        container.innerHTML = '<div class="asset-card unavailable"><div class="asset-name">No asset data available</div></div>';
+        return;
+    }
     
     let html = '';
     
@@ -212,5 +220,7 @@ function displayAssetPrices(assets) {
         }
     }
     
-    container.innerHTML = html;
+    if (html) {
+        container.innerHTML = html;
+    }
 }

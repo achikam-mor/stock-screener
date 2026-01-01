@@ -38,21 +38,17 @@ document.addEventListener('DOMContentLoaded', async () => {
             stockList = data.symbols;
             
             // Update timestamp
-            const lastUpdatedEl = document.getElementById('last-updated');
-            if (lastUpdatedEl) {
-                if (data.last_updated) {
-                    const date = new Date(data.last_updated);
-                    lastUpdatedEl.textContent = `Last updated: ${date.toLocaleString()}`;
-                } else {
-                    lastUpdatedEl.textContent = 'Ready to search';
-                }
+            if (data.last_updated) {
+                const date = new Date(data.last_updated);
+                document.getElementById('last-updated').textContent = 
+                    `Last updated: ${date.toLocaleString()}`;
+            } else {
+                document.getElementById('last-updated').textContent = 'Ready to search';
             }
             
             // Check if stock list is empty
             if (!stockList || stockList.length === 0) {
-                if (lastUpdatedEl) {
-                    lastUpdatedEl.textContent = 'No chart data available yet';
-                }
+                document.getElementById('last-updated').textContent = 'No chart data available yet';
                 console.log('[Chart Viewer] Stock list is empty');
             } else {
                 console.log(`[Chart Viewer] Stock list loaded: ${stockList.length} stocks available`);
@@ -66,50 +62,27 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (ticker) {
                 console.log('[Chart Viewer] Auto-loading chart for ticker:', ticker);
                 document.getElementById('chart-ticker-search').value = ticker.toUpperCase();
-                // Wait for Chart.js and other libraries to load (they're deferred)
-                const waitForLibraries = setInterval(() => {
-                    if (typeof Chart !== 'undefined' && typeof luxon !== 'undefined') {
-                        clearInterval(waitForLibraries);
-                        console.log('[Chart Viewer] Libraries loaded, triggering chart load');
-                        loadChart();
-                    }
-                }, 50); // Check every 50ms
-                
-                // Timeout after 5 seconds
+                // Small delay to ensure DOM is fully ready
                 setTimeout(() => {
-                    clearInterval(waitForLibraries);
-                    if (typeof Chart === 'undefined') {
-                        console.error('[Chart Viewer] Chart.js failed to load');
-                    }
-                }, 5000);
+                    loadChart();
+                }, 100);
             }
         } else {
-            const lastUpdatedEl = document.getElementById('last-updated');
-            if (lastUpdatedEl) {
-                lastUpdatedEl.textContent = 'Stock list not found';
-            }
+            document.getElementById('last-updated').textContent = 'Stock list not found';
             console.error('[Chart Viewer] Stock list file not found');
         }
     } catch (error) {
         console.error('[Chart Viewer] Error loading stock list:', error);
-        const lastUpdatedEl = document.getElementById('last-updated');
-        if (lastUpdatedEl) {
-            lastUpdatedEl.textContent = 'Error loading stock list';
-        }
-        if (typeof showNotification === 'function') {
-            showNotification('Stock list unavailable. Please run the workflow to generate data.', 'error');
-        }
+        document.getElementById('last-updated').textContent = 'Error loading stock list';
+        showNotification('Stock list unavailable. Please run the workflow to generate data.', 'error');
     }
     
     // Handle Enter key in search box
-    const searchInput = document.getElementById('chart-ticker-search');
-    if (searchInput) {
-        searchInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                loadChart();
-            }
-        });
-    }
+    document.getElementById('chart-ticker-search').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            loadChart();
+        }
+    });
     
     // Initialize date range selector
     initDateRangeSelector();
@@ -329,41 +302,81 @@ function displayCandlestickChart(ticker, data) {
     const canvas = document.getElementById('candlestickChart');
     const ctx = canvas.getContext('2d');
     
-    // Store mouse position for crosshair
-    let mouseX = null;
-    let mouseY = null;
-    
     // Define custom horizontal crosshair plugin
     const horizontalCrosshairPlugin = {
         id: 'horizontalCrosshair',
-        afterInit(chart) {
-            // Add mouse move listener to track position
-            canvas.addEventListener('mousemove', (e) => {
-                const rect = canvas.getBoundingClientRect();
-                mouseX = e.clientX - rect.left;
-                mouseY = e.clientY - rect.top;
-                chart.render();
-            });
-            
-            canvas.addEventListener('mouseleave', () => {
-                mouseX = null;
-                mouseY = null;
-                chart.render();
-            });
-        },
         afterDatasetsDraw(chart, args, options) {
-            const { ctx, chartArea: { left, right, top, bottom } } = chart;
+            const { ctx, chartArea: { left, right, top, bottom }, scales: { x, y } } = chart;
             
-            // Draw horizontal line at mouse Y position
-            if (mouseY !== null && mouseY >= top && mouseY <= bottom) {
+            // Get mouse position from chart
+            if (chart.tooltip && chart.tooltip._active && chart.tooltip._active.length) {
+                const activePoint = chart.tooltip._active[0];
+                const yPos = activePoint.element.y;
+                
+                // Draw horizontal line
                 ctx.save();
                 ctx.setLineDash([5, 5]);
                 ctx.beginPath();
-                ctx.moveTo(left, mouseY);
-                ctx.lineTo(right, mouseY);
+                ctx.moveTo(left, yPos);
+                ctx.lineTo(right, yPos);
                 ctx.lineWidth = 1;
                 ctx.strokeStyle = '#94a3b8';
                 ctx.stroke();
+                ctx.restore();
+            }
+        }
+    };
+
+    // Custom plugin to draw dynamic support and resistance levels
+    const keyLevelsPlugin = {
+        id: 'keyLevels',
+        beforeDatasetsDraw(chart, args, options) {
+            // Check if enabled
+            const checkbox = document.getElementById('sr-checkbox');
+            if (checkbox && !checkbox.checked) return;
+
+            const { ctx, chartArea: { left, right, top, bottom }, scales: { y } } = chart;
+            
+            // Get current price (last close)
+            const datasets = chart.data.datasets;
+            if (!datasets || datasets.length === 0) return;
+            
+            // Find candlestick dataset
+            const candleDataset = datasets.find(d => d.type === 'candlestick');
+            if (!candleDataset || !candleDataset.data || candleDataset.data.length === 0) return;
+            
+            const lastPoint = candleDataset.data[candleDataset.data.length - 1];
+            const currentPrice = lastPoint.c;
+            
+            // Get key levels from data
+            // We need to access the original data object. 
+            // Since we don't have direct access to 'data' variable here, we rely on it being in scope 
+            // OR we attach it to the chart config.
+            // Better approach: The 'data' variable from displayCandlestickChart scope is available here due to closure.
+            
+            if (data.key_levels && data.key_levels.length > 0) {
+                ctx.save();
+                ctx.lineWidth = 1;
+                ctx.setLineDash([5, 5]); // Dashed line
+                
+                data.key_levels.forEach(level => {
+                    const yPos = y.getPixelForValue(level);
+                    
+                    // Only draw if visible
+                    if (yPos >= top && yPos <= bottom) {
+                        // Determine color: Green if Support (Price > Level), Red if Resistance (Price < Level)
+                        if (currentPrice > level) {
+                            ctx.strokeStyle = 'rgba(16, 185, 129, 0.6)'; // Green (Support)
+                        } else {
+                            ctx.strokeStyle = 'rgba(239, 68, 68, 0.6)'; // Red (Resistance)
+                        }
+                        
+                        ctx.beginPath();
+                        ctx.moveTo(left, yPos);
+                        ctx.lineTo(right, yPos);
+                        ctx.stroke();
+                    }
+                });
                 ctx.restore();
             }
         }
@@ -467,7 +480,7 @@ function displayCandlestickChart(ticker, data) {
                     }
                 ]
             },
-            plugins: [horizontalCrosshairPlugin],
+            plugins: [horizontalCrosshairPlugin, keyLevelsPlugin],
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
@@ -724,6 +737,15 @@ function toggleSMA(smaType) {
     
     if (datasetIndex !== -1) {
         currentChart.setDatasetVisibility(datasetIndex, isChecked);
+        currentChart.update();
+    }
+}
+
+/**
+ * Toggle Key Levels visibility
+ */
+function toggleKeyLevels() {
+    if (currentChart) {
         currentChart.update();
     }
 }

@@ -445,6 +445,9 @@ async def main():
                 last_volume = volumes[-1] if volumes else 0
                 avg_volume_14d = round(sum(volumes[-15:-1]) / 14) if len(volumes) >= 15 else round(sum(volumes) / len(volumes)) if volumes else 0
                 
+                # Calculate Key Levels (Support/Resistance)
+                key_levels = analyzer.find_key_levels(data_clean)
+                
                 chart_data_raw[symbol] = {
                     "dates": dates,
                     "open": opens,
@@ -464,6 +467,8 @@ async def main():
                     "rsi": rsi_values,
                     # Relative Strength vs SPY
                     "rs_spy": rs_values,
+                    # Key Levels
+                    "key_levels": key_levels,
                     # Golden Cross / Death Cross indicators
                     "golden_cross": golden_cross,
                     "death_cross": death_cross
