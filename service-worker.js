@@ -3,9 +3,9 @@
  * Provides offline support and caching for better performance
  */
 
-const CACHE_NAME = 'stock-screener-v5';
-const STATIC_CACHE = 'static-v5';
-const DATA_CACHE = 'data-v5';
+const CACHE_NAME = 'stock-screener-v6';
+const STATIC_CACHE = 'static-v6';
+const DATA_CACHE = 'data-v6';
 
 // Static assets to cache immediately
 const STATIC_ASSETS = [

@@ -12,11 +12,11 @@ let globalData = null;
 function lazyLoadAdSense() {
     // Wait for page to be fully loaded and interactive
     if (document.readyState === 'complete') {
-        setTimeout(loadAdSenseScript, 100);
+        loadAdSenseScript();
     } else {
         window.addEventListener('load', () => {
-            // Small delay to let critical content render first
-            setTimeout(loadAdSenseScript, 500);
+            // Load immediately after page load event
+            loadAdSenseScript();
         });
     }
 }
@@ -80,8 +80,21 @@ function registerServiceWorker() {
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', async () => {
             try {
+                // Force update: unregister old service workers first
+                const registrations = await navigator.serviceWorker.getRegistrations();
+                for (const registration of registrations) {
+                    await registration.unregister();
+                    console.log('[PWA] Unregistered old service worker');
+                }
+                
+                // Register new service worker
                 const registration = await navigator.serviceWorker.register('/service-worker.js');
                 console.log('[PWA] Service Worker registered:', registration.scope);
+                
+                // Force immediate activation
+                if (registration.waiting) {
+                    registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+                }
                 
                 // Listen for updates
                 registration.addEventListener('updatefound', () => {
@@ -91,10 +104,10 @@ function registerServiceWorker() {
                     newWorker.addEventListener('statechange', () => {
                         if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
                             // New content is available
-                            console.log('[PWA] New content available, refresh to update');
-                            showNotification('App update available! Refresh to get the latest version.', 'info');
+                            console.log('[PWA] New content available');
                         }
                     });
+                });
                 });
             } catch (error) {
                 console.log('[PWA] Service Worker registration failed:', error);
