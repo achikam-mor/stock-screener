@@ -54,12 +54,18 @@ document.addEventListener('DOMContentLoaded', async () => {
                 console.log(`[Chart Viewer] Stock list loaded: ${stockList.length} stocks available`);
             }
             
-            // Check if ticker is in URL parameter
+            console.log('[Chart Viewer] Stock list loaded successfully');
+            
+            // Check if ticker is in URL parameter and auto-load
             const urlParams = new URLSearchParams(window.location.search);
             const ticker = urlParams.get('ticker');
             if (ticker) {
+                console.log('[Chart Viewer] Auto-loading chart for ticker:', ticker);
                 document.getElementById('chart-ticker-search').value = ticker.toUpperCase();
-                loadChart();
+                // Small delay to ensure DOM is fully ready
+                setTimeout(() => {
+                    loadChart();
+                }, 100);
             }
         } else {
             document.getElementById('last-updated').textContent = 'Stock list not found';
