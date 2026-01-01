@@ -4,8 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VN5G5CV48N"></script>
+    <!-- Resource Hints for Performance -->
+    <link rel="preconnect" href="https://www.googletagmanager.com">
+    <link rel="preconnect" href="https://pagead2.googlesyndication.com">
+    <link rel="dns-prefetch" href="https://www.google-analytics.com">
+    
+    <!-- Google Analytics - Deferred -->
+    <script defer src="https://www.googletagmanager.com/gtag/js?id=G-VN5G5CV48N"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
@@ -17,7 +22,7 @@
     <meta name="description" content="Export and download stock screening results in JSON format. Download hot stocks and watch list data for your trading analysis.">
     <meta name="keywords" content="export stocks, download stock data, stock data export, JSON export, trading data download">
     <title>Export Data | Stock Scanner</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=3.0">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9520776475659458"
      crossorigin="anonymous"></script>
 </head>
@@ -119,7 +124,7 @@
         </footer>
     </div>
 
-    <script src="common.js"></script>
-    <script src="export.js"></script>
+    <script src="common.js?v=3.0"></script>
+    <script src="export.js?v=3.0"></script>
 </body>
 </html>

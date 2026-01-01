@@ -4,8 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VN5G5CV48N"></script>
+    <!-- Resource Hints for Performance -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://www.googletagmanager.com">
+    <link rel="preconnect" href="https://pagead2.googlesyndication.com">
+    <link rel="dns-prefetch" href="https://www.google-analytics.com">
+    
+    <!-- Google Analytics - Deferred -->
+    <script defer src="https://www.googletagmanager.com/gtag/js?id=G-VN5G5CV48N"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
@@ -17,10 +23,12 @@
     <meta name="description" content="Market overview with VIX volatility index, Fear & Greed indicators. Track market sentiment and volatility for better trading decisions.">
     <meta name="keywords" content="VIX, volatility index, fear and greed index, market sentiment, stock market indicators, trading indicators">
     <title>Market Overview | VIX & Market Sentiment</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=3.0">
+    <!-- AdSense optimized loading -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9520776475659458"
      crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Chart.js - Deferred for better performance -->
+    <script defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -126,7 +134,7 @@
         </footer>
     </div>
 
-    <script src="common.js"></script>
-    <script src="market-overview.js"></script>
+    <script src="common.js?v=3.0"></script>
+    <script src="market-overview.js?v=3.0"></script>
 </body>
 </html>

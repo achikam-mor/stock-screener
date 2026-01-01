@@ -302,6 +302,31 @@ function displayCandlestickChart(ticker, data) {
     const canvas = document.getElementById('candlestickChart');
     const ctx = canvas.getContext('2d');
     
+    // Define custom horizontal crosshair plugin
+    const horizontalCrosshairPlugin = {
+        id: 'horizontalCrosshair',
+        afterDatasetsDraw(chart, args, options) {
+            const { ctx, chartArea: { left, right, top, bottom }, scales: { x, y } } = chart;
+            
+            // Get mouse position from chart
+            if (chart.tooltip && chart.tooltip._active && chart.tooltip._active.length) {
+                const activePoint = chart.tooltip._active[0];
+                const yPos = activePoint.element.y;
+                
+                // Draw horizontal line
+                ctx.save();
+                ctx.setLineDash([5, 5]);
+                ctx.beginPath();
+                ctx.moveTo(left, yPos);
+                ctx.lineTo(right, yPos);
+                ctx.lineWidth = 1;
+                ctx.strokeStyle = '#94a3b8';
+                ctx.stroke();
+                ctx.restore();
+            }
+        }
+    };
+    
     // Prepare candlestick data - using sliced arrays
     const candlestickData = dates.map((date, i) => ({
         x: new Date(date).getTime(), // Convert to timestamp
@@ -400,6 +425,7 @@ function displayCandlestickChart(ticker, data) {
                     }
                 ]
             },
+            plugins: [horizontalCrosshairPlugin],
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
@@ -413,13 +439,21 @@ function displayCandlestickChart(ticker, data) {
                     crosshair: {
                         line: {
                             color: '#94a3b8',
-                            width: 1
+                            width: 1,
+                            dashPattern: [5, 5]
                         },
                         sync: {
                             enabled: false
                         },
                         zoom: {
                             enabled: false
+                        },
+                        snap: {
+                            enabled: true
+                        },
+                        callbacks: {
+                            beforeZoom: () => false,
+                            afterZoom: () => {}
                         }
                     },
                     legend: {
