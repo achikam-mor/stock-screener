@@ -92,6 +92,7 @@ class StockAnalyzer:
         """
         Find key price levels (support/resistance) using local extrema and clustering.
         Filters out levels that are crossed too frequently (noise) or not tested enough.
+        Also filters out levels that are too far (>20%) from the current price.
         """
         # Handle MultiIndex columns if necessary
         highs = data["High"]
@@ -104,6 +105,11 @@ class StockAnalyzer:
             lows = lows.iloc[:, 0]
         if hasattr(closes, 'iloc') and len(closes.shape) > 1 and closes.shape[1] > 0:
             closes = closes.iloc[:, 0]
+            
+        # Get current price (last close)
+        if len(closes) == 0:
+            return []
+        current_price = float(closes.iloc[-1])
             
         # Find local maxima (Resistance candidates)
         rolling_max = highs.rolling(window=window*2+1, center=True).max()
@@ -135,6 +141,10 @@ class StockAnalyzer:
         # Filter levels
         valid_levels = []
         for level in clusters:
+            # 0. Distance Filter: Ignore levels > 20% away from current price
+            if abs(level - current_price) / current_price > 0.20:
+                continue
+
             # 1. Noise Filter: Count crossings (Low < Level < High)
             crossings = ((lows < level) & (highs > level)).sum()
             

@@ -316,44 +316,68 @@ function displayCandlestickChart(ticker, data) {
     const canvas = document.getElementById('candlestickChart');
     const ctx = canvas.getContext('2d');
     
-    // Define custom horizontal crosshair plugin
-    const horizontalCrosshairPlugin = {
-        id: 'horizontalCrosshair',
+    // Define custom free-moving crosshair plugin
+    const freeCrosshairPlugin = {
+        id: 'freeCrosshair',
+        afterInit(chart) {
+            chart.crosshair = { x: 0, y: 0, visible: false };
+        },
+        afterEvent(chart, args) {
+            const { inChartArea } = args;
+            const { x, y } = args.event;
+            
+            chart.crosshair = { x, y, visible: inChartArea };
+            args.changed = true; // Force redraw
+        },
         afterDatasetsDraw(chart, args, options) {
             const { ctx, chartArea: { left, right, top, bottom }, scales: { x, y } } = chart;
             
-            // Get mouse position from chart
-            if (chart.tooltip && chart.tooltip._active && chart.tooltip._active.length) {
-                const activePoint = chart.tooltip._active[0];
-                const yPos = activePoint.element.y;
-                
-                // Draw horizontal line
-                ctx.save();
-                ctx.setLineDash([5, 5]);
-                ctx.beginPath();
-                ctx.moveTo(left, yPos);
-                ctx.lineTo(right, yPos);
-                ctx.lineWidth = 1;
-                ctx.strokeStyle = '#94a3b8';
-                ctx.stroke();
-                
-                // Draw price label on Y-axis
-                const price = y.getValueForPixel(yPos);
-                const label = price.toFixed(2);
-                
-                // Label background
-                ctx.fillStyle = '#1e293b';
-                ctx.fillRect(right, yPos - 10, 50, 20);
-                
-                // Label text
-                ctx.fillStyle = '#ffffff';
-                ctx.font = '11px sans-serif';
-                ctx.textAlign = 'left';
-                ctx.textBaseline = 'middle';
-                ctx.fillText(label, right + 5, yPos);
-                
-                ctx.restore();
-            }
+            if (!chart.crosshair.visible) return;
+            
+            const xPos = chart.crosshair.x;
+            const yPos = chart.crosshair.y;
+            
+            ctx.save();
+            ctx.beginPath();
+            ctx.lineWidth = 1;
+            ctx.setLineDash([5, 5]);
+            ctx.strokeStyle = '#94a3b8';
+            
+            // Draw vertical line
+            ctx.moveTo(xPos, top);
+            ctx.lineTo(xPos, bottom);
+            
+            // Draw horizontal line
+            ctx.moveTo(left, yPos);
+            ctx.lineTo(right, yPos);
+            ctx.stroke();
+            
+            // Draw Y-axis label (Price)
+            const price = y.getValueForPixel(yPos);
+            const priceLabel = price.toFixed(2);
+            
+            ctx.fillStyle = '#1e293b';
+            ctx.fillRect(right, yPos - 10, 50, 20);
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '11px sans-serif';
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(priceLabel, right + 5, yPos);
+            
+            // Draw X-axis label (Date)
+            const timestamp = x.getValueForPixel(xPos);
+            const date = new Date(timestamp);
+            const dateLabel = date.toLocaleDateString();
+            
+            const textWidth = ctx.measureText(dateLabel).width;
+            ctx.fillStyle = '#1e293b';
+            ctx.fillRect(xPos - textWidth / 2 - 5, bottom, textWidth + 10, 20);
+            ctx.fillStyle = '#ffffff';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'top';
+            ctx.fillText(dateLabel, xPos, bottom + 5);
+            
+            ctx.restore();
         }
     };
 
@@ -510,37 +534,18 @@ function displayCandlestickChart(ticker, data) {
                     }
                 ]
             },
-            plugins: [horizontalCrosshairPlugin, keyLevelsPlugin],
+            plugins: [freeCrosshairPlugin, keyLevelsPlugin],
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
                 parsing: false, // Data is already in correct format
                 interaction: {
-                    mode: 'index',
-                    intersect: false,
+                    mode: 'nearest',
+                    intersect: true,
                     axis: 'x'
                 },
                 plugins: {
-                    crosshair: {
-                        line: {
-                            color: '#94a3b8',
-                            width: 1,
-                            dashPattern: [5, 5]
-                        },
-                        sync: {
-                            enabled: false
-                        },
-                        zoom: {
-                            enabled: false
-                        },
-                        snap: {
-                            enabled: true
-                        },
-                        callbacks: {
-                            beforeZoom: () => false,
-                            afterZoom: () => {}
-                        }
-                    },
+                    crosshair: false,
                     legend: {
                         display: false
                     },
