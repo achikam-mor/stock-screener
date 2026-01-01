@@ -123,11 +123,12 @@ async function cacheFirstStrategy(request, cacheName) {
         const cachedResponse = await cache.match(request);
         
         if (cachedResponse) {
-            console.log('[Service Worker] Cache hit:', request.url);
+            // Reduced logging for performance
+            // console.log('[Service Worker] Cache hit:', request.url);
             return cachedResponse;
         }
         
-        console.log('[Service Worker] Cache miss, fetching:', request.url);
+        // console.log('[Service Worker] Cache miss, fetching:', request.url);
         const networkResponse = await fetch(request);
         
         // Cache successful responses

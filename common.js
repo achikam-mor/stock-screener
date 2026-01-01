@@ -2,6 +2,61 @@
 let globalData = null;
 
 // ============================================
+// LAZY-LOAD ADSENSE FOR PERFORMANCE
+// ============================================
+
+/**
+ * Load AdSense script after page is fully loaded
+ * This prevents ads from blocking initial page render
+ */
+function lazyLoadAdSense() {
+    // Wait for page to be fully loaded and interactive
+    if (document.readyState === 'complete') {
+        loadAdSenseScript();
+    } else {
+        window.addEventListener('load', () => {
+            // Add small delay to let critical content render first
+            setTimeout(loadAdSenseScript, 1500);
+        });
+    }
+}
+
+function loadAdSenseScript() {
+    // Check if AdSense is already loaded
+    if (window.adsbygoogle || document.querySelector('script[src*="adsbygoogle"]')) {
+        console.log('[AdSense] Already loaded');
+        return;
+    }
+    
+    console.log('[AdSense] Loading ads...');
+    const script = document.createElement('script');
+    script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9520776475659458';
+    script.async = true;
+    script.crossOrigin = 'anonymous';
+    script.onload = () => {
+        console.log('[AdSense] Script loaded');
+        // Initialize ads on page
+        const ads = document.querySelectorAll('.adsbygoogle');
+        ads.forEach(ad => {
+            if (!ad.dataset.adsbygoogleStatus) {
+                try {
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                } catch (e) {
+                    console.log('[AdSense] Ad initialization delayed');
+                }
+            }
+        });
+    };
+    script.onerror = () => {
+        console.log('[AdSense] Failed to load (ad blocker?)');
+    };
+    document.head.appendChild(script);
+}
+
+// Initialize lazy AdSense loading
+lazyLoadAdSense();
+
+// ============================================
 // PWA SERVICE WORKER REGISTRATION
 // ============================================
 
