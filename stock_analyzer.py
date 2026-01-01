@@ -146,7 +146,9 @@ class StockAnalyzer:
             
             touches = ((highs >= lower_zone) & (lows <= upper_zone)).sum()
             
-            if crossings <= max_crossings and touches >= min_touches:
+            # Relaxed condition: If it's a very strong level (many touches), allow slightly more noise
+            # Or if it's very clean (few crossings), allow fewer touches
+            if (crossings <= max_crossings and touches >= min_touches) or (touches >= 5 and crossings <= max_crossings * 1.5):
                 valid_levels.append(round(level, 2))
                 
         return valid_levels
