@@ -569,3 +569,405 @@ def scan_patterns_last_7days(opens: List[float], highs: List[float],
     patterns.sort(key=lambda x: x["date"])
     
     return patterns
+
+
+# ============================================================================
+# CUP AND HANDLE PATTERN DETECTION (William O'Neil)
+# ============================================================================
+
+def detect_cup_formation(highs: List[float], lows: List[float], closes: List[float], 
+                         start_idx: int, end_idx: int) -> Optional[Dict]:
+    """
+    Detect cup formation within a given range.
+    
+    Returns dict with:
+    - left_rim_idx: Index of left rim peak
+    - left_rim_price: Price at left rim
+    - cup_bottom_idx: Index of cup bottom
+    - cup_bottom_price: Price at cup bottom
+    - right_rim_idx: Index of right rim
+    - right_rim_price: Price at right rim
+    - depth_percent: Depth as percentage
+    - is_valid: Boolean indicating if cup meets criteria
+    """
+    if end_idx - start_idx < 30:  # Minimum 30 days for cup
+        return None
+    
+    # Find left rim (highest high in first portion)
+    search_end = start_idx + (end_idx - start_idx) // 3  # First third
+    left_rim_idx = start_idx
+    left_rim_price = highs[start_idx]
+    
+    for i in range(start_idx, min(search_end, len(highs))):
+        if highs[i] > left_rim_price:
+            left_rim_price = highs[i]
+            left_rim_idx = i
+    
+    # Find cup bottom (lowest point after left rim)
+    cup_bottom_idx = left_rim_idx
+    cup_bottom_price = lows[left_rim_idx]
+    
+    for i in range(left_rim_idx + 1, min(end_idx, len(lows))):
+        if lows[i] < cup_bottom_price:
+            cup_bottom_price = lows[i]
+            cup_bottom_idx = i
+    
+    # Find right rim (where price recovers to near left rim level)
+    right_rim_idx = None
+    right_rim_price = None
+    rim_tolerance = 0.03  # 3% tolerance
+    
+    for i in range(cup_bottom_idx + 1, min(end_idx, len(highs))):
+        if abs(highs[i] - left_rim_price) / left_rim_price <= rim_tolerance:
+            right_rim_idx = i
+            right_rim_price = highs[i]
+            break
+    
+    if right_rim_idx is None:
+        return None
+    
+    # Calculate depth
+    depth_percent = ((left_rim_price - cup_bottom_price) / left_rim_price) * 100
+    
+    # Validate depth (12-35% per O'Neil)
+    if depth_percent < 12 or depth_percent > 35:
+        return None
+    
+    # Validate time symmetry (20% tolerance)
+    left_duration = cup_bottom_idx - left_rim_idx
+    right_duration = right_rim_idx - cup_bottom_idx
+    
+    if left_duration == 0:
+        return None
+    
+    time_ratio = right_duration / left_duration
+    if time_ratio < 0.8 or time_ratio > 1.2:  # 20% tolerance
+        return None
+    
+    # Validate U-shape (not V-shape) - bottom should be relatively flat
+    # Check if recovery isn't too steep
+    if right_duration < 5:  # Too quick recovery = V-shape
+        return None
+    
+    return {
+        "left_rim_idx": left_rim_idx,
+        "left_rim_price": left_rim_price,
+        "cup_bottom_idx": cup_bottom_idx,
+        "cup_bottom_price": cup_bottom_price,
+        "right_rim_idx": right_rim_idx,
+        "right_rim_price": right_rim_price,
+        "depth_percent": depth_percent,
+        "is_valid": True
+    }
+
+
+def detect_handle_downward_drift(highs: List[float], lows: List[float], closes: List[float],
+                                  handle_start_idx: int, handle_end_idx: int,
+                                  cup_bottom_price: float, cup_rim_price: float) -> Optional[str]:
+    """
+    Detect downward drift handle shape.
+    Returns 'drift' if detected, None otherwise.
+    """
+    if handle_end_idx - handle_start_idx < 5:
+        return None
+    
+    # Check for lower highs and lower lows pattern
+    lower_highs_count = 0
+    lower_lows_count = 0
+    
+    for i in range(handle_start_idx + 1, handle_end_idx):
+        if highs[i] < highs[i-1]:
+            lower_highs_count += 1
+        if lows[i] < lows[i-1]:
+            lower_lows_count += 1
+    
+    total_periods = handle_end_idx - handle_start_idx - 1
+    
+    # At least 60% should show downward drift
+    if (lower_highs_count / total_periods >= 0.6 or 
+        lower_lows_count / total_periods >= 0.6):
+        return 'drift'
+    
+    return None
+
+
+def detect_handle_flag(highs: List[float], lows: List[float], closes: List[float],
+                       handle_start_idx: int, handle_end_idx: int,
+                       cup_bottom_price: float, cup_rim_price: float) -> Optional[str]:
+    """
+    Detect flag pattern handle shape (parallel channel).
+    Returns 'flag' if detected, None otherwise.
+    """
+    if handle_end_idx - handle_start_idx < 5:
+        return None
+    
+    # Calculate upper and lower bounds
+    handle_highs = highs[handle_start_idx:handle_end_idx]
+    handle_lows = lows[handle_start_idx:handle_end_idx]
+    
+    avg_high = sum(handle_highs) / len(handle_highs)
+    avg_low = sum(handle_lows) / len(handle_lows)
+    
+    # Check if highs and lows stay relatively parallel
+    high_variance = sum(abs(h - avg_high) for h in handle_highs) / len(handle_highs)
+    low_variance = sum(abs(l - avg_low) for l in handle_lows) / len(handle_lows)
+    
+    channel_width = avg_high - avg_low
+    
+    # Flag should have consistent channel width (variance < 30% of width)
+    if (high_variance < 0.3 * channel_width and 
+        low_variance < 0.3 * channel_width and
+        channel_width > 0):
+        return 'flag'
+    
+    return None
+
+
+def detect_handle_pennant(highs: List[float], lows: List[float], closes: List[float],
+                          handle_start_idx: int, handle_end_idx: int,
+                          cup_bottom_price: float, cup_rim_price: float) -> Optional[str]:
+    """
+    Detect pennant handle shape (converging trendlines).
+    Returns 'pennant' if detected, None otherwise.
+    """
+    if handle_end_idx - handle_start_idx < 5:
+        return None
+    
+    # Calculate ranges for first and second half
+    mid_idx = (handle_start_idx + handle_end_idx) // 2
+    
+    first_half_range = max(highs[handle_start_idx:mid_idx]) - min(lows[handle_start_idx:mid_idx])
+    second_half_range = max(highs[mid_idx:handle_end_idx]) - min(lows[mid_idx:handle_end_idx])
+    
+    if first_half_range == 0:
+        return None
+    
+    # Pennant should show tightening range (second half < first half)
+    if second_half_range < first_half_range * 0.7:  # 30% reduction in range
+        return 'pennant'
+    
+    return None
+
+
+def detect_handle_shape(highs: List[float], lows: List[float], closes: List[float],
+                        handle_start_idx: int, handle_end_idx: int,
+                        cup_bottom_price: float, cup_rim_price: float) -> Optional[str]:
+    """
+    Detect handle shape - try all three types.
+    Returns: 'drift', 'flag', 'pennant', or None
+    """
+    # Try downward drift first (most reliable per O'Neil)
+    drift = detect_handle_downward_drift(highs, lows, closes, handle_start_idx, 
+                                         handle_end_idx, cup_bottom_price, cup_rim_price)
+    if drift:
+        return drift
+    
+    # Try flag pattern
+    flag = detect_handle_flag(highs, lows, closes, handle_start_idx, 
+                              handle_end_idx, cup_bottom_price, cup_rim_price)
+    if flag:
+        return flag
+    
+    # Try pennant
+    pennant = detect_handle_pennant(highs, lows, closes, handle_start_idx, 
+                                    handle_end_idx, cup_bottom_price, cup_rim_price)
+    if pennant:
+        return pennant
+    
+    return None
+
+
+def validate_handle_position(handle_start_idx: int, handle_end_idx: int,
+                             highs: List[float], lows: List[float], closes: List[float],
+                             cup_bottom_price: float, cup_rim_price: float) -> bool:
+    """
+    Validate handle meets O'Neil criteria:
+    - Bottom stays above cup bottom
+    - Forms in upper half of cup
+    - Doesn't decline more than 15% from handle start
+    """
+    handle_low = min(lows[handle_start_idx:handle_end_idx])
+    handle_start_price = closes[handle_start_idx]
+    
+    # Handle bottom must be above cup bottom
+    if handle_low <= cup_bottom_price:
+        return False
+    
+    # Handle should form in upper half of cup
+    cup_range = cup_rim_price - cup_bottom_price
+    if (handle_low - cup_bottom_price) < (cup_range * 0.5):
+        return False
+    
+    # Handle decline shouldn't exceed 15%
+    decline_percent = ((handle_start_price - handle_low) / handle_start_price) * 100
+    if decline_percent > 15:
+        return False
+    
+    return True
+
+
+def validate_volume_requirements(volumes: List[int], cup_start_idx: int, cup_end_idx: int,
+                                 handle_start_idx: int, handle_end_idx: int,
+                                 breakout_idx: Optional[int] = None) -> bool:
+    """
+    Validate O'Neil volume requirements:
+    - Handle volume should be ≤70% of cup average volume
+    - Breakout volume should be >150% of handle average volume
+    """
+    if not volumes or len(volumes) == 0:
+        return False
+    
+    # Calculate cup average volume
+    cup_volumes = volumes[cup_start_idx:cup_end_idx]
+    if not cup_volumes:
+        return False
+    cup_avg_volume = sum(cup_volumes) / len(cup_volumes)
+    
+    # Calculate handle average volume
+    handle_volumes = volumes[handle_start_idx:handle_end_idx]
+    if not handle_volumes:
+        return False
+    handle_avg_volume = sum(handle_volumes) / len(handle_volumes)
+    
+    # Handle volume should be declining (≤70% of cup average)
+    if handle_avg_volume > cup_avg_volume * 0.7:
+        return False
+    
+    # If breakout occurred, check volume spike
+    if breakout_idx is not None:
+        breakout_volume = volumes[breakout_idx]
+        if breakout_volume < handle_avg_volume * 1.5:
+            return False
+    
+    return True
+
+
+def detect_cup_and_handle(opens: List[float], highs: List[float], lows: List[float],
+                          closes: List[float], volumes: List[int], dates: List[str]) -> Optional[Dict]:
+    """
+    Detect Cup and Handle pattern per William O'Neil methodology.
+    
+    Scans entire price history for cup formations (30-300 days), then validates handle.
+    Returns only patterns where breakout confirmation occurred in last 7 days OR
+    handle is forming within last 7 days.
+    
+    Returns dict with full pattern details or None if no valid pattern found.
+    """
+    if len(closes) < 35:  # Minimum: 30 days cup + 5 days handle
+        return None
+    
+    # Only return patterns where breakout/handle is recent (last 7 days)
+    recent_cutoff_idx = len(closes) - 7
+    
+    # Scan for cup formations - try different window sizes
+    for cup_duration in range(300, 29, -10):  # Start with longer cups first
+        if cup_duration > len(closes) - 5:  # Need room for handle
+            continue
+        
+        # Try different starting points
+        for start_offset in range(0, len(closes) - cup_duration - 5, 5):
+            cup_start_idx = start_offset
+            cup_end_idx = start_offset + cup_duration
+            
+            # Detect cup formation
+            cup = detect_cup_formation(highs, lows, closes, cup_start_idx, cup_end_idx)
+            
+            if not cup or not cup["is_valid"]:
+                continue
+            
+            # Now look for handle after cup
+            handle_search_start = cup["right_rim_idx"]
+            handle_search_end = min(handle_search_start + 25, len(closes))  # Max 25 days handle
+            
+            # Try different handle lengths (5-25 days)
+            for handle_end in range(handle_search_start + 5, handle_search_end + 1):
+                handle_start_idx = cup["right_rim_idx"]
+                handle_end_idx = handle_end
+                
+                # Validate handle position
+                if not validate_handle_position(handle_start_idx, handle_end_idx, highs, lows, closes,
+                                               cup["cup_bottom_price"], cup["left_rim_price"]):
+                    continue
+                
+                # Detect handle shape
+                handle_shape = detect_handle_shape(highs, lows, closes, handle_start_idx, handle_end_idx,
+                                                   cup["cup_bottom_price"], cup["left_rim_price"])
+                
+                if not handle_shape:
+                    continue
+                
+                # Validate volume requirements
+                if not validate_volume_requirements(volumes, cup_start_idx, cup["right_rim_idx"],
+                                                   handle_start_idx, handle_end_idx):
+                    continue
+                
+                # Find handle resistance (highest point in handle)
+                handle_resistance = max(highs[handle_start_idx:handle_end_idx])
+                handle_low = min(lows[handle_start_idx:handle_end_idx])
+                
+                # Check for breakout (1% above handle resistance)
+                breakout_idx = None
+                breakout_date = None
+                
+                for i in range(handle_end_idx, len(closes)):
+                    if closes[i] >= handle_resistance * 1.01:  # 1% above resistance
+                        # Validate breakout volume
+                        if validate_volume_requirements(volumes, cup_start_idx, cup["right_rim_idx"],
+                                                       handle_start_idx, handle_end_idx, i):
+                            breakout_idx = i
+                            breakout_date = dates[i] if i < len(dates) else None
+                            break
+                
+                # Determine if pattern is recent enough to return
+                status = None
+                days_ago = None
+                
+                if breakout_idx and breakout_idx >= recent_cutoff_idx:
+                    # Breakout occurred in last 7 days - CONFIRMED
+                    status = "confirmed"
+                    days_ago = len(closes) - 1 - breakout_idx
+                elif handle_end_idx >= recent_cutoff_idx and not breakout_idx:
+                    # Handle is forming in last 7 days, no breakout yet - FORMING
+                    status = "forming"
+                    days_ago = len(closes) - 1 - handle_end_idx
+                else:
+                    # Pattern is too old, continue searching
+                    continue
+                
+                # Calculate confidence based on handle shape
+                confidence = {
+                    'drift': 87,
+                    'flag': 82,
+                    'pennant': 77
+                }.get(handle_shape, 75)
+                
+                # Calculate profit target (cup depth projected upward from rim)
+                rim_price = cup["left_rim_price"]
+                profit_target = rim_price + (rim_price * (cup["depth_percent"] / 100))
+                
+                # Calculate risk/reward ratio
+                risk = rim_price - handle_low
+                reward = profit_target - rim_price
+                risk_reward_ratio = reward / risk if risk > 0 else 0
+                
+                # Return the pattern
+                return {
+                    "pattern": "cup_and_handle",
+                    "signal": "bullish",
+                    "handle_shape": handle_shape,
+                    "cup_start_date": dates[cup_start_idx] if cup_start_idx < len(dates) else None,
+                    "cup_end_date": dates[cup["right_rim_idx"]] if cup["right_rim_idx"] < len(dates) else None,
+                    "handle_start_date": dates[handle_start_idx] if handle_start_idx < len(dates) else None,
+                    "breakout_date": breakout_date,
+                    "rim_price": round(rim_price, 2),
+                    "cup_bottom_price": round(cup["cup_bottom_price"], 2),
+                    "handle_low": round(handle_low, 2),
+                    "depth_percent": round(cup["depth_percent"], 2),
+                    "profit_target": round(profit_target, 2),
+                    "risk_reward_ratio": round(risk_reward_ratio, 2),
+                    "status": status,
+                    "confidence": confidence,
+                    "days_ago": days_ago
+                }
+    
+    return None
