@@ -20,5 +20,5 @@
 'SCCO', 'SE', 'SEE', 'SEI', 'SHAK', 'SII', 'SKE', 'SKY', 'SM', 'SMCI', 'SMFG', 'SMR', 'SPHR', 'SQM', 'STLD', 
 'STX', 'SYF', 'TBBB', 'TD', 'TDC', 'TECK', 'TEF', 'TEO', 'TER', 'TEVA', 'TFII', 'TFPM', 'TGLS', 'TME', 'TMO', 
 'TNL', 'TOST', 'TPC', 'TPL', 'TPR', 'TREX', 'TSM', 'TTD', 'TV', 'TWLO', 'TYL', 'U', 'UAL', 'UBS', 'ULTA', 
-'VALE', 'VEEV', 'VFC', 'VG', 'VIK', 'VRNS', 'VRT', 'VSCO', 'VTRS', 'VVV', 'W', 'WBD', 'WD', 'WDC', 'WFC', 
-'WLYB', 'WPM', 'WWW', 'YETI', 'ZBRA']
+'VALE', 'VEEV', 'VFC', 'VG', 'VIK', 'VLO', 'VRNS', 'VRT', 'VSCO', 'VTRS', 'VVV', 'W', 'WBD', 'WD', 'WDC', 
+'WFC', 'WLYB', 'WPM', 'WWW', 'YETI', 'ZBRA']
