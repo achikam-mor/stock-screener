@@ -600,64 +600,54 @@ async def main():
     
     print(f"✅ Pattern detection complete: {pattern_count} patterns detected across {stocks_with_patterns} stocks")
     
-    # Detect Cup and Handle patterns for ALL stocks (not just Priority1)
-    print(f"\n☕ Detecting Cup and Handle patterns for all stocks...")
+    # Detect Cup and Handle patterns for ALL stocks in current scan
+    print(f"\n☕ Detecting Cup and Handle patterns for scanned stocks...")
     cup_handle_count = 0
     stocks_with_cup_handle = 0
     
-    # Load all stock symbols
-    all_stocks_symbols = set()
-    if os.path.exists("AllStocks.txt"):
-        with open("AllStocks.txt", "r") as f:
-            all_stocks_symbols = set(line.strip() for line in f if line.strip())
-    
     for symbol in chart_data_raw.keys():
-        if symbol in all_stocks_symbols:
-            chart_data = chart_data_raw[symbol]
+        chart_data = chart_data_raw[symbol]
+        
+        try:
+            # Get OHLC data for cup and handle detection
+            opens = chart_data.get('open', [])
+            highs = chart_data.get('high', [])
+            lows = chart_data.get('low', [])
+            closes = chart_data.get('close', [])
+            volumes = chart_data.get('volume', [])
+            dates = chart_data.get('dates', [])
             
-            try:
-                # Get OHLC data for cup and handle detection
-                opens = chart_data.get('open', [])
-                highs = chart_data.get('high', [])
-                lows = chart_data.get('low', [])
-                closes = chart_data.get('close', [])
-                volumes = chart_data.get('volume', [])
-                dates = chart_data.get('dates', [])
-                
-                # Detect cup and handle pattern
-                cup_handle_pattern = detect_cup_and_handle(opens, highs, lows, closes, volumes, dates)
-                
-                # Store pattern in chart data (separate key from candlestick patterns)
-                if cup_handle_pattern:
-                    chart_data_raw[symbol]['cup_and_handle_patterns'] = [cup_handle_pattern]
-                    cup_handle_count += 1
-                    stocks_with_cup_handle += 1
-                else:
-                    chart_data_raw[symbol]['cup_and_handle_patterns'] = []
-            
-            except Exception as e:
-                print(f"⚠️ Could not detect cup and handle for {symbol}: {str(e)}")
+            # Skip if not enough data
+            if len(closes) < 50:
                 chart_data_raw[symbol]['cup_and_handle_patterns'] = []
+                continue
+            
+            # Detect cup and handle pattern
+            cup_handle_pattern = detect_cup_and_handle(opens, highs, lows, closes, volumes, dates)
+            
+            # Store pattern in chart data (separate key from candlestick patterns)
+            if cup_handle_pattern:
+                chart_data_raw[symbol]['cup_and_handle_patterns'] = [cup_handle_pattern]
+                cup_handle_count += 1
+                stocks_with_cup_handle += 1
+            else:
+                chart_data_raw[symbol]['cup_and_handle_patterns'] = []
+        
+        except Exception as e:
+            print(f"⚠️ Could not detect cup and handle for {symbol}: {str(e)}")
+            chart_data_raw[symbol]['cup_and_handle_patterns'] = []
     
     print(f"✅ Cup and Handle detection complete: {cup_handle_count} patterns detected across {stocks_with_cup_handle} stocks")
     
-    # Re-save chart files with pattern data for Priority1 stocks
-    if pattern_count > 0 or cup_handle_count > 0:
-        print(f"💾 Updating chart files with pattern data...")
-        # Update all stocks that have patterns (either candlestick or cup and handle)
-        symbols_to_update = set()
-        if pattern_count > 0:
-            symbols_to_update.update(priority1_set)
-        if cup_handle_count > 0:
-            symbols_to_update.update(all_stocks_symbols)
-        
-        for symbol in symbols_to_update:
-            if symbol in chart_data_raw:
-                final_chart_data[symbol] = chart_data_raw[symbol]
-        
-        # Save updated individual chart files
-        updated_files = save_individual_chart_files(final_chart_data)
-        print(f"✅ Updated {updated_files} chart files with pattern data")
+    # Update final_chart_data with ALL scanned stocks (both patterns and cup&handle)
+    # This ensures all scanned stocks get their chart files updated
+    print(f"💾 Updating chart files with pattern data for all scanned stocks...")
+    for symbol in chart_data_raw.keys():
+        final_chart_data[symbol] = chart_data_raw[symbol]
+    
+    # Save updated individual chart files for ALL scanned stocks
+    updated_files = save_individual_chart_files(final_chart_data)
+    print(f"✅ Updated {updated_files} chart files with pattern data")
     
     # Screen stocks to identify which ones pass
     results = screener.screen_stocks(stock_data)
