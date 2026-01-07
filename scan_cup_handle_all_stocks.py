@@ -91,7 +91,7 @@ def generate_comprehensive_report():
                 'days_ago': pattern.get('days_ago', 'N/A')
             }
             all_patterns.append(pattern_info)
-            print(f"✅ {symbol}: Found {pattern['status']} pattern (confidence: {pattern.get('confidence', 'N/A')}%)")
+            print(f"[OK] {symbol}: Found {pattern['status']} pattern (confidence: {pattern.get('confidence', 'N/A')}%)")
         
         processed += 1
         if processed % 100 == 0:
@@ -157,8 +157,8 @@ def generate_comprehensive_report():
         forming = [p for p in all_patterns if p['status'] == 'forming']
         
         print(f"\n📊 SUMMARY BY STATUS:")
-        print(f"   ✅ Confirmed (breakout occurred): {len(confirmed)}")
-        print(f"   🔄 Forming (handle forming): {len(forming)}")
+        print(f"   Confirmed (breakout occurred): {len(confirmed)}")
+        print(f"   Forming (handle forming): {len(forming)}")
         
     else:
         print("\n⚠️ No Cup and Handle patterns found in any stock files.")

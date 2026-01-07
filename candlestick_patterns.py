@@ -603,6 +603,15 @@ def detect_cup_formation(highs: List[float], lows: List[float], closes: List[flo
             left_rim_price = highs[i]
             left_rim_idx = i
     
+    # Validate that price doesn't significantly exceed left rim during cup formation
+    # This ensures the left rim is truly the peak and not violated during cup
+    rim_violation_tolerance = 0.02  # Allow 2% tolerance for minor spikes
+    
+    for i in range(left_rim_idx + 1, min(end_idx, len(highs))):
+        if highs[i] > left_rim_price * (1 + rim_violation_tolerance):
+            # Price exceeded the left rim - this invalidates the cup
+            return None
+    
     # Find cup bottom (lowest point after left rim)
     cup_bottom_idx = left_rim_idx
     cup_bottom_price = lows[left_rim_idx]
@@ -613,15 +622,19 @@ def detect_cup_formation(highs: List[float], lows: List[float], closes: List[flo
             cup_bottom_idx = i
     
     # Find right rim (where price recovers to near left rim level)
+    # Look for the price that comes CLOSEST to the left rim (within 3% tolerance)
+    # Search includes end_idx since that's where we expect the cup to complete
     right_rim_idx = None
     right_rim_price = None
     rim_tolerance = 0.03  # 3% tolerance
+    best_diff = float('inf')
     
-    for i in range(cup_bottom_idx + 1, min(end_idx, len(highs))):
-        if abs(highs[i] - left_rim_price) / left_rim_price <= rim_tolerance:
+    for i in range(cup_bottom_idx + 1, min(end_idx + 1, len(highs))):
+        diff = abs(highs[i] - left_rim_price) / left_rim_price
+        if diff <= rim_tolerance and diff < best_diff:
             right_rim_idx = i
             right_rim_price = highs[i]
-            break
+            best_diff = diff
     
     if right_rim_idx is None:
         return None
@@ -633,7 +646,7 @@ def detect_cup_formation(highs: List[float], lows: List[float], closes: List[flo
     if depth_percent < 12 or depth_percent > 35:
         return None
     
-    # Validate time symmetry (20% tolerance)
+    # Validate time symmetry (more lenient tolerance for real-world patterns)
     left_duration = cup_bottom_idx - left_rim_idx
     right_duration = right_rim_idx - cup_bottom_idx
     
@@ -641,7 +654,7 @@ def detect_cup_formation(highs: List[float], lows: List[float], closes: List[flo
         return None
     
     time_ratio = right_duration / left_duration
-    if time_ratio < 0.8 or time_ratio > 1.2:  # 20% tolerance
+    if time_ratio < 0.5 or time_ratio > 2.0:  # 50% tolerance (more realistic than O'Neil's ideal)
         return None
     
     # Validate U-shape (not V-shape) - bottom should be relatively flat
@@ -847,7 +860,7 @@ def detect_cup_and_handle(opens: List[float], highs: List[float], lows: List[flo
     """
     Detect Cup and Handle pattern per William O'Neil methodology.
     
-    Scans entire price history for cup formations (30-300 days), then validates handle.
+    Scans for potential left rims, then naturally finds cup bottoms and right rims.
     Returns only patterns where breakout confirmation occurred in last 7 days OR
     handle is forming within last 7 days.
     
@@ -859,21 +872,92 @@ def detect_cup_and_handle(opens: List[float], highs: List[float], lows: List[flo
     # Only return patterns where breakout/handle is recent (last 7 days)
     recent_cutoff_idx = len(closes) - 7
     
-    # Scan for cup formations - try different window sizes
-    for cup_duration in range(300, 29, -10):  # Start with longer cups first
-        if cup_duration > len(closes) - 5:  # Need room for handle
-            continue
+    # New approach: Scan for potential left rims (local highs in recent 300 days)
+    # Start from most recent data and work backward to find longer cups first
+    max_lookback = min(300, len(closes) - 35)  # Need room for cup + handle
+    
+    for left_rim_idx in range(len(closes) - 35, max(0, len(closes) - max_lookback - 1), -1):
+        # Check if this is a significant local high (potential left rim)
+        # Must be higher than nearby prices (5-day window)
+        window_start = max(0, left_rim_idx - 5)
+        window_end = min(len(highs), left_rim_idx + 6)
+        if highs[left_rim_idx] != max(highs[window_start:window_end]):
+            continue  # Not a local high
         
-        # Try different starting points
-        for start_offset in range(0, len(closes) - cup_duration - 5, 5):
-            cup_start_idx = start_offset
-            cup_end_idx = start_offset + cup_duration
-            
-            # Detect cup formation
-            cup = detect_cup_formation(highs, lows, closes, cup_start_idx, cup_end_idx)
-            
-            if not cup or not cup["is_valid"]:
+        left_rim_price = highs[left_rim_idx]
+        
+        # Search forward for cup bottom (30-300 days from left rim)
+        for bottom_search_end in range(left_rim_idx + 30, min(left_rim_idx + 301, len(lows) - 5)):
+            # Find the lowest low between left rim and search point
+            bottom_segment = lows[left_rim_idx:bottom_search_end]
+            if not bottom_segment:
                 continue
+            cup_bottom_price = min(bottom_segment)
+            cup_bottom_idx = left_rim_idx + bottom_segment.index(cup_bottom_price)
+            
+            # Validate depth (12-35%)
+            depth_percent = ((left_rim_price - cup_bottom_price) / left_rim_price) * 100
+            if depth_percent < 12 or depth_percent > 35:
+                continue
+            
+            # Must have at least 5 days after bottom for recovery + handle
+            if cup_bottom_idx >= len(highs) - 10:
+                continue
+            
+            # Search for right rim (price recovering to near left rim, within 3%)
+            right_rim_idx = None
+            right_rim_price = None
+            best_diff = float('inf')
+            rim_tolerance = 0.03
+            
+            # Search from bottom to reasonable distance (max 300 days total cup)
+            search_end = min(cup_bottom_idx + (cup_bottom_idx - left_rim_idx) * 3, 
+                           left_rim_idx + 300, 
+                           len(highs) - 5)
+            
+            for i in range(cup_bottom_idx + 5, search_end):  # Need at least 5 days recovery
+                diff = abs(highs[i] - left_rim_price) / left_rim_price
+                if diff <= rim_tolerance and diff < best_diff:
+                    right_rim_idx = i
+                    right_rim_price = highs[i]
+                    best_diff = diff
+            
+            if right_rim_idx is None:
+                continue
+            
+            # Validate no rim violations between left and right rim
+            rim_violation = False
+            for i in range(left_rim_idx + 1, right_rim_idx + 1):
+                if highs[i] > left_rim_price * 1.02:  # 2% tolerance
+                    rim_violation = True
+                    break
+            if rim_violation:
+                continue
+            
+            # Validate time symmetry (50% tolerance)
+            left_duration = cup_bottom_idx - left_rim_idx
+            right_duration = right_rim_idx - cup_bottom_idx
+            if left_duration == 0:
+                continue
+            time_ratio = right_duration / left_duration
+            if time_ratio < 0.5 or time_ratio > 2.0:
+                continue
+            
+            # Validate U-shape (not V-shape)
+            if right_duration < 5:
+                continue
+            
+            # Valid cup found! Now look for handle
+            cup = {
+                "left_rim_idx": left_rim_idx,
+                "left_rim_price": left_rim_price,
+                "cup_bottom_idx": cup_bottom_idx,
+                "cup_bottom_price": cup_bottom_price,
+                "right_rim_idx": right_rim_idx,
+                "right_rim_price": right_rim_price,
+                "depth_percent": depth_percent,
+                "is_valid": True
+            }
             
             # Now look for handle after cup
             handle_search_start = cup["right_rim_idx"]
@@ -897,7 +981,7 @@ def detect_cup_and_handle(opens: List[float], highs: List[float], lows: List[flo
                     continue
                 
                 # Validate volume requirements
-                if not validate_volume_requirements(volumes, cup_start_idx, cup["right_rim_idx"],
+                if not validate_volume_requirements(volumes, left_rim_idx, cup["right_rim_idx"],
                                                    handle_start_idx, handle_end_idx):
                     continue
                 
@@ -912,7 +996,7 @@ def detect_cup_and_handle(opens: List[float], highs: List[float], lows: List[flo
                 for i in range(handle_end_idx, len(closes)):
                     if closes[i] >= handle_resistance * 1.01:  # 1% above resistance
                         # Validate breakout volume
-                        if validate_volume_requirements(volumes, cup_start_idx, cup["right_rim_idx"],
+                        if validate_volume_requirements(volumes, left_rim_idx, cup["right_rim_idx"],
                                                        handle_start_idx, handle_end_idx, i):
                             breakout_idx = i
                             breakout_date = dates[i] if i < len(dates) else None
@@ -955,7 +1039,7 @@ def detect_cup_and_handle(opens: List[float], highs: List[float], lows: List[flo
                     "pattern": "cup_and_handle",
                     "signal": "bullish",
                     "handle_shape": handle_shape,
-                    "cup_start_date": dates[cup_start_idx] if cup_start_idx < len(dates) else None,
+                    "cup_start_date": dates[left_rim_idx] if left_rim_idx < len(dates) else None,
                     "cup_end_date": dates[cup["right_rim_idx"]] if cup["right_rim_idx"] < len(dates) else None,
                     "handle_start_date": dates[handle_start_idx] if handle_start_idx < len(dates) else None,
                     "breakout_date": breakout_date,
