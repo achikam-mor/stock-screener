@@ -19,9 +19,9 @@
     </script>
     
     <meta name="google-adsense-account" content="ca-pub-9520776475659458">
-    <meta name="description" content="Hot stocks trading above SMA150 - Find momentum stocks and breakout opportunities for day trading. Updated 4 times daily with technical analysis and ATR14 indicators.">
-    <meta name="keywords" content="hot stocks, momentum stocks, breakout stocks, stocks above SMA, bullish stocks, day trading picks, swing trading opportunities, trending stocks">
-    <title>Hot Stocks Above SMA150 | Day Trading & Momentum Stocks</title>
+    <meta name="description" content="Advanced pattern detector for stocks - Find candlestick patterns, cup and handle formations, golden cross and death cross signals across all stocks regardless of SMA distance.">
+    <meta name="keywords" content="pattern detector, candlestick patterns, cup and handle, golden cross, death cross, stock patterns, technical analysis, pattern scanner">
+    <title>Pattern Detector | Advanced Stock Pattern Scanner</title>
     
     <!-- PWA Manifest -->
     <link rel="manifest" href="manifest.json">
@@ -39,11 +39,11 @@
             <div class="nav-brand">Stock Scanner</div>
             <ul class="nav-menu">
                 <li><a href="home.html">Home</a></li>
-                <li><a href="hot-stocks.html" class="active">🔥 Hot Stocks</a></li>
+                <li><a href="hot-stocks.html">🔥 Hot Stocks</a></li>
                 <li><a href="watch-list.html">👀 Watch List</a></li>
                 <li><a href="filtered-stocks.html">🔀 Filtered</a></li>
                 <li><a href="favorites.html">⭐ Favorites</a></li>
-                <li><a href="pattern-detector.html">🔍 Pattern Detector</a></li>
+                <li><a href="pattern-detector.html" class="active">🔍 Pattern Detector</a></li>
                 <li><a href="market-overview.html">📊 Market</a></li>
                 <li><a href="chart-viewer.html">📈 Charts</a></li>
                 <li><a href="compare.html">🔄 Compare</a></li>
@@ -54,8 +54,8 @@
 
     <div class="container">
         <header>
-            <h1>Hot Stocks</h1>
-            <p class="subtitle">Stocks trading above their 150-day SMA</p>
+            <h1>🔍 Pattern Detector</h1>
+            <p class="subtitle">Find stocks with specific patterns, crosses, or cup & handle formations - regardless of SMA distance</p>
             
             <div class="search-container">
                 <input type="text" id="ticker-search" placeholder="🔍 Search ticker..." maxlength="10">
@@ -65,6 +65,53 @@
             
             <!-- Filters -->
             <div class="filters-container">
+                <div class="filter-group">
+                    <label for="sma-status-filter">SMA Status:</label>
+                    <select id="sma-status-filter" onchange="applyFilters()">
+                        <option value="all">All</option>
+                        <option value="above">Above SMA150</option>
+                        <option value="below">Below SMA150</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="sma-distance-filter">SMA Distance:</label>
+                    <select id="sma-distance-filter" onchange="applyFilters()">
+                        <option value="all">All</option>
+                        <option value="0-4">0-4% (Tight)</option>
+                        <option value="4-10">4-10%</option>
+                        <option value="10-20">10-20%</option>
+                        <option value="20-100">> 20%</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="pattern-filter">Candlestick Patterns:</label>
+                    <select id="pattern-filter" onchange="applyFilters()">
+                        <option value="all">All</option>
+                        <option value="bullish_confirmed">🟢 Bullish Confirmed</option>
+                        <option value="pending_bullish">🟡 Pending Bullish</option>
+                        <option value="pending_bearish">🟠 Pending Bearish</option>
+                        <option value="bearish_confirmed">🔴 Bearish Confirmed</option>
+                        <option value="any_pattern">🕯️ Any Pattern</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="cross-filter">Moving Avg Cross:</label>
+                    <select id="cross-filter" onchange="applyFilters()">
+                        <option value="all">All</option>
+                        <option value="golden">✨ Golden Cross</option>
+                        <option value="death">💀 Death Cross</option>
+                        <option value="any">Any Cross</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="cup-handle-filter">Cup & Handle:</label>
+                    <select id="cup-handle-filter" onchange="applyFilters()">
+                        <option value="all">All</option>
+                        <option value="confirmed">☕ Confirmed</option>
+                        <option value="forming">🏺 Forming</option>
+                        <option value="any">☕ Any C&H</option>
+                    </select>
+                </div>
                 <div class="filter-group">
                     <label for="sector-filter">Sector:</label>
                     <select id="sector-filter" onchange="applyFilters()">
@@ -77,16 +124,6 @@
                         <option value="all">All Stocks</option>
                         <option value="favorites">⭐ Favorites Only</option>
                         <option value="non-favorites">Non-Favorites</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label for="sma-filter">SMA Distance:</label>
-                    <select id="sma-filter" onchange="applyFilters()">
-                        <option value="all">All</option>
-                        <option value="0-1">0-1% (Tight)</option>
-                        <option value="1-2">1-2%</option>
-                        <option value="2-3">2-3%</option>
-                        <option value="3-4">3-4%</option>
                     </select>
                 </div>
                 <div class="filter-group">
@@ -105,34 +142,6 @@
                         <option value="above">Above Avg</option>
                         <option value="below">Below Avg</option>
                         <option value="high">High (>1.5x)</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label for="cross-filter">Cross:</label>
-                    <select id="cross-filter" onchange="applyFilters()">
-                        <option value="all">All</option>
-                        <option value="golden">✨ Golden Cross</option>
-                        <option value="death">💀 Death Cross</option>
-                        <option value="any">Any Cross</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label for="pattern-filter">Patterns (7d):</label>
-                    <select id="pattern-filter" onchange="applyFilters()">
-                        <option value="all">All</option>
-                        <option value="bullish_confirmed">🟢 Bullish Confirmed</option>
-                        <option value="pending_bullish">🟡 Pending Bullish</option>
-                        <option value="pending_bearish">🟠 Pending Bearish</option>
-                        <option value="bearish_confirmed">🔴 Bearish Confirmed</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label for="cup-handle-filter">Cup & Handle:</label>
-                    <select id="cup-handle-filter" onchange="applyFilters()">
-                        <option value="all">All</option>
-                        <option value="confirmed">☕ Confirmed</option>
-                        <option value="forming">🏺 Forming</option>
-                        <option value="any">☕ Any C&H</option>
                     </select>
                 </div>
                 <button class="filter-reset-btn" onclick="resetFilters()">Reset Filters</button>
@@ -155,7 +164,7 @@
         </div>
 
         <div id="stocks-container" class="stocks-grid">
-            <div class="loading">Loading hot stocks...</div>
+            <div class="loading">Loading pattern detector data...</div>
         </div>
 
         <div id="pagination-controls" class="pagination">
@@ -169,10 +178,6 @@
 
     <script src="common.js?v=3.14"></script>
     <script src="stock-notes.js?v=3.14"></script>
-    <script src="stocks-page.js?v=3.14"></script>
-    <script>
-        // Initialize page with 'hot' type
-        initStocksPage('hot');
-    </script>
+    <script src="pattern-detector.js?v=3.14"></script>
 </body>
 </html>

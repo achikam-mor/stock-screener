@@ -3,9 +3,9 @@
  * Provides offline support and caching for better performance
  */
 
-const CACHE_NAME = 'stock-screener-v6';
-const STATIC_CACHE = 'static-v6';
-const DATA_CACHE = 'data-v6';
+const CACHE_NAME = 'stock-screener-v7';
+const STATIC_CACHE = 'static-v7';
+const DATA_CACHE = 'data-v7';
 
 // Static assets to cache immediately
 const STATIC_ASSETS = [
@@ -20,6 +20,7 @@ const STATIC_ASSETS = [
     '/market-overview.html',
     '/filtered-stocks.html',
     '/export.html',
+    '/pattern-detector.html',
     '/styles.css',
     '/common.js',
     '/home.js',
@@ -28,7 +29,8 @@ const STATIC_ASSETS = [
     '/compare.js',
     '/favorites.js',
     '/market-overview.js',
-    '/stock-notes.js'
+    '/stock-notes.js',
+    '/pattern-detector.js'
 ];
 
 // External CDN resources to cache
