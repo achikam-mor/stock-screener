@@ -65,6 +65,18 @@ class ResultsManager:
                     pass
             return []
         
+        # Helper function to load cup and handle patterns from chart file
+        def load_cup_handle_patterns(symbol: str) -> list:
+            chart_path = os.path.join('charts', f'{symbol}.json')
+            if os.path.exists(chart_path):
+                try:
+                    with open(chart_path, 'r') as f:
+                        chart_data = json.load(f)
+                        return chart_data.get('cup_and_handle_patterns', [])
+                except:
+                    pass
+            return []
+        
         # Initialize pattern summary counters
         pattern_summary = {
             "bullish_confirmed": 0,
@@ -85,6 +97,7 @@ class ResultsManager:
             
             # Load candlestick patterns for this stock
             patterns = load_patterns(symbol)
+            cup_handle_patterns = load_cup_handle_patterns(symbol)
             
             # Update pattern summary counts
             for pattern in patterns:
@@ -110,7 +123,8 @@ class ResultsManager:
                 "avg_volume_14d": int(stock.avg_volume_14d),
                 "golden_cross": stock.golden_cross,
                 "death_cross": stock.death_cross,
-                "patterns": patterns  # Add patterns array
+                "patterns": patterns,  # Add patterns array
+                "cup_handle_patterns": cup_handle_patterns  # Add cup and handle patterns
             })
 
         # Sort watch list by distance from SMA (same as hot stocks)
@@ -125,6 +139,7 @@ class ResultsManager:
             
             # Load candlestick patterns for this stock
             patterns = load_patterns(symbol)
+            cup_handle_patterns = load_cup_handle_patterns(symbol)
             
             # Update pattern summary counts
             for pattern in patterns:
@@ -150,7 +165,8 @@ class ResultsManager:
                 "avg_volume_14d": int(stock.avg_volume_14d),
                 "golden_cross": stock.golden_cross,
                 "death_cross": stock.death_cross,
-                "patterns": patterns  # Add patterns array
+                "patterns": patterns,  # Add patterns array
+                "cup_handle_patterns": cup_handle_patterns  # Add cup and handle patterns
             })
 
         output = {

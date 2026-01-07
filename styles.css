@@ -2200,6 +2200,27 @@ footer p {
     font-size: 0.9rem;
 }
 
+/* Cup and Handle Pattern Icons */
+.cup-handle-icon {
+    display: inline-block;
+    font-size: 1.2rem;
+    margin-left: 4px;
+    cursor: help;
+    transition: transform 0.2s ease;
+}
+
+.cup-handle-icon:hover {
+    transform: scale(1.2);
+}
+
+.cup-handle-confirmed {
+    filter: drop-shadow(0 0 3px rgba(16, 185, 129, 0.5));
+}
+
+.cup-handle-forming {
+    filter: drop-shadow(0 0 3px rgba(251, 191, 36, 0.5));
+}
+
 /* Chart page favorite star (larger) */
 .chart-favorite-star {
     font-size: 1.5rem;

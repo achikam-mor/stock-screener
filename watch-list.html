@@ -30,7 +30,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="StockScreen">
     
-    <link rel="stylesheet" href="styles.css?v=3.11">
+    <link rel="stylesheet" href="styles.css?v=3.12">
     <!-- AdSense loaded via lazy-load script for better performance -->
 </head>
 <body>
@@ -125,6 +125,15 @@
                         <option value="bearish_confirmed">🔴 Bearish Confirmed</option>
                     </select>
                 </div>
+                <div class="filter-group">
+                    <label for="cup-handle-filter">Cup & Handle:</label>
+                    <select id="cup-handle-filter" onchange="applyFilters()">
+                        <option value="all">All</option>
+                        <option value="confirmed">☕ Confirmed</option>
+                        <option value="forming">🏺 Forming</option>
+                        <option value="any">☕ Any C&H</option>
+                    </select>
+                </div>
                 <button class="filter-reset-btn" onclick="resetFilters()">Reset Filters</button>
             </div>
         </header>
@@ -157,9 +166,9 @@
         </footer>
     </div>
 
-    <script src="common.js?v=3.11"></script>
-    <script src="stock-notes.js?v=3.11"></script>
-    <script src="stocks-page.js?v=3.11"></script>
+    <script src="common.js?v=3.12"></script>
+    <script src="stock-notes.js?v=3.12"></script>
+    <script src="stocks-page.js?v=3.12"></script>
     <script>
         // Initialize page with 'watch' type
         initStocksPage('watch');

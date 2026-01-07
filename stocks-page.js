@@ -119,9 +119,10 @@ function applyFilters() {
     const volumeFilter = document.getElementById('volume-filter')?.value || 'all';
     const crossFilter = document.getElementById('cross-filter')?.value || 'all';
     const patternFilter = document.getElementById('pattern-filter')?.value || 'all';
+    const cupHandleFilter = document.getElementById('cup-handle-filter')?.value || 'all';
     const favorites = getFavorites();
     
-    console.log('[Stocks Page] Applying filters:', { sectorFilter, favoritesFilter, smaFilter, atrFilter, volumeFilter, crossFilter, patternFilter });
+    console.log('[Stocks Page] Applying filters:', { sectorFilter, favoritesFilter, smaFilter, atrFilter, volumeFilter, crossFilter, patternFilter, cupHandleFilter });
     
     filteredStocks = allStocks.filter(stock => {
         // Sector filter
@@ -182,6 +183,20 @@ function applyFilters() {
             if (!hasPattern) return false;
         }
         
+        // Cup and Handle Pattern filter
+        if (cupHandleFilter !== 'all') {
+            // If no cup_handle_patterns array or empty, filter out
+            if (!stock.cup_handle_patterns || stock.cup_handle_patterns.length === 0) return false;
+            
+            const hasCupHandle = stock.cup_handle_patterns.some(p => {
+                if (cupHandleFilter === 'confirmed') return p.status === 'confirmed';
+                if (cupHandleFilter === 'forming') return p.status === 'forming';
+                if (cupHandleFilter === 'any') return true;
+                return false;
+            });
+            if (!hasCupHandle) return false;
+        }
+        
         return true;
     });
     
@@ -207,12 +222,14 @@ function resetFilters() {
     const volumeFilter = document.getElementById('volume-filter');
     const crossFilter = document.getElementById('cross-filter');
     const patternFilter = document.getElementById('pattern-filter');
+    const cupHandleFilter = document.getElementById('cup-handle-filter');
     
     if (smaFilter) smaFilter.value = 'all';
     if (atrFilter) atrFilter.value = 'all';
     if (volumeFilter) volumeFilter.value = 'all';
     if (crossFilter) crossFilter.value = 'all';
     if (patternFilter) patternFilter.value = 'all';
+    if (cupHandleFilter) cupHandleFilter.value = 'all';
     
     console.log('[Stocks Page] Filters reset');
     applyFilters();
@@ -268,6 +285,43 @@ function renderPatternDots(patterns) {
     }).join('');
 }
 
+function renderCupHandleDots(cupHandlePatterns) {
+    if (!cupHandlePatterns || cupHandlePatterns.length === 0) {
+        return '';
+    }
+    
+    return cupHandlePatterns.map(pattern => {
+        const { status, confidence, breakout_date, rim_price, profit_target, depth_percent, handle_shape } = pattern;
+        
+        // Determine color and icon
+        let colorClass = status === 'confirmed' ? 'cup-handle-confirmed' : 'cup-handle-forming';
+        let icon = status === 'confirmed' ? '☕✅' : '🏺';
+        
+        // Format handle shape for display
+        const shapeDisplay = handle_shape ? handle_shape.charAt(0).toUpperCase() + handle_shape.slice(1) : 'Unknown';
+        
+        // Handle shape emoji
+        let shapeEmoji = '';
+        if (handle_shape === 'drift') shapeEmoji = '📉';
+        else if (handle_shape === 'pennant') shapeEmoji = '🔻';
+        else if (handle_shape === 'flag') shapeEmoji = '🏳️';
+        
+        // Format breakout date
+        let dateDisplay = '';
+        if (breakout_date) {
+            const dateObj = new Date(breakout_date);
+            dateDisplay = `${dateObj.getMonth() + 1}/${dateObj.getDate()}`;
+        } else {
+            dateDisplay = 'Forming';
+        }
+        
+        // Create tooltip with key information including handle shape
+        const tooltip = `Cup & Handle ${status.toUpperCase()} | Handle: ${shapeEmoji} ${shapeDisplay} | Rim: $${rim_price} | Target: $${profit_target} (+${depth_percent.toFixed(1)}%) | Confidence: ${confidence}% | ${dateDisplay}`;
+        
+        return `<span class="cup-handle-icon ${colorClass}" title="${tooltip}">${icon}</span>`;
+    }).join('');
+}
+
 function createCompactStockCard(stock, type) {
     const volumeRatio = stock.avg_volume_14d > 0 
         ? (stock.last_volume / stock.avg_volume_14d).toFixed(2) 
@@ -289,6 +343,9 @@ function createCompactStockCard(stock, type) {
     // Create pattern dots HTML
     const patternDotsHTML = renderPatternDots(stock.patterns);
     
+    // Create cup and handle dots HTML
+    const cupHandleHTML = renderCupHandleDots(stock.cup_handle_patterns);
+    
     return `
         <div class="stock-card-compact" data-ticker="${stock.symbol}">
             <div class="stock-header">
@@ -296,6 +353,7 @@ function createCompactStockCard(stock, type) {
                     ${createFavoriteStarHTML(stock.symbol)}
                     ${noteIconHTML}
                     ${crossIconHTML}
+                    ${cupHandleHTML}
                     <input type="checkbox" class="compare-checkbox" value="${stock.symbol}" 
                            onchange="toggleCompareStock('${stock.symbol}')" 
                            title="Select for comparison">
