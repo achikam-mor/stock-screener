@@ -11,7 +11,6 @@
       "BWXT",
       "CAE",
       "CW",
-      "ERJ",
       "GD",
       "GE",
       "HEI",
@@ -88,7 +87,8 @@
       "IVZ",
       "JHG",
       "KKR",
-      "MAIN"
+      "MAIN",
+      "NAN"
     ],
     "Auto & Truck Dealerships": [
       "ABG",
@@ -272,6 +272,7 @@
       "HBM"
     ],
     "Credit Services": [
+      "AFRM",
       "ALLY",
       "AXP",
       "BFH",
@@ -428,8 +429,7 @@
       "KR"
     ],
     "Health Information Services": [
-      "DOCS",
-      "GEHC"
+      "DOCS"
     ],
     "Healthcare Plans": [
       "CI",
@@ -473,7 +473,6 @@
       "CTSH",
       "DXC",
       "EPAM",
-      "FI",
       "FIS",
       "G",
       "GIB",
@@ -491,7 +490,8 @@
       "AEG",
       "AIG",
       "BNT",
-      "FIHL"
+      "FIHL",
+      "HIG"
     ],
     "Insurance - Life": [
       "AFL",
@@ -513,7 +513,6 @@
       "CNA",
       "HCI",
       "HGTY",
-      "HIG",
       "KMPR",
       "KNSL",
       "L",
@@ -606,6 +605,7 @@
       "BSX",
       "DXCM",
       "EW",
+      "GEHC",
       "GKOS",
       "GMED",
       "HAE",
@@ -647,6 +647,8 @@
       "BSM",
       "CIVI",
       "CNQ",
+      "CNX",
+      "COP",
       "CRC",
       "CRGY",
       "CRK",
@@ -718,26 +720,24 @@
       "CMSA",
       "CMSC",
       "CMSD",
-      "CNX",
-      "COP",
       "DTB",
       "DTG",
       "DTW",
       "DUKB",
+      "EBR",
       "ELC",
       "ENJ",
       "ENO",
+      "ERJ",
       "FGN",
+      "FI",
       "GJS",
       "HCXY",
       "KKRS",
       "MFAN",
       "MFAO",
       "MSTY",
-      "MWA",
-      "NAN",
       "NATL",
-      "NCLH",
       "NDAQ",
       "NDSN",
       "NE",
@@ -1491,7 +1491,6 @@
       "MSTR"
     ],
     "Software - Infrastructure": [
-      "AFRM",
       "AI",
       "AKAM",
       "BB",
@@ -1567,7 +1566,8 @@
       "ITW",
       "JBTM",
       "KAI",
-      "MIR"
+      "MIR",
+      "MWA"
     ],
     "Specialty Retail": [
       "BBWI",
@@ -1610,7 +1610,8 @@
       "CCL",
       "CUK",
       "EXPE",
-      "GBTG"
+      "GBTG",
+      "NCLH"
     ],
     "Trucking": [
       "KNX"
@@ -1670,8 +1671,7 @@
     "Utilities - Renewable": [
       "BEP",
       "BEPC",
-      "CWEN",
-      "EBR"
+      "CWEN"
     ],
     "Waste Management": [
       "CLH",
@@ -1715,7 +1715,7 @@
     "AES": "Utilities - Diversified",
     "AFG": "Insurance - Property & Casualty",
     "AFL": "Insurance - Life",
-    "AFRM": "Software - Infrastructure",
+    "AFRM": "Credit Services",
     "AG": "Silver",
     "AGCO": "Farm & Heavy Construction Machinery",
     "AGI": "Gold",
@@ -1995,7 +1995,7 @@
     "CNQ": "Oil & Gas E&P",
     "CNR": "Thermal Coal",
     "CNS": "Asset Management",
-    "CNX": "Other",
+    "CNX": "Oil & Gas E&P",
     "COF": "Credit Services",
     "COHR": "Scientific & Technical Instruments",
     "COIN": "Financial Data & Stock Exchanges",
@@ -2003,7 +2003,7 @@
     "COMP": "Real Estate Services",
     "CON": "Medical Care Facilities",
     "COO": "Medical Instruments & Supplies",
-    "COP": "Other",
+    "COP": "Oil & Gas E&P",
     "COR": "Medical Distribution",
     "COST": "Discount Stores",
     "COTY": "Household & Personal Products",
@@ -2112,7 +2112,7 @@
     "EA": "Electronic Gaming & Multimedia",
     "EAT": "Restaurants",
     "EBAY": "Internet Retail",
-    "EBR": "Utilities - Renewable",
+    "EBR": "Other",
     "EC": "Oil & Gas Integrated",
     "ECCF": "Asset Management",
     "ECG": "Engineering & Construction",
@@ -2156,7 +2156,7 @@
     "EQR": "REIT - Residential",
     "EQT": "Oil & Gas E&P",
     "ERIE": "Insurance Brokers",
-    "ERJ": "Aerospace & Defense",
+    "ERJ": "Other",
     "ERO": "Copper",
     "ES": "Utilities - Regulated Electric",
     "ESAB": "Metal Fabrication",
@@ -2198,7 +2198,7 @@
     "FGN": "Other",
     "FHI": "Asset Management",
     "FHN": "Banks - Regional",
-    "FI": "Information Technology Services",
+    "FI": "Other",
     "FICO": "Software - Application",
     "FIHL": "Insurance - Diversified",
     "FIS": "Information Technology Services",
@@ -2243,7 +2243,7 @@
     "GDV": "Asset Management",
     "GE": "Aerospace & Defense",
     "GEF": "Packaging & Containers",
-    "GEHC": "Health Information Services",
+    "GEHC": "Medical Devices",
     "GEN": "Software - Infrastructure",
     "GENI": "Internet Content & Information",
     "GEO": "Security & Protection Services",
@@ -2308,7 +2308,7 @@
     "HGV": "Resorts & Casinos",
     "HHH": "Real Estate - Development",
     "HI": "Specialty Industrial Machinery",
-    "HIG": "Insurance - Property & Casualty",
+    "HIG": "Insurance - Diversified",
     "HII": "Aerospace & Defense",
     "HIMS": "Drug Manufacturers - Specialty & Generic",
     "HIW": "REIT - Office",
@@ -2554,10 +2554,10 @@
     "MUFG": "Banks - Diversified",
     "MUR": "Oil & Gas E&P",
     "MUSA": "Specialty Retail",
-    "MWA": "Other",
-    "NAN": "Other",
+    "MWA": "Specialty Industrial Machinery",
+    "NAN": "Asset Management",
     "NATL": "Other",
-    "NCLH": "Other",
+    "NCLH": "Travel Services",
     "NDAQ": "Other",
     "NDSN": "Other",
     "NE": "Other",
@@ -3224,7 +3224,7 @@
     "Utilities - Renewable",
     "Waste Management"
   ],
-  "last_updated": "2025-12-22T05:05:50.187018",
+  "last_updated": "2026-01-17T18:12:42.942671",
   "total_stocks": 1407,
-  "success_count": 844
+  "success_count": 846
 }
