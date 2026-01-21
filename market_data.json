@@ -13,24 +13,40 @@
   "assets": {
     "gold": {
       "name": "Gold",
-      "available": false,
-      "error": "HTTP 429"
+      "symbol": "GC=F",
+      "price": 4851.0,
+      "previous_close": 0,
+      "change": 0,
+      "change_percent": 0,
+      "available": true
     },
     "silver": {
       "name": "Silver",
-      "available": false,
-      "error": "HTTP 429"
+      "symbol": "SI=F",
+      "price": 93.61,
+      "previous_close": 0,
+      "change": 0,
+      "change_percent": 0,
+      "available": true
     },
     "bitcoin": {
       "name": "Bitcoin",
-      "available": false,
-      "error": "HTTP 429"
+      "symbol": "BTC-USD",
+      "price": 89869.74,
+      "previous_close": 0,
+      "change": 0,
+      "change_percent": 0,
+      "available": true
     },
     "ethereum": {
       "name": "Ethereum",
-      "available": false,
-      "error": "HTTP 429"
+      "symbol": "ETH-USD",
+      "price": 2990.74,
+      "previous_close": 0,
+      "change": 0,
+      "change_percent": 0,
+      "available": true
     }
   },
-  "last_updated": "2026-01-21T15:19:41.874440"
+  "last_updated": "2026-01-21T16:08:54.249910"
 }
