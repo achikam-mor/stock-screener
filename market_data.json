@@ -1,8 +1,8 @@
 {
   "cnn_fear_greed": {
-    "score": 48,
+    "score": 47,
     "rating": "neutral",
-    "previous_close": 62,
+    "previous_close": 48,
     "available": true
   },
   "crypto_fear_greed": {
@@ -13,40 +13,24 @@
   "assets": {
     "gold": {
       "name": "Gold",
-      "symbol": "GC=F",
-      "price": 4844.8,
-      "previous_close": 0,
-      "change": 0,
-      "change_percent": 0,
-      "available": true
+      "available": false,
+      "error": "HTTP 429"
     },
     "silver": {
       "name": "Silver",
-      "symbol": "SI=F",
-      "price": 93.8,
-      "previous_close": 0,
-      "change": 0,
-      "change_percent": 0,
-      "available": true
+      "available": false,
+      "error": "HTTP 429"
     },
     "bitcoin": {
       "name": "Bitcoin",
-      "symbol": "BTC-USD",
-      "price": 89328.89,
-      "previous_close": 0,
-      "change": 0,
-      "change_percent": 0,
-      "available": true
+      "available": false,
+      "error": "HTTP 429"
     },
     "ethereum": {
       "name": "Ethereum",
-      "symbol": "ETH-USD",
-      "price": 2977.06,
-      "previous_close": 0,
-      "change": 0,
-      "change_percent": 0,
-      "available": true
+      "available": false,
+      "error": "HTTP 429"
     }
   },
-  "last_updated": "2026-01-21T04:14:59.777045"
+  "last_updated": "2026-01-21T14:41:30.313300"
 }
