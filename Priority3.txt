@@ -22,9 +22,9 @@
 'PHIN', 'PII', 'PINS', 'PL', 'PNC', 'PRGO', 'PRIM', 'PRKS', 'PRM', 'PSKY', 'PTC', 'PVH', 'PYPL', 'QGEN', 'RACE', 
 'RBC', 'RBLX', 'RBRK', 'REGN', 'REVG', 'RH', 'RIG', 'RIO', 'RKT', 'RL', 'ROK', 'ROP', 'ROST', 'RTO', 'RTX', 
 'RVTY', 'S', 'SA', 'SAN', 'SAP', 'SBSW', 'SCCO', 'SE', 'SEE', 'SEI', 'SGHC', 'SII', 'SKE', 'SKY', 'SLB', 
-'SM', 'SMCI', 'SMFG', 'SMR', 'SN', 'SNDR', 'SPHR', 'SPOT', 'SQM', 'STLD', 'STVN', 'STX', 'SU', 'SWK', 'SWKS', 
-'SXI', 'TBBB', 'TD', 'TDC', 'TDY', 'TECH', 'TECK', 'TEF', 'TER', 'TEVA', 'TEX', 'TFII', 'TFPM', 'TGLS', 'THO', 
-'TKR', 'TM', 'TME', 'TMO', 'TMUS', 'TOST', 'TPC', 'TPL', 'TPR', 'TS', 'TSM', 'TTC', 'TTD', 'TV', 'TX', 
-'TXT', 'TYL', 'UAA', 'UBS', 'UGP', 'ULTA', 'UMC', 'UNF', 'UPS', 'VALE', 'VEEV', 'VFC', 'VG', 'VIST', 'VLO', 
-'VMI', 'VRNS', 'VRT', 'VSCO', 'VSH', 'VTRS', 'W', 'WAT', 'WBD', 'WCC', 'WDAY', 'WDC', 'WHD', 'WPM', 'XOM', 
-'YETI', 'YMM', 'ZBRA']
+'SM', 'SMCI', 'SMFG', 'SMR', 'SN', 'SNDR', 'SPHR', 'SPOT', 'SQM', 'SSL', 'STLD', 'STVN', 'STX', 'SU', 'SWK', 
+'SWKS', 'SXI', 'TBBB', 'TD', 'TDC', 'TDY', 'TECH', 'TECK', 'TEF', 'TER', 'TEVA', 'TEX', 'TFII', 'TFPM', 'TGLS', 
+'THO', 'TKR', 'TM', 'TME', 'TMO', 'TMUS', 'TOST', 'TPC', 'TPL', 'TPR', 'TS', 'TSM', 'TTC', 'TTD', 'TV', 
+'TX', 'TXT', 'TYL', 'UAA', 'UBS', 'UGP', 'ULTA', 'UMC', 'UNF', 'UPS', 'VALE', 'VEEV', 'VFC', 'VG', 'VIST', 
+'VLO', 'VMI', 'VRNS', 'VRT', 'VSCO', 'VSH', 'VTRS', 'W', 'WAT', 'WBD', 'WCC', 'WDAY', 'WDC', 'WHD', 'WPM', 
+'XOM', 'YETI', 'YMM', 'ZBRA']
