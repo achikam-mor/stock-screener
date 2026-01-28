@@ -2,68 +2,200 @@
 let globalData = null;
 
 // ============================================
-// LAZY-LOAD ADSENSE FOR PERFORMANCE
+// LAZY-LOAD ADSENSE WITH INTERSECTION OBSERVER
 // ============================================
 
 /**
- * Load AdSense script after page is fully loaded
- * This prevents ads from blocking initial page render
+ * Enhanced AdSense loading with Intersection Observer
+ * Ads are only initialized when they come into view
+ * This dramatically improves viewability metrics
  */
 function lazyLoadAdSense() {
-    // Wait for page to be fully loaded and interactive
     if (document.readyState === 'complete') {
-        loadAdSenseScript();
+        initAdSenseWithObserver();
     } else {
-        window.addEventListener('load', () => {
-            // Load immediately after page load event
-            loadAdSenseScript();
-        });
+        window.addEventListener('load', initAdSenseWithObserver);
     }
 }
 
-function loadAdSenseScript() {
-    // Check if AdSense is already loaded
-    if (window.adsbygoogle || document.querySelector('script[src*="adsbygoogle"]')) {
-        console.log('[AdSense] Already loaded');
+function initAdSenseWithObserver() {
+    // Check if AdSense script already loaded
+    if (document.querySelector('script[src*="adsbygoogle"]')) {
+        console.log('[AdSense] Script already loaded');
+        setupIntersectionObserver();
         return;
     }
-    
-    console.log('[AdSense] Loading ads...');
+
+    console.log('[AdSense] Loading script...');
     const script = document.createElement('script');
     script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9520776475659458';
     script.async = true;
     script.crossOrigin = 'anonymous';
     script.onload = () => {
-        console.log('[AdSense] Script loaded, initializing ads');
-        // Initialize immediately - AdSense script is now loaded
-        try {
-            const ads = document.querySelectorAll('.adsbygoogle');
-            console.log(`[AdSense] Found ${ads.length} ad slots`);
-            
-            if (ads.length === 0) {
-                console.warn('[AdSense] No ad slots found on this page');
-                return;
-            }
-            
-            // Initialize each ad slot
-            ads.forEach((ad, index) => {
-                if (!ad.dataset.adsbygoogleStatus) {
-                    try {
-                        (window.adsbygoogle = window.adsbygoogle || []).push({});
-                        console.log(`[AdSense] Initialized ad ${index + 1}`);
-                    } catch (adError) {
-                        console.error(`[AdSense] Failed to initialize ad ${index + 1}:`, adError);
-                    }
-                }
-            });
-        } catch (e) {
-            console.error('[AdSense] Error initializing ads:', e);
-        }
+        console.log('[AdSense] Script loaded');
+        setupIntersectionObserver();
+        initializeStickyAnchorAd();
     };
     script.onerror = () => {
         console.log('[AdSense] Failed to load (ad blocker?)');
     };
     document.head.appendChild(script);
+}
+
+/**
+ * Intersection Observer for lazy-loading ads when visible
+ * Only loads ads when they're about to enter viewport
+ */
+function setupIntersectionObserver() {
+    const adContainers = document.querySelectorAll('.ad-container:not(.ad-sticky-anchor)');
+    
+    if (!('IntersectionObserver' in window)) {
+        // Fallback for older browsers - load all ads immediately
+        initializeAllAds();
+        return;
+    }
+
+    const observerOptions = {
+        root: null,
+        rootMargin: '200px 0px', // Start loading 200px before ad comes into view
+        threshold: 0
+    };
+
+    const adObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const container = entry.target;
+                const ad = container.querySelector('.adsbygoogle');
+                
+                if (ad && !ad.dataset.adsbygoogleStatus) {
+                    try {
+                        (window.adsbygoogle = window.adsbygoogle || []).push({});
+                        console.log('[AdSense] Initialized visible ad');
+                        container.classList.add('ad-loaded');
+                    } catch (e) {
+                        console.error('[AdSense] Error initializing ad:', e);
+                    }
+                }
+                observer.unobserve(container);
+            }
+        });
+    }, observerOptions);
+
+    adContainers.forEach(container => {
+        adObserver.observe(container);
+    });
+}
+
+/**
+ * Fallback: Initialize all ads immediately (for older browsers)
+ */
+function initializeAllAds() {
+    const ads = document.querySelectorAll('.adsbygoogle');
+    ads.forEach((ad, index) => {
+        if (!ad.dataset.adsbygoogleStatus) {
+            try {
+                (window.adsbygoogle = window.adsbygoogle || []).push({});
+                console.log(`[AdSense] Initialized ad ${index + 1}`);
+            } catch (e) {
+                console.error(`[AdSense] Error initializing ad ${index + 1}:`, e);
+            }
+        }
+    });
+}
+
+/**
+ * Create and initialize sticky anchor ad at bottom of page
+ * High viewability = higher CPM
+ */
+function initializeStickyAnchorAd() {
+    // Check if sticky anchor already exists or was closed this session
+    if (document.querySelector('.ad-sticky-anchor') || sessionStorage.getItem('stickyAdClosed') === 'true') {
+        return;
+    }
+
+    // Create sticky anchor container
+    const stickyAnchor = document.createElement('div');
+    stickyAnchor.className = 'ad-container ad-sticky-anchor';
+    stickyAnchor.innerHTML = `
+        <button class="ad-sticky-close" onclick="closeStickyAd()" aria-label="Close ad">×</button>
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-9520776475659458"
+             data-ad-slot="8162731200"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+    `;
+    
+    document.body.appendChild(stickyAnchor);
+    
+    // Initialize the sticky ad after a small delay
+    setTimeout(() => {
+        try {
+            (window.adsbygoogle = window.adsbygoogle || []).push({});
+            console.log('[AdSense] Sticky anchor ad initialized');
+        } catch (e) {
+            console.error('[AdSense] Sticky anchor error:', e);
+        }
+    }, 1000);
+}
+
+/**
+ * Close sticky anchor ad
+ */
+function closeStickyAd() {
+    const stickyAd = document.querySelector('.ad-sticky-anchor');
+    if (stickyAd) {
+        stickyAd.style.display = 'none';
+        // Remember user preference for this session
+        sessionStorage.setItem('stickyAdClosed', 'true');
+    }
+}
+
+/**
+ * In-feed ad insertion for stock grids
+ * Call this after rendering stock cards
+ * @param {string} containerId - ID of the stocks container
+ * @param {number} insertAfter - Insert ad after this many cards (default: 8)
+ */
+function insertInFeedAd(containerId, insertAfter = 8) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    
+    const cards = container.querySelectorAll('.stock-card-compact');
+    if (cards.length <= insertAfter) return;
+    
+    // Check if in-feed ad already exists
+    if (container.querySelector('.ad-infeed')) return;
+    
+    // Create in-feed ad
+    const adCard = document.createElement('div');
+    adCard.className = 'stock-card-compact ad-infeed';
+    adCard.innerHTML = `
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-9520776475659458"
+             data-ad-slot="4768070238"
+             data-ad-format="fluid"
+             data-ad-layout-key="-6t+ed+2i-1n-4w"></ins>
+    `;
+    
+    // Insert after the specified number of cards
+    const targetCard = cards[insertAfter - 1];
+    if (targetCard && targetCard.nextSibling) {
+        container.insertBefore(adCard, targetCard.nextSibling);
+    } else {
+        container.appendChild(adCard);
+    }
+    
+    // Initialize the in-feed ad
+    setTimeout(() => {
+        try {
+            (window.adsbygoogle = window.adsbygoogle || []).push({});
+            console.log('[AdSense] In-feed ad initialized');
+        } catch (e) {
+            console.error('[AdSense] In-feed ad error:', e);
+        }
+    }, 100);
 }
 
 // Initialize lazy AdSense loading

@@ -250,6 +250,11 @@ function displayCurrentPage() {
 
     // Update page info
     document.getElementById('current-page').textContent = currentPage;
+    
+    // Insert in-feed ad after 8 stock cards for better monetization
+    if (typeof insertInFeedAd === 'function') {
+        insertInFeedAd('stocks-container', 8);
+    }
 }
 
 function renderPatternDots(patterns) {
