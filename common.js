@@ -119,10 +119,10 @@ function initializeStickyAnchorAd() {
     stickyAnchor.innerHTML = `
         <button class="ad-sticky-close" onclick="closeStickyAd()" aria-label="Close ad">×</button>
         <ins class="adsbygoogle"
-             style="display:block"
+             style="display:block; min-height:50px; width:100%;"
              data-ad-client="ca-pub-9520776475659458"
              data-ad-slot="8162731200"
-             data-ad-format="auto"
+             data-ad-format="horizontal"
              data-full-width-responsive="true"></ins>
     `;
     
@@ -133,8 +133,22 @@ function initializeStickyAnchorAd() {
         try {
             (window.adsbygoogle = window.adsbygoogle || []).push({});
             console.log('[AdSense] Sticky anchor ad initialized');
+            
+            // Check if ad actually filled after 3 seconds
+            setTimeout(() => {
+                const adElement = stickyAnchor.querySelector('.adsbygoogle');
+                const adStatus = adElement ? adElement.getAttribute('data-adsbygoogle-status') : null;
+                const hasIframe = stickyAnchor.querySelector('iframe');
+                
+                // Hide container if ad didn't load (no iframe or unfilled status)
+                if (!hasIframe && adStatus !== 'done') {
+                    console.log('[AdSense] Sticky anchor ad did not fill, hiding container');
+                    stickyAnchor.style.display = 'none';
+                }
+            }, 3000);
         } catch (e) {
             console.error('[AdSense] Sticky anchor error:', e);
+            stickyAnchor.style.display = 'none';
         }
     }, 1000);
 }

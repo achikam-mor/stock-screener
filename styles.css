@@ -3052,7 +3052,10 @@ body.fullscreen-active {
 }
 
 .ad-sticky-anchor .adsbygoogle {
+    min-height: 50px;
     max-height: 100px;
+    width: 100%;
+    display: block;
 }
 
 .ad-sticky-close {
