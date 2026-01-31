@@ -26,4 +26,4 @@
 'TEF', 'TEO', 'TER', 'TEVA', 'TGLS', 'TGS', 'TKR', 'TME', 'TOST', 'TPC', 'TPL', 'TREX', 'TRGP', 'TRMB', 'TS', 
 'TSM', 'TSN', 'TTC', 'TTD', 'TTE', 'TV', 'TX', 'TXN', 'TYL', 'U', 'UAA', 'UBS', 'UGP', 'ULTA', 'UMC', 
 'UNF', 'VAC', 'VALE', 'VEEV', 'VFC', 'VIST', 'VIV', 'VRNS', 'VRT', 'VSCO', 'VSH', 'VST', 'VTRS', 'W', 'WBD', 
-'WCC', 'WDAY', 'WDC', 'WHD', 'WPM', 'WWW', 'XOM', 'YETI', 'YMM', 'YPF', 'ZBRA']
+'WCC', 'WDAY', 'WDC', 'WHD', 'WPM', 'WWW', 'XOM', 'XYZ', 'YETI', 'YMM', 'YPF', 'ZBRA']
