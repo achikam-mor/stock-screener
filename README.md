@@ -151,7 +151,7 @@ This project is open source and available for educational purposes.
 
 This tool is for educational and informational purposes only. It is not financial advice. Always do your own research before making investment decisions.
 
-## 📞 Support
+## 📞 Support 
 
 For issues or questions:
 1. Check [DEPLOYMENT.md](DEPLOYMENT.md) for setup help
