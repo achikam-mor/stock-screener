@@ -91,4 +91,4 @@
 'WELL', 'WES', 'WEX', 'WF', 'WFC', 'WFG', 'WH', 'WHD', 'WHR', 'WIT', 'WK', 'WLK', 'WLYB', 'WM', 'WMB', 
 'WMS', 'WMT', 'WOR', 'WPC', 'WPM', 'WPP', 'WRB', 'WRBY', 'WSM', 'WSO', 'WST', 'WTM', 'WTRG', 'WTS', 'WTW', 
 'WU', 'WWW', 'WY', 'WYNN', 'XEL', 'XOM', 'XPEV', 'XPO', 'XYL', 'XYZ', 'YELP', 'YETI', 'YMM', 'YOU', 'YPF', 
-'YUM', 'YUMC', 'ZBH', 'ZBRA', 'ZETA', 'ZGN', 'ZK', 'ZTO', 'ZTS', 'ZWS']
+'YUM', 'YUMC', 'ZBH', 'ZBRA', 'ZETA', 'ZGN', 'ZK', 'ZTO', 'ZTS', 'ZWS', 'DJT']
