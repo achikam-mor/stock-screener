@@ -12,5 +12,5 @@
 'REVG', 'RNST', 'ROK', 'ROL', 'RY', 'RYAN', 'SAH', 'SBUX', 'SF', 'SFBS', 'SGI', 'SITE', 'SLGN', 'SMG', 'SNPS', 
 'SNX', 'SPG', 'SPGI', 'SPXC', 'SSB', 'SSD', 'ST', 'STM', 'STT', 'STZ', 'SWKS', 'SYY', 'TAL', 'TDC', 'TECH', 
 'TEF', 'TFPM', 'TIC', 'TIMB', 'TKC', 'TKO', 'TMUS', 'TNET', 'TNL', 'TOL', 'TRN', 'TRNO', 'TRP', 'TSLX', 'TXT', 
-'UAL', 'UNF', 'UNH', 'UNP', 'USAC', 'VLTO', 'VMC', 'VRTX', 'VTR', 'VZ', 'WAL', 'WAT', 'WD', 'WDS', 'WFC', 
-'WK', 'WLYB', 'WMB', 'WSM', 'WTM', 'WY', 'XPEV', 'ZBRA', 'ZETA']
+'UAL', 'UNF', 'UNH', 'UNP', 'USAC', 'VLTO', 'VMC', 'VRTX', 'VTR', 'VZ', 'WAL', 'WAT', 'WD', 'WDS', 'WELL', 
+'WFC', 'WK', 'WLYB', 'WMB', 'WSM', 'WTM', 'WY', 'XPEV', 'ZBRA', 'ZETA']

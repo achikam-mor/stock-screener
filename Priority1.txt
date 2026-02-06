@@ -36,5 +36,5 @@
 'TDG', 'TEL', 'TFX', 'TGNA', 'TGS', 'THC', 'THG', 'TJX', 'TLK', 'TMHC', 'TMO', 'TPH', 'TR', 'TREX', 'TROW', 
 'TRV', 'TSCO', 'TSLA', 'TT', 'TU', 'TWLO', 'TXNM', 'UBS', 'UDR', 'UE', 'UGI', 'UHAL', 'UHS', 'UI', 'UL', 
 'ULS', 'UNM', 'UNMA', 'URI', 'UWMC', 'V', 'VG', 'VICI', 'VIPS', 'VIRT', 'VNT', 'VOYA', 'VTMX', 'VVV', 'W', 
-'WCN', 'WEC', 'WELL', 'WES', 'WEX', 'WFG', 'WH', 'WHR', 'WIT', 'WM', 'WOR', 'WPC', 'WRB', 'WRBY', 'WSO', 
-'WST', 'WTRG', 'WTW', 'WYNN', 'XEL', 'XYL', 'YOU', 'YUM', 'ZBH', 'ZGN', 'ZK', 'ZTS']
+'WCN', 'WEC', 'WES', 'WEX', 'WFG', 'WH', 'WHR', 'WIT', 'WM', 'WOR', 'WPC', 'WRB', 'WRBY', 'WSO', 'WST', 
+'WTRG', 'WTW', 'WYNN', 'XEL', 'XYL', 'YOU', 'YUM', 'ZBH', 'ZGN', 'ZK', 'ZTS']
