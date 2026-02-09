@@ -33,7 +33,7 @@
 'STLD', 'STNG', 'STVN', 'STX', 'SU', 'SWK', 'SXI', 'TAK', 'TBBB', 'TD', 'TDS', 'TDW', 'TDY', 'TECK', 'TEO', 
 'TER', 'TEVA', 'TEX', 'TFC', 'TFII', 'TGLS', 'TGT', 'THO', 'TKR', 'TM', 'TME', 'TOST', 'TPC', 'TPL', 'TPR', 
 'TRGP', 'TRMB', 'TS', 'TSM', 'TSN', 'TTAM', 'TTC', 'TTD', 'TTE', 'TTWO', 'TV', 'TX', 'TXN', 'TYL', 'U', 
-'UAA', 'UBER', 'UCB', 'UGP', 'ULTA', 'UMC', 'UNFI', 'UPS', 'USB', 'USFD', 'VAC', 'VAL', 'VALE', 'VEEV', 'VFC', 
-'VIK', 'VIST', 'VIV', 'VLO', 'VMI', 'VNO', 'VRNS', 'VRSK', 'VRT', 'VSCO', 'VSH', 'VST', 'VTRS', 'WAB', 'WBD', 
-'WBS', 'WCC', 'WDAY', 'WDC', 'WF', 'WHD', 'WLK', 'WLYB', 'WMS', 'WMT', 'WPM', 'WPP', 'WTS', 'WU', 'WWW', 
-'XOM', 'XPO', 'XYZ', 'YELP', 'YETI', 'YMM', 'YPF', 'YUMC', 'ZTO', 'ZWS']
+'UAA', 'UBER', 'UCB', 'UGP', 'UI', 'ULTA', 'UMC', 'UNFI', 'UPS', 'USB', 'USFD', 'VAC', 'VAL', 'VALE', 'VEEV', 
+'VFC', 'VIK', 'VIST', 'VIV', 'VLO', 'VMI', 'VNO', 'VRNS', 'VRSK', 'VRT', 'VSCO', 'VSH', 'VST', 'VTRS', 'WAB', 
+'WBD', 'WBS', 'WCC', 'WDAY', 'WDC', 'WF', 'WHD', 'WLK', 'WLYB', 'WMS', 'WMT', 'WPM', 'WPP', 'WTS', 'WU', 
+'WWW', 'XOM', 'XPO', 'XYZ', 'YELP', 'YETI', 'YMM', 'YPF', 'YUMC', 'ZTO', 'ZWS']
