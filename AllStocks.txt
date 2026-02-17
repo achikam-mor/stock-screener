@@ -19,7 +19,7 @@
 'CHE', 'CHH', 'CHRW', 'CHT', 'CHTR', 'CHWY', 'CI', 'CIB', 'CIEN', 'CIG', 'CII', 'CIMN', 'CINF', 'CIVI', 'CL', 
 'CLF', 'CLH', 'CLS', 'CLVT', 'CLX', 'CM', 'CMA', 'CMBT', 'CMC', 'CMCM', 'CMCSA', 'CME', 'CMG', 'CMI', 'CMPO', 
 'CMS', 'CMSA', 'CMSC', 'CMSD', 'CNA', 'CNC', 'CNH', 'CNI', 'CNK', 'CNM', 'CNO', 'CNP', 'CNQ', 'CNR', 'CNS', 
-'CNX', 'COF', 'COHR', 'COIN', 'COLD', 'COMP', 'CON', 'COO', 'COP', 'COR', 'COST', 'COTY', 'CP', 'CPA', 'CPAY', 
+'CNX', 'COF', 'COHR', 'COIN', 'COLD', 'COMP', 'COO', 'COP', 'COR', 'COST', 'COTY', 'CP', 'CPA', 'CPAY', 
 'CPB', 'CPK', 'CPNG', 'CPRI', 'CPRT', 'CPT', 'CQP', 'CR', 'CRBG', 'CRC', 'CRGY', 'CRH', 'CRK', 'CRL', 'CRM', 
 'CRS', 'CRWD', 'CSAN', 'CSCO', 'CSGP', 'CSL', 'CSTM', 'CSW', 'CSX', 'CTAS', 'CTRA', 'CTRE', 'CTSH', 'CTVA', 'CUBE', 
 'CUBI', 'CUK', 'CURB', 'CUZ', 'CVE', 'CVI', 'CVNA', 'CVS', 'CVX', 'CW', 'CWAN', 'CWEN', 'CWK', 'CWT', 'CX', 
