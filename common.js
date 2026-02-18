@@ -234,7 +234,7 @@ function registerServiceWorker() {
                 }
                 
                 // Register new service worker
-                const registration = await navigator.serviceWorker.register('/service-worker.js');
+                const registration = await navigator.serviceWorker.register('service-worker.js');
                 console.log('[PWA] Service Worker registered:', registration.scope);
                 
                 // Force immediate activation

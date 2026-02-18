@@ -3,34 +3,38 @@
  * Provides offline support and caching for better performance
  */
 
-const CACHE_NAME = 'stock-screener-v7';
-const STATIC_CACHE = 'static-v7';
-const DATA_CACHE = 'data-v7';
+const CACHE_NAME = 'stock-screener-v8';
+const STATIC_CACHE = 'static-v8';
+const DATA_CACHE = 'data-v8';
+
+// Derive base path dynamically — works for both root and subdirectory deployments
+// e.g. '/stock-screener/' when served from a GitHub Pages project page
+const SW_BASE = self.location.pathname.slice(0, self.location.pathname.lastIndexOf('/') + 1);
 
 // Static assets to cache immediately
 const STATIC_ASSETS = [
-    '/',
-    '/index.html',
-    '/home.html',
-    '/hot-stocks.html',
-    '/watch-list.html',
-    '/chart-viewer.html',
-    '/compare.html',
-    '/favorites.html',
-    '/market-overview.html',
-    '/filtered-stocks.html',
-    '/export.html',
-    '/pattern-detector.html',
-    '/styles.css',
-    '/common.js',
-    '/home.js',
-    '/stocks-page.js',
-    '/chart-viewer.js',
-    '/compare.js',
-    '/favorites.js',
-    '/market-overview.js',
-    '/stock-notes.js',
-    '/pattern-detector.js'
+    SW_BASE,
+    SW_BASE + 'index.html',
+    SW_BASE + 'home.html',
+    SW_BASE + 'hot-stocks.html',
+    SW_BASE + 'watch-list.html',
+    SW_BASE + 'chart-viewer.html',
+    SW_BASE + 'compare.html',
+    SW_BASE + 'favorites.html',
+    SW_BASE + 'market-overview.html',
+    SW_BASE + 'filtered-stocks.html',
+    SW_BASE + 'export.html',
+    SW_BASE + 'pattern-detector.html',
+    SW_BASE + 'styles.css',
+    SW_BASE + 'common.js',
+    SW_BASE + 'home.js',
+    SW_BASE + 'stocks-page.js',
+    SW_BASE + 'chart-viewer.js',
+    SW_BASE + 'compare.js',
+    SW_BASE + 'favorites.js',
+    SW_BASE + 'market-overview.js',
+    SW_BASE + 'stock-notes.js',
+    SW_BASE + 'pattern-detector.js'
 ];
 
 // External CDN resources to cache
@@ -149,7 +153,7 @@ async function cacheFirstStrategy(request, cacheName) {
         
         // Return offline fallback page for navigation requests
         if (request.mode === 'navigate') {
-            return caches.match('/index.html');
+            return caches.match(SW_BASE + 'index.html');
         }
         
         throw error;
@@ -182,7 +186,7 @@ async function networkFirstStrategy(request, cacheName) {
         
         // Return offline fallback for navigation requests
         if (request.mode === 'navigate') {
-            return caches.match('/index.html');
+            return caches.match(SW_BASE + 'index.html');
         }
         
         throw error;
