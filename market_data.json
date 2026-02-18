@@ -1,3 +1,52 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:b050b26352eeaa59eb0de7a6102d7aecf415b3b4d54ba97f519946f0cffc5e3e
-size 1054
+{
+  "cnn_fear_greed": {
+    "score": 37,
+    "rating": "fear",
+    "previous_close": 37,
+    "available": true
+  },
+  "crypto_fear_greed": {
+    "score": 8,
+    "rating": "Extreme Fear",
+    "available": true
+  },
+  "assets": {
+    "gold": {
+      "name": "Gold",
+      "symbol": "GC=F",
+      "price": 4954.7,
+      "previous_close": 0,
+      "change": 0,
+      "change_percent": 0,
+      "available": true
+    },
+    "silver": {
+      "name": "Silver",
+      "symbol": "SI=F",
+      "price": 75.81,
+      "previous_close": 0,
+      "change": 0,
+      "change_percent": 0,
+      "available": true
+    },
+    "bitcoin": {
+      "name": "Bitcoin",
+      "symbol": "BTC-USD",
+      "price": 68128.96,
+      "previous_close": 0,
+      "change": 0,
+      "change_percent": 0,
+      "available": true
+    },
+    "ethereum": {
+      "name": "Ethereum",
+      "symbol": "ETH-USD",
+      "price": 2018.57,
+      "previous_close": 0,
+      "change": 0,
+      "change_percent": 0,
+      "available": true
+    }
+  },
+  "last_updated": "2026-02-18T07:50:50.862893"
+}
