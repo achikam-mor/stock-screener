@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-02-18T07:50:50.207558",
+  "timestamp": "2026-02-18T09:15:53.540551",
   "scan_mode": "manual",
   "hot_stocks": [
     {
@@ -85,7 +85,7 @@
       "symbol": "AFG",
       "last_close": 131.1,
       "sma150": 130.75,
-      "distance_percent": 0.26,
+      "distance_percent": 0.27,
       "atr": 2.88,
       "atr_percent": 2.25,
       "last_volume": 470200,
@@ -108,9 +108,9 @@
       "symbol": "BEPI",
       "last_close": 16.11,
       "sma150": 16.06,
-      "distance_percent": 0.34,
+      "distance_percent": 0.33,
       "atr": 0.13,
-      "atr_percent": 0.8,
+      "atr_percent": 0.81,
       "last_volume": 10800,
       "avg_volume_14d": 6600,
       "golden_cross": false,
@@ -207,7 +207,7 @@
       "sma150": 10.84,
       "distance_percent": 0.56,
       "atr": 0.44,
-      "atr_percent": 4.01,
+      "atr_percent": 4.02,
       "last_volume": 1221800,
       "avg_volume_14d": 794035,
       "golden_cross": false,
@@ -230,7 +230,7 @@
       "sma150": 15.27,
       "distance_percent": 0.63,
       "atr": 0.14,
-      "atr_percent": 0.92,
+      "atr_percent": 0.93,
       "last_volume": 27900,
       "avg_volume_14d": 14500,
       "golden_cross": false,
@@ -395,20 +395,6 @@
       "cup_handle_patterns": []
     },
     {
-      "symbol": "SOJC",
-      "last_close": 22.45,
-      "sma150": 22.23,
-      "distance_percent": 1.0,
-      "atr": 0.11,
-      "atr_percent": 0.48,
-      "last_volume": 28200,
-      "avg_volume_14d": 18242,
-      "golden_cross": false,
-      "death_cross": false,
-      "patterns": [],
-      "cup_handle_patterns": []
-    },
-    {
       "symbol": "SO",
       "last_close": 92.0,
       "sma150": 91.09,
@@ -429,6 +415,20 @@
           "status": "pending"
         }
       ],
+      "cup_handle_patterns": []
+    },
+    {
+      "symbol": "SOJC",
+      "last_close": 22.45,
+      "sma150": 22.23,
+      "distance_percent": 1.0,
+      "atr": 0.11,
+      "atr_percent": 0.48,
+      "last_volume": 28200,
+      "avg_volume_14d": 18242,
+      "golden_cross": false,
+      "death_cross": false,
+      "patterns": [],
       "cup_handle_patterns": []
     },
     {
@@ -479,7 +479,7 @@
       "sma150": 41.94,
       "distance_percent": 1.08,
       "atr": 1.58,
-      "atr_percent": 3.69,
+      "atr_percent": 3.68,
       "last_volume": 585300,
       "avg_volume_14d": 699878,
       "golden_cross": false,
@@ -505,7 +505,7 @@
       "symbol": "PRS",
       "last_close": 24.1,
       "sma150": 23.83,
-      "distance_percent": 1.14,
+      "distance_percent": 1.15,
       "atr": 0.13,
       "atr_percent": 0.53,
       "last_volume": 59800,
@@ -528,9 +528,9 @@
       "symbol": "DTB",
       "last_close": 17.72,
       "sma150": 17.51,
-      "distance_percent": 1.17,
+      "distance_percent": 1.18,
       "atr": 0.15,
-      "atr_percent": 0.85,
+      "atr_percent": 0.84,
       "last_volume": 19400,
       "avg_volume_14d": 15107,
       "golden_cross": false,
@@ -563,7 +563,7 @@
       "sma150": 17.4,
       "distance_percent": 1.21,
       "atr": 0.14,
-      "atr_percent": 0.82,
+      "atr_percent": 0.83,
       "last_volume": 40700,
       "avg_volume_14d": 29214,
       "golden_cross": false,
@@ -792,7 +792,7 @@
     {
       "symbol": "FGN",
       "last_close": 26.2,
-      "sma150": 25.78,
+      "sma150": 25.79,
       "distance_percent": 1.61,
       "atr": 0.19,
       "atr_percent": 0.74,
@@ -816,7 +816,7 @@
       "symbol": "AQNB",
       "last_close": 25.97,
       "sma150": 25.54,
-      "distance_percent": 1.66,
+      "distance_percent": 1.67,
       "atr": 0.11,
       "atr_percent": 0.44,
       "last_volume": 16000,
@@ -868,7 +868,7 @@
       "last_close": 155.43,
       "sma150": 152.74,
       "distance_percent": 1.76,
-      "atr": 4.88,
+      "atr": 4.89,
       "atr_percent": 2.98,
       "last_volume": 6795000,
       "avg_volume_14d": 10409342,
@@ -932,7 +932,7 @@
       "symbol": "SOJD",
       "last_close": 20.75,
       "sma150": 20.35,
-      "distance_percent": 1.95,
+      "distance_percent": 1.96,
       "atr": 0.13,
       "atr_percent": 0.61,
       "last_volume": 76200,
@@ -975,7 +975,7 @@
       "last_close": 48.76,
       "sma150": 47.75,
       "distance_percent": 2.12,
-      "atr": 1.25,
+      "atr": 1.26,
       "atr_percent": 2.43,
       "last_volume": 2534500,
       "avg_volume_14d": 2589221,
@@ -1006,7 +1006,7 @@
       "last_close": 24.86,
       "sma150": 24.34,
       "distance_percent": 2.14,
-      "atr": 0.13,
+      "atr": 0.12,
       "atr_percent": 0.51,
       "last_volume": 51700,
       "avg_volume_14d": 27492,
@@ -1092,9 +1092,9 @@
       "symbol": "BNJ",
       "last_close": 15.47,
       "sma150": 15.14,
-      "distance_percent": 2.2,
+      "distance_percent": 2.19,
       "atr": 0.13,
-      "atr_percent": 0.81,
+      "atr_percent": 0.82,
       "last_volume": 14600,
       "avg_volume_14d": 15971,
       "golden_cross": false,
@@ -1269,8 +1269,8 @@
       "last_close": 40.62,
       "sma150": 39.61,
       "distance_percent": 2.54,
-      "atr": 1.88,
-      "atr_percent": 4.7,
+      "atr": 1.89,
+      "atr_percent": 4.71,
       "last_volume": 1771200,
       "avg_volume_14d": 1667871,
       "golden_cross": false,
@@ -1287,20 +1287,6 @@
       "atr_percent": 2.68,
       "last_volume": 1699800,
       "avg_volume_14d": 1573028,
-      "golden_cross": false,
-      "death_cross": false,
-      "patterns": [],
-      "cup_handle_patterns": []
-    },
-    {
-      "symbol": "GJS",
-      "last_close": 23.4,
-      "sma150": 22.81,
-      "distance_percent": 2.58,
-      "atr": 0.1,
-      "atr_percent": 0.44,
-      "last_volume": 3000,
-      "avg_volume_14d": 2614,
       "golden_cross": false,
       "death_cross": false,
       "patterns": [],
@@ -1327,6 +1313,20 @@
           "status": "confirmed"
         }
       ],
+      "cup_handle_patterns": []
+    },
+    {
+      "symbol": "GJS",
+      "last_close": 23.4,
+      "sma150": 22.81,
+      "distance_percent": 2.58,
+      "atr": 0.1,
+      "atr_percent": 0.44,
+      "last_volume": 3000,
+      "avg_volume_14d": 2614,
+      "golden_cross": false,
+      "death_cross": false,
+      "patterns": [],
       "cup_handle_patterns": []
     },
     {
@@ -1372,7 +1372,7 @@
       "sma150": 9.03,
       "distance_percent": 2.66,
       "atr": 0.33,
-      "atr_percent": 3.47,
+      "atr_percent": 3.48,
       "last_volume": 755876,
       "avg_volume_14d": 496214,
       "golden_cross": false,
@@ -1409,7 +1409,7 @@
       "sma150": 21.24,
       "distance_percent": 2.79,
       "atr": 0.83,
-      "atr_percent": 4.0,
+      "atr_percent": 3.99,
       "last_volume": 1715900,
       "avg_volume_14d": 3380035,
       "golden_cross": false,
@@ -1692,7 +1692,7 @@
       "sma150": 38.22,
       "distance_percent": 3.6,
       "atr": 1.05,
-      "atr_percent": 2.78,
+      "atr_percent": 2.77,
       "last_volume": 1736000,
       "avg_volume_14d": 2136692,
       "golden_cross": false,
@@ -1818,6 +1818,29 @@
       "golden_cross": false,
       "death_cross": false,
       "patterns": [],
+      "cup_handle_patterns": []
+    },
+    {
+      "symbol": "ALE",
+      "last_close": 67.9,
+      "sma150": 65.45,
+      "distance_percent": 3.74,
+      "atr": 0.13,
+      "atr_percent": 0.19,
+      "last_volume": 4388747,
+      "avg_volume_14d": 986350,
+      "golden_cross": false,
+      "death_cross": false,
+      "patterns": [
+        {
+          "date": "2025-12-04",
+          "days_ago": 8,
+          "pattern": "bearish_engulfing",
+          "signal": "bearish",
+          "confidence": 80,
+          "status": "pending"
+        }
+      ],
       "cup_handle_patterns": []
     },
     {
@@ -1959,6 +1982,20 @@
       "cup_handle_patterns": []
     },
     {
+      "symbol": "K",
+      "last_close": 83.44,
+      "sma150": 80.26,
+      "distance_percent": 3.97,
+      "atr": 0.11,
+      "atr_percent": 0.13,
+      "last_volume": 0,
+      "avg_volume_14d": 6000225,
+      "golden_cross": false,
+      "death_cross": false,
+      "patterns": [],
+      "cup_handle_patterns": []
+    },
+    {
       "symbol": "TXNM",
       "last_close": 59.33,
       "sma150": 57.05,
@@ -1979,7 +2016,7 @@
       "last_close": 174.95,
       "sma150": 174.99,
       "distance_percent": -0.02,
-      "atr": 4.1,
+      "atr": 4.09,
       "atr_percent": 2.36,
       "last_volume": 217800,
       "avg_volume_14d": 459528,
@@ -2075,7 +2112,7 @@
       "last_close": 35.94,
       "sma150": 36.12,
       "distance_percent": -0.5,
-      "atr": 0.79,
+      "atr": 0.8,
       "atr_percent": 2.1,
       "last_volume": 3720500,
       "avg_volume_14d": 3652892,
@@ -2218,7 +2255,7 @@
       "symbol": "TAC",
       "last_close": 13.43,
       "sma150": 13.61,
-      "distance_percent": -1.35,
+      "distance_percent": -1.34,
       "atr": 0.52,
       "atr_percent": 3.91,
       "last_volume": 1505900,
@@ -2257,7 +2294,7 @@
       "symbol": "IREN",
       "last_close": 40.97,
       "sma150": 41.6,
-      "distance_percent": -1.51,
+      "distance_percent": -1.5,
       "atr": 5.25,
       "atr_percent": 11.03,
       "last_volume": 23452200,
@@ -2620,7 +2657,7 @@
       "last_close": 72.31,
       "sma150": 74.85,
       "distance_percent": -3.39,
-      "atr": 2.09,
+      "atr": 2.1,
       "atr_percent": 2.86,
       "last_volume": 5470900,
       "avg_volume_14d": 5964421,
@@ -2858,7 +2895,7 @@
     {
       "symbol": "ABBV",
       "last_close": 232.86,
-      "sma150": 216.42,
+      "sma150": 216.41,
       "distance_percent": 7.6,
       "atr": 6.97,
       "atr_percent": 2.99,
@@ -3305,8 +3342,8 @@
     {
       "symbol": "AES",
       "last_close": 16.39,
-      "sma150": 13.69,
-      "distance_percent": 19.72,
+      "sma150": 13.7,
+      "distance_percent": 19.64,
       "atr": 0.56,
       "atr_percent": 3.41,
       "last_volume": 8081300,
@@ -3669,6 +3706,30 @@
       ],
       "cup_handle_patterns": [],
       "sector": "Healthcare"
+    },
+    {
+      "symbol": "ALE",
+      "last_close": 67.9,
+      "sma150": 65.45,
+      "distance_percent": 3.74,
+      "atr": 0.14,
+      "atr_percent": 0.21,
+      "last_volume": 4388747,
+      "avg_volume_14d": 986350,
+      "golden_cross": false,
+      "death_cross": false,
+      "patterns": [
+        {
+          "date": "2025-12-04",
+          "days_ago": 8,
+          "pattern": "bearish_engulfing",
+          "signal": "bearish",
+          "confidence": 80,
+          "status": "pending"
+        }
+      ],
+      "cup_handle_patterns": [],
+      "sector": "Utilities"
     },
     {
       "symbol": "ALG",
@@ -5769,8 +5830,8 @@
     {
       "symbol": "BG",
       "last_close": 121.88,
-      "sma150": 91.24,
-      "distance_percent": 33.58,
+      "sma150": 91.25,
+      "distance_percent": 33.57,
       "atr": 4.36,
       "atr_percent": 3.57,
       "last_volume": 1161700,
@@ -7912,8 +7973,8 @@
     {
       "symbol": "CNA",
       "last_close": 49.66,
-      "sma150": 46.25,
-      "distance_percent": 7.37,
+      "sma150": 46.24,
+      "distance_percent": 7.4,
       "atr": 1.06,
       "atr_percent": 2.14,
       "last_volume": 513900,
@@ -8559,8 +8620,8 @@
     {
       "symbol": "CRBG",
       "last_close": 30.91,
-      "sma150": 31.68,
-      "distance_percent": -2.43,
+      "sma150": 31.67,
+      "distance_percent": -2.4,
       "atr": 1.19,
       "atr_percent": 3.85,
       "last_volume": 2990700,
@@ -9418,8 +9479,8 @@
     {
       "symbol": "DECK",
       "last_close": 117.35,
-      "sma150": 102.46,
-      "distance_percent": 14.53,
+      "sma150": 102.45,
+      "distance_percent": 14.54,
       "atr": 4.99,
       "atr_percent": 4.25,
       "last_volume": 2043000,
@@ -9617,8 +9678,8 @@
     {
       "symbol": "DK",
       "last_close": 35.01,
-      "sma150": 31.1,
-      "distance_percent": 12.57,
+      "sma150": 31.09,
+      "distance_percent": 12.61,
       "atr": 1.86,
       "atr_percent": 5.32,
       "last_volume": 2194600,
@@ -10222,6 +10283,30 @@
       ],
       "cup_handle_patterns": [],
       "sector": "Consumer Cyclical"
+    },
+    {
+      "symbol": "EBR",
+      "last_close": 9.54,
+      "sma150": 8.76,
+      "distance_percent": 8.9,
+      "atr": 0.67,
+      "atr_percent": 7.05,
+      "last_volume": 982841,
+      "avg_volume_14d": 2130888,
+      "golden_cross": false,
+      "death_cross": false,
+      "patterns": [
+        {
+          "date": "2026-01-05",
+          "days_ago": 3,
+          "pattern": "bullish_engulfing",
+          "signal": "bullish",
+          "confidence": 80,
+          "status": "confirmed"
+        }
+      ],
+      "cup_handle_patterns": [],
+      "sector": "Other"
     },
     {
       "symbol": "EC",
@@ -10994,6 +11079,21 @@
       "sector": "Financial Services"
     },
     {
+      "symbol": "ERJ",
+      "last_close": 64.37,
+      "sma150": 58.18,
+      "distance_percent": 10.64,
+      "atr": 1.46,
+      "atr_percent": 2.27,
+      "last_volume": 325208,
+      "avg_volume_14d": 660130,
+      "golden_cross": false,
+      "death_cross": false,
+      "patterns": [],
+      "cup_handle_patterns": [],
+      "sector": "Other"
+    },
+    {
       "symbol": "ERO",
       "last_close": 29.93,
       "sma150": 22.05,
@@ -11619,8 +11719,8 @@
     {
       "symbol": "FERG",
       "last_close": 259.67,
-      "sma150": 235.72,
-      "distance_percent": 10.16,
+      "sma150": 235.71,
+      "distance_percent": 10.17,
       "atr": 6.43,
       "atr_percent": 2.48,
       "last_volume": 939100,
@@ -11664,8 +11764,8 @@
     {
       "symbol": "FGN",
       "last_close": 26.2,
-      "sma150": 25.78,
-      "distance_percent": 1.63,
+      "sma150": 25.79,
+      "distance_percent": 1.59,
       "atr": 0.2,
       "atr_percent": 0.75,
       "last_volume": 17800,
@@ -11733,6 +11833,21 @@
       "patterns": [],
       "cup_handle_patterns": [],
       "sector": "Financial Services"
+    },
+    {
+      "symbol": "FI",
+      "last_close": 69.85,
+      "sma150": 117.49,
+      "distance_percent": -40.55,
+      "atr": 1.63,
+      "atr_percent": 2.34,
+      "last_volume": 5058153,
+      "avg_volume_14d": 7859345,
+      "golden_cross": false,
+      "death_cross": false,
+      "patterns": [],
+      "cup_handle_patterns": [],
+      "sector": "Other"
     },
     {
       "symbol": "FICO",
@@ -11911,8 +12026,8 @@
     {
       "symbol": "FMS",
       "last_close": 24.59,
-      "sma150": 24.68,
-      "distance_percent": -0.36,
+      "sma150": 24.67,
+      "distance_percent": -0.32,
       "atr": 0.45,
       "atr_percent": 1.81,
       "last_volume": 494200,
@@ -12732,7 +12847,7 @@
     {
       "symbol": "GL",
       "last_close": 145.91,
-      "sma150": 137.28,
+      "sma150": 137.27,
       "distance_percent": 6.29,
       "atr": 3.49,
       "atr_percent": 2.39,
@@ -13804,8 +13919,8 @@
     {
       "symbol": "HOMB",
       "last_close": 29.44,
-      "sma150": 28.11,
-      "distance_percent": 4.73,
+      "sma150": 28.1,
+      "distance_percent": 4.77,
       "atr": 0.63,
       "atr_percent": 2.14,
       "last_volume": 1072900,
@@ -14540,8 +14655,8 @@
     {
       "symbol": "IONQ",
       "last_close": 33.18,
-      "sma150": 50.26,
-      "distance_percent": -33.98,
+      "sma150": 50.27,
+      "distance_percent": -34.0,
       "atr": 3.44,
       "atr_percent": 10.37,
       "last_volume": 13705900,
@@ -15036,6 +15151,21 @@
       "sector": "Financial Services"
     },
     {
+      "symbol": "K",
+      "last_close": 83.44,
+      "sma150": 80.26,
+      "distance_percent": 3.96,
+      "atr": 0.14,
+      "atr_percent": 0.16,
+      "last_volume": 0,
+      "avg_volume_14d": 6000226,
+      "golden_cross": false,
+      "death_cross": false,
+      "patterns": [],
+      "cup_handle_patterns": [],
+      "sector": "Consumer Defensive"
+    },
+    {
       "symbol": "KAI",
       "last_close": 333.51,
       "sma150": 306.79,
@@ -15128,8 +15258,8 @@
     {
       "symbol": "KDP",
       "last_close": 29.13,
-      "sma150": 28.56,
-      "distance_percent": 2.0,
+      "sma150": 28.57,
+      "distance_percent": 1.96,
       "atr": 0.76,
       "atr_percent": 2.59,
       "last_volume": 10659800,
@@ -16739,8 +16869,8 @@
     {
       "symbol": "MDU",
       "last_close": 20.27,
-      "sma150": 18.61,
-      "distance_percent": 8.92,
+      "sma150": 18.6,
+      "distance_percent": 8.98,
       "atr": 0.48,
       "atr_percent": 2.36,
       "last_volume": 1921000,
@@ -16849,8 +16979,8 @@
     {
       "symbol": "MFC",
       "last_close": 37.17,
-      "sma150": 33.5,
-      "distance_percent": 10.96,
+      "sma150": 33.49,
+      "distance_percent": 10.99,
       "atr": 0.91,
       "atr_percent": 2.45,
       "last_volume": 2928800,
@@ -19807,8 +19937,8 @@
     {
       "symbol": "PJT",
       "last_close": 152.12,
-      "sma150": 175.02,
-      "distance_percent": -13.08,
+      "sma150": 175.03,
+      "distance_percent": -13.09,
       "atr": 7.13,
       "atr_percent": 4.68,
       "last_volume": 331700,
@@ -20441,8 +20571,8 @@
     {
       "symbol": "PVH",
       "last_close": 69.33,
-      "sma150": 75.96,
-      "distance_percent": -8.73,
+      "sma150": 75.95,
+      "distance_percent": -8.72,
       "atr": 2.38,
       "atr_percent": 3.44,
       "last_volume": 818300,
@@ -20909,8 +21039,8 @@
     {
       "symbol": "REXR",
       "last_close": 37.57,
-      "sma150": 39.76,
-      "distance_percent": -5.51,
+      "sma150": 39.75,
+      "distance_percent": -5.48,
       "atr": 1.11,
       "atr_percent": 2.94,
       "last_volume": 3165500,
@@ -24248,8 +24378,8 @@
     {
       "symbol": "TRN",
       "last_close": 34.74,
-      "sma150": 27.32,
-      "distance_percent": 27.16,
+      "sma150": 27.31,
+      "distance_percent": 27.21,
       "atr": 0.99,
       "atr_percent": 2.86,
       "last_volume": 898100,
@@ -26249,8 +26379,8 @@
     {
       "symbol": "WMB",
       "last_close": 71.96,
-      "sma150": 60.25,
-      "distance_percent": 19.44,
+      "sma150": 60.24,
+      "distance_percent": 19.46,
       "atr": 2.11,
       "atr_percent": 2.93,
       "last_volume": 6808600,
@@ -26417,7 +26547,7 @@
     {
       "symbol": "WSO",
       "last_close": 422.83,
-      "sma150": 382.96,
+      "sma150": 382.95,
       "distance_percent": 10.41,
       "atr": 15.7,
       "atr_percent": 3.71,
@@ -26967,13 +27097,7 @@
       "sector": "Other"
     }
   ],
-  "failed_tickers": [
-    "ALE",
-    "EBR",
-    "ERJ",
-    "FI",
-    "K"
-  ],
+  "failed_tickers": [],
   "filtered_by_sma": [
     "A",
     "AA",
@@ -27366,6 +27490,7 @@
     "EA",
     "EAT",
     "EBAY",
+    "EBR",
     "EC",
     "ECG",
     "ECL",
@@ -27404,6 +27529,7 @@
     "EQR",
     "EQT",
     "ERIE",
+    "ERJ",
     "ERO",
     "ES",
     "ESAB",
@@ -27438,6 +27564,7 @@
     "FG",
     "FHI",
     "FHN",
+    "FI",
     "FICO",
     "FIHL",
     "FIS",
@@ -28232,17 +28359,17 @@
     "DJT"
   ],
   "summary": {
-    "hot_stocks_count": 107,
+    "hot_stocks_count": 109,
     "watch_list_count": 40,
-    "all_stocks_count": 1402,
-    "failed_count": 5,
-    "filtered_by_sma_count": 1255,
+    "all_stocks_count": 1407,
+    "failed_count": 0,
+    "filtered_by_sma_count": 1258,
     "total_analyzed": 1407
   },
   "pattern_summary": {
     "bullish_confirmed": 5,
     "pending_bullish": 20,
-    "pending_bearish": 28,
+    "pending_bearish": 29,
     "bearish_confirmed": 19
   }
 }
