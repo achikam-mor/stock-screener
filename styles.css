@@ -1615,7 +1615,7 @@ footer p {
 
 .candlestick-chart-container {
     position: relative;
-    height: 500px;
+    min-height: 500px;
     margin-bottom: 30px;
     background: var(--bg-dark);
     border-radius: 10px;
@@ -1623,9 +1623,9 @@ footer p {
     border: 1px solid var(--border-color);
 }
 
-.candlestick-chart-container canvas {
+.candlestick-chart-container > canvas {
     max-width: 100%;
-    height: 100% !important;
+    height: 500px !important;
 }
 
 .chart-stats {
@@ -1787,8 +1787,12 @@ footer p {
     }
     
     .candlestick-chart-container {
-        height: 350px;
+        min-height: 350px;
         padding: 15px;
+    }
+
+    .candlestick-chart-container > canvas {
+        height: 350px !important;
     }
     
     .chart-header {
@@ -2783,6 +2787,31 @@ body.fullscreen-active {
     .chart-stats {
         grid-template-columns: repeat(2, 1fr);
     }
+}
+
+/* TradingView Link */
+.tradingview-link-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.tradingview-btn {
+    display: inline-block;
+    padding: 12px 28px;
+    background: linear-gradient(135deg, #2962ff 0%, #1e88e5 100%);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tradingview-btn:hover {
+    background: linear-gradient(135deg, #1e88e5 0%, #1565c0 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(41, 98, 255, 0.4);
 }
 
 /* ============================================

@@ -7,6 +7,7 @@ let allFavoriteStocks = [];
 let filteredFavoriteStocks = [];
 let currentPage = 1;
 let stocksPerPage = 20;
+let sectorsData = null;
 
 // Adjust stocks per page based on screen size
 function updateStocksPerPage() {
@@ -21,6 +22,7 @@ function updateStocksPerPage() {
 document.addEventListener('DOMContentLoaded', () => {
     updateStocksPerPage();
     loadFavoritesPage();
+    loadSectorsData();
     
     // Re-adjust on window resize
     window.addEventListener('resize', () => {
@@ -40,6 +42,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+async function loadSectorsData() {
+    try {
+        const response = await fetch('sectors.json');
+        if (response.ok) {
+            sectorsData = await response.json();
+        }
+    } catch (error) {
+        console.log('Sectors data not available');
+    }
+}
+
 async function loadFavoritesPage() {
     const data = await loadResults();
     if (!data) {
@@ -49,6 +62,11 @@ async function loadFavoritesPage() {
 
     globalData = data;
     updateTimestamp(data);
+
+    // Ensure sectors data is loaded before rendering cards
+    if (!sectorsData) {
+        await loadSectorsData();
+    }
 
     // Get favorite tickers from localStorage
     const favoriteTickers = getFavorites();
@@ -209,6 +227,14 @@ function createFavoriteStockCard(stock) {
                     <span class="label">ATR14</span>
                     <span class="value">$${stock.atr.toFixed(2)} (${stock.atr_percent.toFixed(2)}%)</span>
                 </div>
+                ${(() => {
+                    const sector = sectorsData && sectorsData.stocks && sectorsData.stocks[stock.symbol];
+                    return sector ? `
+                <div class="data-row">
+                    <span class="label">Sector</span>
+                    <span class="value">${sector}</span>
+                </div>` : '';
+                })()}
                 <div class="data-row">
                     <span class="label">Volume</span>
                     <span class="value">${(stock.last_volume / 1000000).toFixed(2)}M</span>

@@ -14,6 +14,7 @@ let chartCache = {};  // Cache for loaded chart data
 let currentTicker = null;  // Currently displayed ticker
 let currentDateRange = 260;  // Default to 1 year (260 trading days)
 let currentChartData = null;  // Store current chart data for re-rendering
+let sectorsData = null;  // Sectors lookup data
 
 // Load stock list on page load (small file, loads instantly)
 document.addEventListener('DOMContentLoaded', async () => {
@@ -28,6 +29,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     } catch (error) {
         console.log('[Chart Viewer] Could not load results.json:', error);
+    }
+    
+    // Load sectors data for sector display
+    try {
+        const sectorsResponse = await fetch('sectors.json');
+        if (sectorsResponse.ok) {
+            sectorsData = await sectorsResponse.json();
+            console.log('[Chart Viewer] Sectors data loaded');
+        }
+    } catch (error) {
+        console.log('[Chart Viewer] Could not load sectors.json:', error);
     }
     
     try {
@@ -305,6 +317,22 @@ function displayCandlestickChart(ticker, data) {
     // Color current price based on change
     const priceChange = data.close[data.close.length - 1] - data.close[0];
     document.getElementById('current-price').style.color = priceChange >= 0 ? '#10b981' : '#ef4444';
+    
+    // Display sector
+    const sectorEl = document.getElementById('stock-sector');
+    if (sectorEl) {
+        const sector = (sectorsData && sectorsData.stocks && sectorsData.stocks[ticker]) || 'Unknown';
+        sectorEl.textContent = sector;
+    }
+    
+    // Update TradingView link
+    const tvContainer = document.getElementById('tradingview-link-container');
+    const tvLink = document.getElementById('tradingview-link');
+    if (tvContainer && tvLink) {
+        tvLink.href = `https://www.tradingview.com/chart/?symbol=${encodeURIComponent(ticker)}`;
+        tvLink.textContent = `📊 View ${ticker} on TradingView`;
+        tvContainer.style.display = 'block';
+    }
     
     // Destroy existing chart if any
     if (currentChart) {

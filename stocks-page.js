@@ -387,6 +387,14 @@ function createCompactStockCard(stock, type) {
                     <span class="label">ATR14</span>
                     <span class="value">$${stock.atr.toFixed(2)} (${stock.atr_percent.toFixed(2)}%)</span>
                 </div>
+                ${(() => {
+                    const sector = sectorsData && sectorsData.stocks && sectorsData.stocks[stock.symbol];
+                    return sector ? `
+                <div class="data-row">
+                    <span class="label">Sector</span>
+                    <span class="value">${sector}</span>
+                </div>` : '';
+                })()}
                 <div class="data-row">
                     <span class="label">Volume</span>
                     <span class="value">${(stock.last_volume / 1000000).toFixed(2)}M</span>
