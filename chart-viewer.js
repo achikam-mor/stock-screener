@@ -16,6 +16,73 @@ let currentDateRange = 260;  // Default to 1 year (260 trading days)
 let currentChartData = null;  // Store current chart data for re-rendering
 let sectorsData = null;  // Sectors lookup data
 
+// Shared crosshair state for synced vertical pointer across all charts
+let sharedCrosshair = { dateIndex: -1, visible: false };
+
+/**
+ * Sync crosshair plugin for sub-charts (volume, RSI, RS).
+ * Draws a vertical line at the same date index as the main chart crosshair.
+ * Also allows hovering on sub-charts to broadcast back to the main chart.
+ */
+const syncCrosshairPlugin = {
+    id: 'syncCrosshair',
+    afterEvent(chart, args) {
+        const { event } = args;
+        const { x } = event;
+        const inChartArea = args.inChartArea;
+
+        if (event.type === 'mouseout') {
+            sharedCrosshair.visible = false;
+            sharedCrosshair.dateIndex = -1;
+            // Redraw all charts to clear crosshair
+            requestAnimationFrame(() => {
+                if (currentChart) currentChart.draw();
+                if (volumeChart) volumeChart.draw();
+                if (rsiChart) rsiChart.draw();
+                if (rsChart) rsChart.draw();
+            });
+            args.changed = true;
+            return;
+        }
+
+        if (inChartArea && chart.scales.x) {
+            // Find the label index under the cursor
+            const xScale = chart.scales.x;
+            const labelIndex = Math.round(xScale.getValueForPixel(x));
+            const labels = chart.data.labels;
+            if (labelIndex >= 0 && labelIndex < labels.length) {
+                sharedCrosshair.dateIndex = labelIndex;
+                sharedCrosshair.visible = true;
+                // Trigger redraw on all charts
+                requestAnimationFrame(() => {
+                    if (currentChart) currentChart.draw();
+                    if (volumeChart && volumeChart !== chart) volumeChart.draw();
+                    if (rsiChart && rsiChart !== chart) rsiChart.draw();
+                    if (rsChart && rsChart !== chart) rsChart.draw();
+                });
+                args.changed = true;
+            }
+        }
+    },
+    afterDatasetsDraw(chart) {
+        if (!sharedCrosshair.visible || sharedCrosshair.dateIndex < 0) return;
+        const { ctx, chartArea: { top, bottom }, scales: { x } } = chart;
+        if (!x) return;
+        const xPos = x.getPixelForValue(sharedCrosshair.dateIndex);
+        if (xPos < chart.chartArea.left || xPos > chart.chartArea.right) return;
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.lineWidth = 1;
+        ctx.setLineDash([5, 5]);
+        ctx.strokeStyle = '#94a3b8';
+        ctx.moveTo(xPos, top);
+        ctx.lineTo(xPos, bottom);
+        ctx.stroke();
+        ctx.restore();
+    }
+};
+
 // Load stock list on page load (small file, loads instantly)
 document.addEventListener('DOMContentLoaded', async () => {
     console.log('[Chart Viewer] Initializing...');
@@ -354,11 +421,69 @@ function displayCandlestickChart(ticker, data) {
             const { inChartArea } = args;
             const { x, y } = args.event;
             
+            if (args.event.type === 'mouseout') {
+                chart.crosshair = { x: 0, y: 0, visible: false };
+                sharedCrosshair.visible = false;
+                sharedCrosshair.dateIndex = -1;
+                requestAnimationFrame(() => {
+                    if (volumeChart) volumeChart.draw();
+                    if (rsiChart) rsiChart.draw();
+                    if (rsChart) rsChart.draw();
+                });
+                args.changed = true;
+                return;
+            }
+            
             chart.crosshair = { x, y, visible: inChartArea };
+            
+            // Sync with sub-charts: find the date index under cursor
+            if (inChartArea && chart.scales.x) {
+                const timestamp = chart.scales.x.getValueForPixel(x);
+                // Find the closest date index in the sliced dates array
+                let closestIdx = 0;
+                let minDiff = Infinity;
+                for (let i = 0; i < dates.length; i++) {
+                    const diff = Math.abs(new Date(dates[i]).getTime() - timestamp);
+                    if (diff < minDiff) {
+                        minDiff = diff;
+                        closestIdx = i;
+                    }
+                }
+                sharedCrosshair.dateIndex = closestIdx;
+                sharedCrosshair.visible = true;
+                // Trigger redraw on sub-charts
+                requestAnimationFrame(() => {
+                    if (volumeChart) volumeChart.draw();
+                    if (rsiChart) rsiChart.draw();
+                    if (rsChart) rsChart.draw();
+                });
+            }
+            
             args.changed = true; // Force redraw
         },
         afterDatasetsDraw(chart, args, options) {
             const { ctx, chartArea: { left, right, top, bottom }, scales: { x, y } } = chart;
+            
+            // If sub-chart triggered the crosshair, draw vertical line from shared state
+            if (!chart.crosshair.visible && sharedCrosshair.visible && sharedCrosshair.dateIndex >= 0) {
+                const dateStr = dates[sharedCrosshair.dateIndex];
+                if (dateStr) {
+                    const ts = new Date(dateStr).getTime();
+                    const xPos = x.getPixelForValue(ts);
+                    if (xPos >= left && xPos <= right) {
+                        ctx.save();
+                        ctx.beginPath();
+                        ctx.lineWidth = 1;
+                        ctx.setLineDash([5, 5]);
+                        ctx.strokeStyle = '#94a3b8';
+                        ctx.moveTo(xPos, top);
+                        ctx.lineTo(xPos, bottom);
+                        ctx.stroke();
+                        ctx.restore();
+                    }
+                }
+                return;
+            }
             
             if (!chart.crosshair.visible) return;
             
@@ -919,6 +1044,7 @@ function renderVolumeChart(data) {
                 borderWidth: 1
             }]
         },
+        plugins: [syncCrosshairPlugin],
         options: {
             responsive: true,
             maintainAspectRatio: false,
@@ -1131,6 +1257,7 @@ function renderRSIChart(data) {
                 tension: 0.1
             }]
         },
+        plugins: [syncCrosshairPlugin],
         options: {
             responsive: true,
             maintainAspectRatio: false,
@@ -1350,6 +1477,7 @@ function renderRSChart(data) {
                 tension: 0.1
             }]
         },
+        plugins: [syncCrosshairPlugin],
         options: {
             responsive: true,
             maintainAspectRatio: false,
