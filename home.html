@@ -160,10 +160,28 @@
 
         <footer>
             <p class="disclaimer">This is not financial advice. Data provided for educational purposes only.</p>
+            <div style="margin-top:12px;">
+                <button onclick="clearCacheAndReload()" style="background:transparent;border:1px solid #475569;color:#94a3b8;font-size:0.75rem;padding:5px 12px;border-radius:6px;cursor:pointer;">
+                    🔄 Clear Cache &amp; Reload
+                </button>
+            </div>
         </footer>
     </div>
 
     <script src="common.js?v=3.18"></script>
     <script src="home.js?v=3.18"></script>
+    <script>
+        async function clearCacheAndReload() {
+            if ('serviceWorker' in navigator) {
+                const registrations = await navigator.serviceWorker.getRegistrations();
+                await Promise.all(registrations.map(r => r.unregister()));
+            }
+            if ('caches' in window) {
+                const keys = await caches.keys();
+                await Promise.all(keys.map(k => caches.delete(k)));
+            }
+            location.reload(true);
+        }
+    </script>
 </body>
 </html>
