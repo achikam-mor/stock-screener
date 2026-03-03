@@ -30,10 +30,10 @@
 'RRX', 'RTX', 'RYAN', 'S', 'SA', 'SAP', 'SBS', 'SBSW', 'SCCO', 'SE', 'SF', 'SHG', 'SII', 'SKE', 'SKM', 
 'SLB', 'SLG', 'SMCI', 'SMFG', 'SMG', 'SMR', 'SNAP', 'SNOW', 'SOBO', 'SON', 'SPHR', 'SPOT', 'SQM', 'SSL', 'STLA', 
 'STLD', 'STM', 'STNG', 'STVN', 'STX', 'SU', 'SUN', 'SUZ', 'SVV', 'SXI', 'TAK', 'TBBB', 'TD', 'TDC', 'TDW', 
-'TDY', 'TECK', 'TER', 'TEVA', 'TEX', 'TFII', 'TFPM', 'TGLS', 'TGT', 'THC', 'TIMB', 'TKO', 'TKR', 'TM', 'TME', 
-'TNET', 'TOST', 'TPH', 'TPL', 'TPR', 'TRGP', 'TRN', 'TRP', 'TS', 'TSLX', 'TSM', 'TTC', 'TTD', 'TTE', 'TX', 
-'TXT', 'TYL', 'U', 'UAA', 'UGP', 'UI', 'ULTA', 'UMC', 'UNF', 'UNP', 'UPS', 'USAC', 'USFD', 'UWMC', 'VAL', 
-'VALE', 'VEEV', 'VFC', 'VIRT', 'VIST', 'VIV', 'VLO', 'VNO', 'VRNS', 'VRT', 'VSCO', 'VSH', 'VTMX', 'VTR', 'VTRS', 
-'VZ', 'W', 'WAB', 'WBD', 'WBS', 'WCC', 'WD', 'WDAY', 'WDC', 'WDS', 'WELL', 'WF', 'WHD', 'WHR', 'WIT', 
-'WK', 'WLK', 'WMB', 'WMT', 'WPM', 'WPP', 'WTM', 'WWW', 'XOM', 'XPEV', 'XPO', 'YELP', 'YMM', 'YOU', 'ZBRA', 
-'ZGN', 'ZTO']
+'TDY', 'TECK', 'TER', 'TEVA', 'TEX', 'TFII', 'TFPM', 'TGLS', 'TGT', 'THC', 'THO', 'TIMB', 'TKO', 'TKR', 'TM', 
+'TME', 'TNET', 'TOST', 'TPH', 'TPL', 'TPR', 'TRGP', 'TRN', 'TRP', 'TS', 'TSLX', 'TSM', 'TTC', 'TTD', 'TTE', 
+'TX', 'TXT', 'TYL', 'U', 'UAA', 'UGP', 'UI', 'ULTA', 'UMC', 'UNF', 'UNP', 'UPS', 'USAC', 'USFD', 'UWMC', 
+'VAL', 'VALE', 'VEEV', 'VFC', 'VIRT', 'VIST', 'VIV', 'VLO', 'VNO', 'VRNS', 'VRT', 'VSCO', 'VSH', 'VST', 'VTMX', 
+'VTR', 'VTRS', 'VZ', 'W', 'WAB', 'WBD', 'WBS', 'WCC', 'WD', 'WDAY', 'WDC', 'WDS', 'WELL', 'WF', 'WHD', 
+'WHR', 'WIT', 'WK', 'WLK', 'WMB', 'WMT', 'WPM', 'WPP', 'WTM', 'WWW', 'XOM', 'XPEV', 'XPO', 'YELP', 'YMM', 
+'YOU', 'ZBRA', 'ZGN', 'ZTO']
