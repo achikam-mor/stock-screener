@@ -5,10 +5,10 @@
 'DT', 'DY', 'ED', 'ELAN', 'ENB', 'EPRT', 'EQT', 'ERJ', 'ET', 'ETR', 'EVRG', 'EXP', 'FE', 'FMX', 'FNF', 
 'FTS', 'GIB', 'GOLF', 'GRND', 'GVA', 'GWW', 'HASI', 'HESM', 'HI', 'HMC', 'HON', 'HRI', 'HST', 'IEX', 'IHS', 
 'IP', 'IQV', 'IREN', 'IRM', 'IX', 'JBL', 'JCI', 'JHG', 'KBR', 'KNSL', 'KO', 'KOF', 'KR', 'KRG', 'KT', 
-'LCII', 'LEVI', 'LPX', 'LUV', 'LW', 'MAR', 'MDU', 'MFG', 'MGA', 'MHK', 'MOH', 'MPLX', 'MTRN', 'MUSA', 'NDSN', 
-'NEE', 'NFG', 'NGVT', 'NHI', 'NI', 'NIO', 'NNN', 'NSA', 'NVR', 'O', 'OGS', 'OHI', 'OMF', 'OSK', 'PANW', 
-'PATH', 'PBA', 'PCAR', 'PCG', 'PCOR', 'PH', 'PHIN', 'PNR', 'PNW', 'POR', 'PTC', 'RCI', 'REVG', 'REXR', 'RITM', 
-'RNR', 'RRC', 'RTO', 'S', 'SAH', 'SBS', 'SBSW', 'SBUX', 'SEE', 'SEI', 'SHG', 'SID', 'SMFG', 'SPGI', 'SPOT', 
-'SR', 'STLD', 'STN', 'SUZ', 'SXI', 'SYF', 'TD', 'TDS', 'TECK', 'TEX', 'TFII', 'TRN', 'TROW', 'TTWO', 'UHAL', 
-'ULTA', 'UNFI', 'UNH', 'USFD', 'VIPS', 'VIRT', 'WAT', 'WBS', 'WELL', 'WHD', 'WIT', 'WM', 'WMT', 'WOR', 'WU', 
-'XPEV', 'XYL', 'YPF', 'YUMC', 'ZTO']
+'LCII', 'LEVI', 'LLY', 'LPL', 'LPX', 'LUV', 'LW', 'MAR', 'MDU', 'MFG', 'MGA', 'MHK', 'MOH', 'MPLX', 'MTRN', 
+'MUSA', 'NDSN', 'NEE', 'NFG', 'NGVT', 'NHI', 'NI', 'NIO', 'NNN', 'NSA', 'NVR', 'O', 'OGS', 'OHI', 'OMC', 
+'OMF', 'OSK', 'PANW', 'PATH', 'PBA', 'PCAR', 'PCG', 'PCOR', 'PH', 'PHIN', 'PNR', 'PNW', 'POR', 'PTC', 'RCI', 
+'REVG', 'REXR', 'RITM', 'RNR', 'RRC', 'RTO', 'S', 'SAH', 'SBS', 'SBSW', 'SBUX', 'SEE', 'SEI', 'SHG', 'SID', 
+'SMFG', 'SPGI', 'SPOT', 'SR', 'STLD', 'STN', 'SUZ', 'SXI', 'SYF', 'TD', 'TDS', 'TECK', 'TEX', 'TFII', 'TRN', 
+'TROW', 'TTWO', 'UHAL', 'ULTA', 'UNFI', 'UNH', 'USFD', 'VIPS', 'VIRT', 'WAT', 'WBS', 'WELL', 'WHD', 'WIT', 'WM', 
+'WMT', 'WOR', 'WU', 'XPEV', 'XYL', 'YPF', 'YUMC', 'ZTO']
