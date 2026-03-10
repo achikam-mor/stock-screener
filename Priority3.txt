@@ -26,6 +26,6 @@
 'SSL', 'STLA', 'STM', 'STNG', 'STVN', 'STX', 'SU', 'SUN', 'SVV', 'SWKS', 'TAK', 'TDW', 'TDY', 'TER', 'TEVA', 
 'TFPM', 'TGLS', 'TGT', 'THC', 'THO', 'TIC', 'TIMB', 'TKR', 'TME', 'TNET', 'TOST', 'TPH', 'TPL', 'TPR', 'TREX', 
 'TRGP', 'TRP', 'TS', 'TSM', 'TTC', 'TTD', 'TTE', 'TYL', 'U', 'UAA', 'UBER', 'UGP', 'UI', 'UMC', 'UNF', 
-'USAC', 'UWMC', 'VAL', 'VALE', 'VEEV', 'VG', 'VIST', 'VIV', 'VLO', 'VNO', 'VRNS', 'VRT', 'VSCO', 'VTR', 'VTRS', 
-'VZ', 'W', 'WAB', 'WBD', 'WD', 'WDAY', 'WDC', 'WDS', 'WF', 'WHR', 'WK', 'WLK', 'WMB', 'WPM', 'WPP', 
-'WWW', 'XOM', 'XPO', 'YELP', 'YMM', 'YOU', 'ZBRA']
+'USAC', 'UWMC', 'VAL', 'VALE', 'VEEV', 'VG', 'VIST', 'VIV', 'VLO', 'VNO', 'VRNS', 'VRT', 'VRTX', 'VSCO', 'VTR', 
+'VTRS', 'VZ', 'W', 'WAB', 'WBD', 'WD', 'WDAY', 'WDC', 'WDS', 'WF', 'WHR', 'WK', 'WLK', 'WMB', 'WPM', 
+'WPP', 'WWW', 'XOM', 'XPO', 'YELP', 'YMM', 'YOU', 'ZBRA']
