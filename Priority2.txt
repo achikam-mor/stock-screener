@@ -7,8 +7,8 @@
 'HMC', 'HSY', 'IBM', 'IBN', 'IHS', 'IP', 'IRM', 'IX', 'JBL', 'JHG', 'KBH', 'KBR', 'KMB', 'KNSL', 'KNX', 
 'KOF', 'KRG', 'KT', 'KWR', 'LAZ', 'LEVI', 'LNG', 'LPX', 'LULU', 'LUV', 'MAR', 'MDU', 'MGA', 'MHK', 'MMS', 
 'MOH', 'MPLX', 'MTRN', 'MUSA', 'NATL', 'NDSN', 'NEE', 'NJR', 'NPO', 'NTAP', 'NVR', 'NVS', 'OBDC', 'OHI', 'OMF', 
-'ONON', 'PAG', 'PANW', 'PBA', 'PCAR', 'PCG', 'PH', 'PLTR', 'PNR', 'PNW', 'POR', 'PRU', 'PTC', 'QGEN', 'REGN', 
-'REVG', 'REXR', 'RITM', 'RRC', 'RSI', 'RTO', 'S', 'SBS', 'SEE', 'SHG', 'SID', 'SOLV', 'SPGI', 'STE', 'STN', 
-'SUZ', 'SXI', 'SYF', 'TBBB', 'TD', 'TFII', 'TGS', 'TLK', 'TRMB', 'TROW', 'TRU', 'TSLX', 'TTWO', 'UAL', 'UHAL', 
-'UHS', 'ULTA', 'UNH', 'URI', 'USFD', 'VIPS', 'VIRT', 'VRSK', 'VRTX', 'VST', 'VTR', 'WAT', 'WBS', 'WELL', 'WF', 
-'WIT', 'WMT', 'WOR', 'WTM', 'WTW', 'WU', 'XYL', 'YUMC', 'ZTO', 'ZTS']
+'ONON', 'PAG', 'PANW', 'PBA', 'PCAR', 'PCG', 'PH', 'PII', 'PIPR', 'PLTR', 'PNR', 'PNW', 'POR', 'PRU', 'PTC', 
+'QGEN', 'REGN', 'REVG', 'REXR', 'RITM', 'RRC', 'RSI', 'RTO', 'S', 'SBS', 'SEE', 'SHG', 'SID', 'SOLV', 'SPGI', 
+'STE', 'STN', 'SUZ', 'SXI', 'SYF', 'TBBB', 'TD', 'TEX', 'TFII', 'TGS', 'TLK', 'TRMB', 'TROW', 'TRU', 'TSLX', 
+'TTWO', 'UAL', 'UBER', 'UHAL', 'UHS', 'ULTA', 'UNH', 'URI', 'USFD', 'VIPS', 'VIRT', 'VRSK', 'VRTX', 'VST', 'VTR', 
+'WAT', 'WBS', 'WELL', 'WF', 'WIT', 'WMT', 'WOR', 'WTM', 'WTW', 'WU', 'XYL', 'YUMC', 'ZTO', 'ZTS']
