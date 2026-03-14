@@ -12,6 +12,6 @@
 'NWS', 'NWSA', 'NXPI', 'OBDC', 'ODFL', 'OHI', 'OMF', 'ONON', 'PAG', 'PANW', 'PBA', 'PCG', 'PEN', 'PLTR', 'PNW', 
 'POR', 'PRU', 'PTC', 'QGEN', 'REVG', 'REXR', 'RITM', 'RJF', 'RMD', 'RNR', 'RPM', 'RTO', 'RVTY', 'RYN', 'SAH', 
 'SBUX', 'SEI', 'SGI', 'SIG', 'SLB', 'SNPS', 'SOLV', 'SPOT', 'SR', 'STE', 'STN', 'STNG', 'SXI', 'SYF', 'TAK', 
-'TDY', 'TECH', 'TEF', 'TEL', 'TEVA', 'TFPM', 'THC', 'TIMB', 'TKR', 'TLK', 'TMO', 'TRMB', 'TROW', 'TSCO', 'TSM', 
-'TTWO', 'UBS', 'UMC', 'UNH', 'VALE', 'VIPS', 'VLTO', 'VMC', 'VRSK', 'VST', 'WAB', 'WELL', 'WFC', 'WMT', 'WTM', 
-'WTW', 'XYL', 'XYZ', 'YPF', 'YUMC', 'ZTS']
+'TDY', 'TECH', 'TEL', 'TEVA', 'TFPM', 'THC', 'TIMB', 'TKR', 'TLK', 'TMO', 'TRMB', 'TROW', 'TSCO', 'TSM', 'TTWO', 
+'UBS', 'UMC', 'UNH', 'VALE', 'VIPS', 'VLTO', 'VMC', 'VRSK', 'VST', 'WAB', 'WELL', 'WFC', 'WMT', 'WTM', 'WTW', 
+'XYL', 'XYZ', 'YPF', 'YUMC', 'ZTS']
