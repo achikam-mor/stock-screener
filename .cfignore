@@ -1,0 +1,26 @@
+# Exclude large legacy combined file - site uses individual charts/ files instead
+chart_data.json
+
+# Exclude Python source files - not needed for static hosting
+*.py
+*.pyc
+__pycache__/
+venv/
+.venv/
+
+# Exclude Python data/config files
+requirements.txt
+*.backup
+
+# Exclude test files
+tests/
+
+# Exclude CSV reports
+*.csv
+
+# Exclude development/documentation files
+*.md
+*.txt
+
+# Exclude internal config
+.github/
