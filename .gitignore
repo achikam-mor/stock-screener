@@ -32,3 +32,6 @@ htmlcov/
 
 # Vercel deployment
 .vercel
+
+# Large legacy combined file - not used by frontend, too big for Cloudflare Pages (50MB+)
+chart_data.json
