@@ -3,8 +3,14 @@ name: Daily Stock Screening
 on:
   schedule:
     # NYSE opens at 9:30 AM ET, closes at 4:00 PM ET
-    # Runs 10 times per trading day (Monday to Friday)
-    # Different priority levels scanned at different times to reduce API calls
+    # Runs 12 times per trading day (Monday to Friday)
+    # 2 pre-market full-data fetches, then priority-based scans during trading hours
+    
+    # Pre-run A: 08:00 AM ET = 13:00 UTC - ALL stocks data fetch (60 min before first scan)
+    - cron: '0 13 * * 1-5'
+    
+    # Pre-run B: 08:30 AM ET = 13:30 UTC - ALL stocks data fetch (30 min before first scan)
+    - cron: '30 13 * * 1-5'
     
     # Run 1: 09:00 AM ET = 14:00 UTC - Priority 1 only
     - cron: '0 14 * * 1-5'
@@ -70,6 +76,16 @@ jobs:
           # Determine mode based on schedule time
           SCHEDULE="${{ github.event.schedule }}"
           case "$SCHEDULE" in
+            "0 13 * * 1-5")
+              # Pre-run A: 08:00 AM ET - ALL stocks (pre-market, 60 min before first scan)
+              echo "mode=all" >> $GITHUB_OUTPUT
+              echo "📋 Pre-run A (08:00 ET) - fetching ALL stocks data (60 min pre-market)"
+              ;;
+            "30 13 * * 1-5")
+              # Pre-run B: 08:30 AM ET - ALL stocks (pre-market, 30 min before first scan)
+              echo "mode=all" >> $GITHUB_OUTPUT
+              echo "📋 Pre-run B (08:30 ET) - fetching ALL stocks data (30 min pre-market)"
+              ;;
             "0 14 * * 1-5")
               # Run 1: 09:00 AM ET - Priority 1 only
               echo "mode=priority1" >> $GITHUB_OUTPUT
