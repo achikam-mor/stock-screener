@@ -168,7 +168,8 @@ async function cacheFirstStrategy(request, cacheName) {
  */
 async function networkFirstStrategy(request, cacheName) {
     try {
-        const networkResponse = await fetch(request);
+        // Use redirect:'follow' to handle Cloudflare redirects (e.g. HTTP→HTTPS, trailing slash)
+        const networkResponse = await fetch(request, { redirect: 'follow' });
         
         // Cache successful responses
         if (networkResponse.ok) {
