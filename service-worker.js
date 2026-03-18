@@ -3,9 +3,9 @@
  * Provides offline support and caching for better performance
  */
 
-const CACHE_NAME = 'stock-screener-v10';
-const STATIC_CACHE = 'static-v10';
-const DATA_CACHE = 'data-v10';
+const CACHE_NAME = 'stock-screener-v11';
+const STATIC_CACHE = 'static-v11';
+const DATA_CACHE = 'data-v11';
 
 // Derive base path dynamically — works for both root and subdirectory deployments
 // e.g. '/stock-screener/' when served from a GitHub Pages project page
@@ -112,13 +112,17 @@ self.addEventListener('fetch', (event) => {
         return;
     }
     
+    // Don't intercept navigation requests — let the browser handle them natively.
+    // This avoids ERR_FAILED caused by Cloudflare redirects (e.g. HTTP→HTTPS, trailing slash)
+    // being returned to a request whose redirect mode is not 'follow'.
+    if (request.mode === 'navigate') {
+        return;
+    }
+    
     // Handle different types of requests
     if (url.pathname.endsWith('.json')) {
         // JSON data files - Network first, cache fallback
         event.respondWith(networkFirstStrategy(request, DATA_CACHE));
-    } else if (url.pathname.endsWith('.html') || url.pathname === '/' || url.pathname === SW_BASE) {
-        // HTML pages - Always network first so navigation always gets latest deployment
-        event.respondWith(networkFirstStrategy(request, STATIC_CACHE));
     } else if (url.hostname !== location.hostname) {
         // External CDN resources - Cache first
         event.respondWith(cacheFirstStrategy(request, STATIC_CACHE));
