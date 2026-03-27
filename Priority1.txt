@@ -41,7 +41,7 @@
 'SYY', 'TAC', 'TAL', 'TAP', 'TBB', 'TBBB', 'TD', 'TDC', 'TDS', 'TDY', 'TECK', 'TEF', 'TEL', 'TEO', 'TEVA', 
 'TEX', 'TFC', 'TFII', 'TFPM', 'TFX', 'TGNA', 'THC', 'THG', 'TJX', 'TKC', 'TKO', 'TM', 'TMHC', 'TMUS', 'TNL', 
 'TOL', 'TPC', 'TR', 'TRN', 'TRNO', 'TRV', 'TSM', 'TT', 'TTAM', 'TV', 'TWLO', 'TX', 'TXN', 'TXNM', 'TXT', 
-'UAA', 'UCB', 'UDR', 'UE', 'UGI', 'ULS', 'UMC', 'UNM', 'UNMA', 'UNP', 'UPS', 'USB', 'VAC', 'VFC', 'VIK', 
-'VMI', 'VOYA', 'VRSN', 'VRTX', 'VSCO', 'VSH', 'VTMX', 'VTR', 'VTRS', 'VVV', 'WBS', 'WCC', 'WCN', 'WEC', 'WELL', 
-'WES', 'WEX', 'WF', 'WFC', 'WFG', 'WH', 'WHD', 'WLYB', 'WM', 'WMT', 'WOR', 'WPC', 'WPM', 'WRB', 'WSM', 
-'WSO', 'WST', 'WTM', 'WTRG', 'WTS', 'WU', 'WY', 'XEL', 'YUM', 'YUMC', 'ZBH', 'ZGN', 'ZK', 'ZWS']
+'UAA', 'UCB', 'UDR', 'UE', 'UGI', 'ULS', 'UMC', 'UNM', 'UNMA', 'UNP', 'UPS', 'USB', 'VAC', 'VFC', 'VICI', 
+'VIK', 'VMI', 'VOYA', 'VRSN', 'VRTX', 'VSCO', 'VSH', 'VTMX', 'VTR', 'VTRS', 'VVV', 'WBS', 'WCC', 'WCN', 'WEC', 
+'WELL', 'WES', 'WEX', 'WF', 'WFC', 'WFG', 'WH', 'WHD', 'WLYB', 'WM', 'WMT', 'WOR', 'WPC', 'WPM', 'WRB', 
+'WSM', 'WSO', 'WST', 'WTM', 'WTRG', 'WTS', 'WU', 'WY', 'XEL', 'YUM', 'YUMC', 'ZBH', 'ZGN', 'ZK', 'ZWS']
