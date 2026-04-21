@@ -1,0 +1,158 @@
+name: Daily Stock Screening
+
+on:
+  schedule:
+    # NYSE opens at 9:30 AM ET, closes at 4:00 PM ET
+    # Runs 12 times per trading day (Monday to Friday)
+    # 2 pre-market full-data fetches, then priority-based scans during trading hours
+    
+    # Pre-run A: 08:00 AM ET = 13:00 UTC - ALL stocks data fetch (60 min before first scan)
+    - cron: '0 13 * * 1-5'
+    
+    # Pre-run B: 08:30 AM ET = 13:30 UTC - ALL stocks data fetch (30 min before first scan)
+    - cron: '30 13 * * 1-5'
+    
+    # Run 1: 09:00 AM ET = 14:00 UTC - Priority 1 only
+    - cron: '0 14 * * 1-5'
+    
+    # Run 2: 09:50 AM ET = 14:50 UTC - Priority 1 + 2
+    - cron: '50 14 * * 1-5'
+    
+    # Run 3: 10:40 AM ET = 15:40 UTC - ALL stocks (full scan + reclassification)
+    - cron: '40 15 * * 1-5'
+    
+    # Run 4: 11:30 AM ET = 16:30 UTC - Priority 1 only
+    - cron: '30 16 * * 1-5'
+    
+    # Run 5: 12:20 PM ET = 17:20 UTC - Priority 1 + 2
+    - cron: '20 17 * * 1-5'
+    
+    # Run 6: 13:10 PM ET = 18:10 UTC - ALL stocks (full scan + reclassification)
+    - cron: '10 18 * * 1-5'
+    
+    # Run 7: 14:00 PM ET = 19:00 UTC - Priority 1 only
+    - cron: '0 19 * * 1-5'
+    
+    # Run 8: 14:50 PM ET = 19:50 UTC - Priority 1 + 2
+    - cron: '50 19 * * 1-5'
+    
+    # Run 9: 15:40 PM ET = 20:40 UTC - Priority 1 only
+    - cron: '40 20 * * 1-5'
+    
+    # Run 10: 16:10 PM ET = 21:10 UTC - ALL stocks (full scan + reclassification)
+    - cron: '10 21 * * 1-5'
+    
+  workflow_dispatch: # Manual trigger scans ALL stocks
+
+jobs:
+  run-screening:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+        cache: 'pip'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Determine scan mode
+      id: scan-mode
+      run: |
+        # Check if this is a manual trigger
+        if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+          echo "mode=manual" >> $GITHUB_OUTPUT
+          echo "📋 Manual trigger detected - scanning ALL stocks"
+        else
+          # Determine mode based on schedule time
+          SCHEDULE="${{ github.event.schedule }}"
+          case "$SCHEDULE" in
+            "0 13 * * 1-5")
+              # Pre-run A: 08:00 AM ET - ALL stocks (pre-market, 60 min before first scan)
+              echo "mode=all" >> $GITHUB_OUTPUT
+              echo "📋 Pre-run A (08:00 ET) - fetching ALL stocks data (60 min pre-market)"
+              ;;
+            "30 13 * * 1-5")
+              # Pre-run B: 08:30 AM ET - ALL stocks (pre-market, 30 min before first scan)
+              echo "mode=all" >> $GITHUB_OUTPUT
+              echo "📋 Pre-run B (08:30 ET) - fetching ALL stocks data (30 min pre-market)"
+              ;;
+            "0 14 * * 1-5")
+              # Run 1: 09:00 AM ET - Priority 1 only
+              echo "mode=priority1" >> $GITHUB_OUTPUT
+              echo "📋 Run 1 (09:00 ET) - scanning Priority 1 stocks only"
+              ;;
+            "50 14 * * 1-5")
+              # Run 2: 09:50 AM ET - Priority 1 + 2
+              echo "mode=priority1_2" >> $GITHUB_OUTPUT
+              echo "📋 Run 2 (09:50 ET) - scanning Priority 1+2 stocks"
+              ;;
+            "40 15 * * 1-5")
+              # Run 3: 10:40 AM ET - ALL stocks (full scan)
+              echo "mode=all" >> $GITHUB_OUTPUT
+              echo "📋 Run 3 (10:40 ET) - scanning ALL stocks + reclassification"
+              ;;
+            "30 16 * * 1-5")
+              # Run 4: 11:30 AM ET - Priority 1 only
+              echo "mode=priority1" >> $GITHUB_OUTPUT
+              echo "📋 Run 4 (11:30 ET) - scanning Priority 1 stocks only"
+              ;;
+            "20 17 * * 1-5")
+              # Run 5: 12:20 PM ET - Priority 1 + 2
+              echo "mode=priority1_2" >> $GITHUB_OUTPUT
+              echo "📋 Run 5 (12:20 ET) - scanning Priority 1+2 stocks"
+              ;;
+            "10 18 * * 1-5")
+              # Run 6: 13:10 PM ET - ALL stocks (full scan)
+              echo "mode=all" >> $GITHUB_OUTPUT
+              echo "📋 Run 6 (13:10 ET) - scanning ALL stocks + reclassification"
+              ;;
+            "0 19 * * 1-5")
+              # Run 7: 14:00 PM ET - Priority 1 only
+              echo "mode=priority1" >> $GITHUB_OUTPUT
+              echo "📋 Run 7 (14:00 ET) - scanning Priority 1 stocks only"
+              ;;
+            "50 19 * * 1-5")
+              # Run 8: 14:50 PM ET - Priority 1 + 2
+              echo "mode=priority1_2" >> $GITHUB_OUTPUT
+              echo "📋 Run 8 (14:50 ET) - scanning Priority 1+2 stocks"
+              ;;
+            "40 20 * * 1-5")
+              # Run 9: 15:40 PM ET - Priority 1 only
+              echo "mode=priority1" >> $GITHUB_OUTPUT
+              echo "📋 Run 9 (15:40 ET) - scanning Priority 1 stocks only"
+              ;;
+            "10 21 * * 1-5")
+              # Run 10: 16:10 PM ET - ALL stocks (full scan)
+              echo "mode=all" >> $GITHUB_OUTPUT
+              echo "📋 Run 10 (16:10 ET) - scanning ALL stocks + reclassification"
+              ;;
+            *)
+              # Default to all if unknown schedule
+              echo "mode=all" >> $GITHUB_OUTPUT
+              echo "📋 Unknown schedule - scanning ALL stocks"
+              ;;
+          esac
+        fi
+    
+    - name: Run stock screening
+      run: |
+        python main.py --mode ${{ steps.scan-mode.outputs.mode }}
+    
+    - name: Commit and push results
+      run: |
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
+        git add results.json stock-list.json market_data.json Priority1.txt Priority2.txt Priority3.txt charts/
+        git diff --quiet && git diff --staged --quiet || (git commit -m "Update stock screening results - $(date +'%Y-%m-%d %H:%M:%S') [Mode: ${{ steps.scan-mode.outputs.mode }}]" && git push)
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
