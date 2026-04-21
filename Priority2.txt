@@ -9,9 +9,9 @@
 'JEF', 'JLL', 'JOE', 'KBR', 'KEY', 'KIM', 'KKR', 'KMI', 'KMPR', 'KRC', 'KRG', 'KTB', 'LB', 'LDOS', 'LEA', 
 'LNG', 'LPL', 'LPX', 'LUMN', 'MDT', 'MFC', 'MFG', 'MGM', 'MGY', 'MOS', 'MRK', 'MS', 'MSM', 'MSTR', 'MTCH', 
 'NDSN', 'NEM', 'NIO', 'NJR', 'NOV', 'OKE', 'OLN', 'ONON', 'OR', 'ORCL', 'PAGS', 'PAYX', 'PFS', 'PH', 'PLD', 
-'PLTR', 'PNC', 'PNR', 'PNW', 'PSA', 'PSKY', 'PSTG', 'QBTS', 'QCOM', 'QGEN', 'QSR', 'QTWO', 'RCI', 'RDDT', 'REG', 
-'REVG', 'RHP', 'RL', 'RMD', 'RNR', 'RNST', 'ROP', 'RS', 'RY', 'SAM', 'SAN', 'SBAC', 'SBUX', 'SHAK', 'SHEL', 
-'SID', 'SITE', 'SKT', 'SLF', 'SMFG', 'SMG', 'SN', 'SNAP', 'SPG', 'SPNT', 'STZ', 'SUN', 'SVV', 'TDY', 'TEO', 
-'TEX', 'TFX', 'TGLS', 'TIC', 'TNL', 'TOST', 'TRN', 'TSCO', 'TT', 'TTC', 'TU', 'TV', 'TX', 'UHS', 'UL', 
-'USB', 'USFD', 'VG', 'VIPS', 'VNO', 'VRSN', 'W', 'WBS', 'WEX', 'WHD', 'WMT', 'WPP', 'WRBY', 'WTM', 'XOM', 
-'XPEV', 'XYL', 'XYZ']
+'PLTR', 'PNC', 'PNR', 'PNW', 'PSA', 'PSKY', 'QBTS', 'QCOM', 'QGEN', 'QSR', 'QTWO', 'RCI', 'RDDT', 'REG', 'REVG', 
+'RHP', 'RL', 'RMD', 'RNR', 'RNST', 'ROP', 'RS', 'RY', 'SAM', 'SAN', 'SBAC', 'SBUX', 'SHAK', 'SHEL', 'SID', 
+'SITE', 'SKT', 'SLF', 'SMFG', 'SMG', 'SN', 'SNAP', 'SPG', 'SPNT', 'STZ', 'SUN', 'SVV', 'TDY', 'TEO', 'TEX', 
+'TFX', 'TGLS', 'TIC', 'TNL', 'TOST', 'TRN', 'TSCO', 'TT', 'TTC', 'TU', 'TV', 'TX', 'UHS', 'UL', 'USB', 
+'USFD', 'VG', 'VIPS', 'VNO', 'VRSN', 'W', 'WBS', 'WEX', 'WHD', 'WMT', 'WPP', 'WRBY', 'WTM', 'XOM', 'XPEV', 
+'XYL', 'XYZ']
