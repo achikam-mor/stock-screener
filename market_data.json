@@ -14,7 +14,7 @@
     "gold": {
       "name": "Gold",
       "symbol": "GC=F",
-      "price": 4738.3,
+      "price": 4740.9,
       "previous_close": 0,
       "change": 0,
       "change_percent": 0,
@@ -23,7 +23,7 @@
     "silver": {
       "name": "Silver",
       "symbol": "SI=F",
-      "price": 75.73,
+      "price": 76.33,
       "previous_close": 0,
       "change": 0,
       "change_percent": 0,
@@ -32,7 +32,7 @@
     "bitcoin": {
       "name": "Bitcoin",
       "symbol": "BTC-USD",
-      "price": 77737.02,
+      "price": 78068.03,
       "previous_close": 0,
       "change": 0,
       "change_percent": 0,
@@ -41,12 +41,12 @@
     "ethereum": {
       "name": "Ethereum",
       "symbol": "ETH-USD",
-      "price": 2308.42,
+      "price": 2324.63,
       "previous_close": 0,
       "change": 0,
       "change_percent": 0,
       "available": true
     }
   },
-  "last_updated": "2026-04-24T15:18:59.767833"
+  "last_updated": "2026-04-24T16:00:02.285185"
 }
