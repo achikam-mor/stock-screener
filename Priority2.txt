@@ -7,9 +7,9 @@
 'HSBC', 'IAG', 'IBN', 'IEX', 'IFF', 'ING', 'IOT', 'IQV', 'IR', 'IREN', 'IVZ', 'JCI', 'JKHY', 'JOBY', 'KB', 
 'KEP', 'KKR', 'KNF', 'KNX', 'KRG', 'LAC', 'LIN', 'LNC', 'LOAR', 'LPX', 'LVS', 'MANU', 'MAR', 'MCD', 'MCK', 
 'MCY', 'MDU', 'MFC', 'MFG', 'MGY', 'MHK', 'MNST', 'MOH', 'MS', 'MTCH', 'MTN', 'MUR', 'NEM', 'NFLX', 'NJR', 
-'NOC', 'NOV', 'NRG', 'NTRS', 'ODFL', 'OKE', 'OMF', 'OTIS', 'OXY', 'PBA', 'PFG', 'PINS', 'PM', 'PSKY', 'PTC', 
-'PVH', 'QSR', 'QXO', 'RACE', 'RDDT', 'RELX', 'REVG', 'RHP', 'ROST', 'RY', 'SA', 'SAM', 'SBAC', 'SCCO', 'SHG', 
-'SID', 'SKY', 'SLF', 'SMFG', 'SNAP', 'SNDR', 'SNN', 'SNPS', 'SONY', 'SPGI', 'SPNT', 'STN', 'SWKS', 'TEX', 'TFX', 
-'TGT', 'TLK', 'TM', 'TPC', 'TRP', 'TRU', 'TSLX', 'TSN', 'TT', 'TTC', 'UGI', 'UL', 'ULTA', 'URI', 'VIK', 
-'VLTO', 'VRNS', 'VTMX', 'WBS', 'WCN', 'WD', 'WES', 'WFC', 'WMB', 'WPM', 'WSO', 'WWW', 'WYNN', 'XOM', 'XYZ', 
-'YMM', 'ZBH', 'ZBRA', 'ZTO']
+'NOC', 'NOV', 'NRG', 'NTRS', 'NU', 'ODFL', 'OKE', 'OMF', 'OTIS', 'OXY', 'PBA', 'PFG', 'PINS', 'PM', 'PSKY', 
+'PTC', 'PVH', 'QSR', 'QXO', 'RACE', 'RDDT', 'RELX', 'REVG', 'RHP', 'ROST', 'RY', 'SA', 'SAM', 'SBAC', 'SCCO', 
+'SHG', 'SID', 'SKY', 'SLF', 'SMFG', 'SNAP', 'SNDR', 'SNN', 'SNPS', 'SONY', 'SPGI', 'SPNT', 'STN', 'SUN', 'SWKS', 
+'TEX', 'TFX', 'TGT', 'TLK', 'TM', 'TPC', 'TRP', 'TRU', 'TSLX', 'TSN', 'TT', 'TTC', 'UGI', 'UL', 'ULTA', 
+'URI', 'VIK', 'VLTO', 'VRNS', 'VTMX', 'WBS', 'WCN', 'WD', 'WES', 'WFC', 'WMB', 'WPM', 'WSO', 'WWW', 'WYNN', 
+'XOM', 'XYZ', 'YMM', 'ZBH', 'ZBRA', 'ZTO']
