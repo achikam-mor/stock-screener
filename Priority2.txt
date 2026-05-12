@@ -8,8 +8,8 @@
 'INGM', 'IQV', 'IR', 'IVZ', 'JCI', 'JKHY', 'KKR', 'KNX', 'KRG', 'LKQ', 'LNC', 'LOAR', 'LPX', 'LVS', 'LYV', 
 'MANU', 'MAR', 'MCD', 'MCK', 'MCY', 'MDU', 'MFC', 'MFG', 'MGA', 'MGY', 'MHK', 'MNST', 'MO', 'MOS', 'MRP', 
 'MS', 'MSTY', 'NATL', 'NEM', 'NGVT', 'NJR', 'NNE', 'NOC', 'NRG', 'NTRS', 'NXE', 'ODFL', 'OKE', 'OKLO', 'OMF', 
-'ORA', 'OTIS', 'PBA', 'PFG', 'PINS', 'PM', 'PTC', 'QSR', 'RACE', 'RELX', 'REVG', 'RHP', 'ROST', 'RY', 'SA', 
-'SHG', 'SID', 'SIG', 'SITE', 'SLF', 'SMFG', 'SNN', 'SNPS', 'STE', 'STN', 'TAP', 'TDC', 'TEX', 'TGT', 'TM', 
-'TPC', 'TRP', 'TRU', 'TSLX', 'TSN', 'TTC', 'TX', 'UAA', 'UL', 'ULTA', 'UNP', 'URI', 'VIK', 'VOYA', 'VRNS', 
-'VRSN', 'VST', 'VTR', 'WBS', 'WELL', 'WES', 'WEX', 'WFC', 'WMB', 'WMT', 'WPM', 'WPP', 'WSO', 'WWW', 'WYNN', 
-'XOM', 'XYZ', 'YMM', 'ZETA', 'ZTO']
+'ORA', 'OTIS', 'PBA', 'PFG', 'PINS', 'PM', 'PTC', 'QSR', 'R', 'RACE', 'RELX', 'REVG', 'RHP', 'ROST', 'RY', 
+'SA', 'SHG', 'SID', 'SIG', 'SITE', 'SLF', 'SMFG', 'SNN', 'SNPS', 'STE', 'STN', 'TAP', 'TDC', 'TEX', 'TGT', 
+'TM', 'TPC', 'TRP', 'TRU', 'TSLX', 'TSN', 'TTC', 'TX', 'UAA', 'UL', 'ULTA', 'UNP', 'URI', 'VIK', 'VOYA', 
+'VRNS', 'VRSN', 'VST', 'VTR', 'WBS', 'WELL', 'WES', 'WEX', 'WFC', 'WMB', 'WMT', 'WPM', 'WPP', 'WSO', 'WWW', 
+'WYNN', 'XOM', 'XYZ', 'YMM', 'ZETA', 'ZTO']
