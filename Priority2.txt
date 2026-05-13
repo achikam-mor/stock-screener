@@ -11,5 +11,6 @@
 'MUFG', 'NATL', 'NEM', 'NGVT', 'NIO', 'NJR', 'NNE', 'NOC', 'NTAP', 'NXE', 'OKE', 'OMF', 'OSK', 'OTIS', 'PAGS', 
 'PAY', 'PAYX', 'PBA', 'PBF', 'PFG', 'PM', 'PSTG', 'PSX', 'PTC', 'QS', 'R', 'REVG', 'RHP', 'RITM', 'ROST', 
 'SA', 'SITE', 'SLF', 'SMFG', 'SNDR', 'SNN', 'SNPS', 'SPGI', 'STE', 'SYK', 'TD', 'TFX', 'TGT', 'TM', 'TRU', 
-'TSLX', 'TSN', 'TX', 'UAA', 'UBS', 'UL', 'UNP', 'USAC', 'VIPS', 'VLTO', 'VOYA', 'VTR', 'WAB', 'WD', 'WELL', 
-'WES', 'WEX', 'WFC', 'WMB', 'WMT', 'WPM', 'WPP', 'WSM', 'WSO', 'WST', 'XOM', 'XPEV', 'ZBH', 'ZETA', 'ZTO']
+'TSLX', 'TSN', 'TX', 'UAA', 'UBS', 'UL', 'UNP', 'URI', 'USAC', 'VIPS', 'VLTO', 'VOYA', 'VTR', 'WAB', 'WD', 
+'WELL', 'WES', 'WEX', 'WFC', 'WMB', 'WMT', 'WPM', 'WPP', 'WSM', 'WSO', 'WST', 'XOM', 'XPEV', 'ZBH', 'ZETA', 
+'ZTO']
