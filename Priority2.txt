@@ -7,10 +7,10 @@
 'ETR', 'EXE', 'EXK', 'EXPE', 'FRT', 'FUN', 'GGG', 'GMED', 'GPI', 'GPN', 'GRND', 'GS', 'HAE', 'HAYW', 'HCA', 
 'HCI', 'HGTY', 'HI', 'HLI', 'HMC', 'HOG', 'HR', 'HRL', 'HSBC', 'IBN', 'IEX', 'IFF', 'IHG', 'INGM', 'IQV', 
 'IR', 'IREN', 'IVZ', 'JBTM', 'JCI', 'JOBY', 'KKR', 'KMI', 'KMX', 'LIN', 'LKQ', 'LNC', 'LOAR', 'LOW', 'LPL', 
-'LPX', 'LVS', 'LYV', 'MANU', 'MCD', 'MCK', 'MCY', 'MDU', 'MFC', 'MFG', 'MGA', 'MGY', 'MHK', 'MNST', 'MO', 
-'MOS', 'MRP', 'MS', 'MSTY', 'MTH', 'MTN', 'MUFG', 'MUR', 'NATL', 'NEM', 'NGVT', 'NIO', 'NJR', 'NNE', 'NOC', 
-'NTAP', 'NXE', 'OKE', 'OMF', 'OSK', 'OTIS', 'PAY', 'PAYC', 'PAYX', 'PBA', 'PFG', 'PM', 'PSTG', 'R', 'REVG', 
-'RHP', 'RITM', 'ROL', 'ROST', 'RY', 'SA', 'SID', 'SITE', 'SLF', 'SMFG', 'SNN', 'SNPS', 'SPGI', 'STE', 'SYK', 
-'TAP', 'TFX', 'TGT', 'TLK', 'TM', 'TRU', 'TSLX', 'TSN', 'TT', 'TX', 'UAA', 'UBS', 'UL', 'ULTA', 'URI', 
-'VIPS', 'VLTO', 'VOYA', 'VTR', 'WAB', 'WCN', 'WELL', 'WES', 'WEX', 'WFC', 'WHD', 'WMB', 'WMT', 'WPM', 'WPP', 
-'WSM', 'WST', 'WWW', 'XOM', 'XPEV', 'ZETA']
+'LPX', 'LVS', 'LYV', 'MAIN', 'MANU', 'MCD', 'MCK', 'MCY', 'MDU', 'MFC', 'MFG', 'MGA', 'MGY', 'MHK', 'MNST', 
+'MO', 'MOS', 'MRP', 'MS', 'MSTY', 'MTCH', 'MTH', 'MTN', 'MUFG', 'MUR', 'NATL', 'NEM', 'NGVT', 'NIO', 'NJR', 
+'NNE', 'NOC', 'NTAP', 'NXE', 'OKE', 'OMF', 'OSK', 'OTIS', 'PAGS', 'PAY', 'PAYC', 'PAYX', 'PBA', 'PFG', 'PM', 
+'PSTG', 'R', 'REVG', 'RHP', 'RITM', 'ROL', 'ROST', 'RY', 'SA', 'SID', 'SITE', 'SLF', 'SMFG', 'SNDR', 'SNN', 
+'SNPS', 'SPGI', 'STE', 'SUZ', 'SYK', 'TAP', 'TFX', 'TGT', 'TLK', 'TM', 'TRU', 'TSLX', 'TSN', 'TT', 'TX', 
+'UAA', 'UBS', 'UL', 'ULTA', 'UNP', 'URI', 'VIPS', 'VLTO', 'VOYA', 'VTR', 'WAB', 'WCN', 'WD', 'WELL', 'WES', 
+'WEX', 'WFC', 'WHD', 'WMB', 'WMT', 'WPM', 'WPP', 'WSM', 'WST', 'WWW', 'XOM', 'XPEV', 'ZETA']
