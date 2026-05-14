@@ -11,4 +11,4 @@
 'RDDT', 'REVG', 'RHP', 'RITM', 'ROST', 'RXO', 'RY', 'S', 'SCCO', 'SHG', 'SID', 'SIG', 'SKY', 'SLF', 'SMFG', 
 'SNN', 'SNPS', 'SPGI', 'STE', 'STLA', 'SUZ', 'SYK', 'TAP', 'TEX', 'TFX', 'TM', 'TPC', 'TRU', 'TSLX', 'TSN', 
 'TT', 'TX', 'UAA', 'UBS', 'UL', 'ULTA', 'UNP', 'URI', 'VALE', 'VLTO', 'VOYA', 'VRNS', 'VTR', 'WD', 'WELL', 
-'WEX', 'WFC', 'WMT', 'WPM', 'WPP', 'WST', 'XOM', 'YMM', 'ZBH']
+'WES', 'WEX', 'WFC', 'WMT', 'WPM', 'WPP', 'WST', 'XOM', 'YMM', 'ZBH']
