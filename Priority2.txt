@@ -9,6 +9,7 @@
 'LNC', 'LOAR', 'LOW', 'LPX', 'LVS', 'LW', 'LYV', 'M', 'MAIN', 'MANU', 'MAR', 'MCD', 'MCK', 'MCY', 'MFG', 
 'MGA', 'MGY', 'MHK', 'MLM', 'MNST', 'MOH', 'MRP', 'MS', 'MSTY', 'MTH', 'MTN', 'MUFG', 'NJR', 'NOC', 'NTAP', 
 'OLN', 'OMF', 'ONON', 'PAGS', 'PAY', 'PAYX', 'PFG', 'PHG', 'PHM', 'PSTG', 'PTC', 'QBTS', 'RACE', 'RDDT', 'RELX', 
-'REVG', 'RITM', 'RLI', 'ROK', 'ROST', 'RRX', 'RY', 'S', 'SBSW', 'SHW', 'SITE', 'SLF', 'SMFG', 'SNN', 'SPGI', 
-'STE', 'SUZ', 'SYK', 'TAP', 'TDG', 'TEVA', 'TGT', 'TIC', 'TOL', 'TRU', 'TSLX', 'UI', 'UL', 'ULTA', 'UNP', 
-'URI', 'VAC', 'VLTO', 'VOYA', 'VRNS', 'WAB', 'WD', 'WFC', 'WMT', 'WPP', 'WSM', 'WST', 'WWW', 'YMM']
+'REVG', 'RITM', 'RLI', 'ROK', 'ROST', 'RRX', 'RY', 'S', 'SBSW', 'SHW', 'SITE', 'SLF', 'SMFG', 'SNN', 'SNPS', 
+'SPGI', 'STE', 'SUZ', 'SYK', 'TAP', 'TDG', 'TEVA', 'TGT', 'TIC', 'TOL', 'TRU', 'TSLX', 'TSN', 'UI', 'UL', 
+'ULTA', 'UNP', 'URI', 'VAC', 'VLTO', 'VOYA', 'VRNS', 'WAB', 'WD', 'WFC', 'WMT', 'WPP', 'WSM', 'WST', 'WWW', 
+'YMM']
