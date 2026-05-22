@@ -4,11 +4,10 @@
 'CRH', 'CRL', 'CTRA', 'CURB', 'CVX', 'CW', 'CWK', 'D', 'DAL', 'DBRG', 'DD', 'DLB', 'DLR', 'DOC', 'DVN', 
 'DY', 'EE', 'EGO', 'EIX', 'ENB', 'EPAC', 'EPD', 'ERJ', 'ET', 'ETR', 'EXPE', 'FBP', 'FCX', 'FICO', 'FMX', 
 'FSLR', 'FUN', 'GDDY', 'GFI', 'GGG', 'GL', 'GPI', 'GPOR', 'GS', 'GXO', 'HASI', 'HAYW', 'HBM', 'HD', 'HESM', 
-'HI', 'HII', 'HL', 'HMY', 'HR', 'HSBC', 'HWM', 'IBKR', 'IBN', 'IDXX', 'IHG', 'ING', 'INGM', 'IR', 'ISRG', 
-'IVT', 'KIM', 'KKR', 'KMI', 'KRG', 'KT', 'LIN', 'LKQ', 'LOW', 'LPL', 'LPX', 'LYV', 'MAIN', 'MAR', 'MCY', 
-'MGY', 'MLI', 'MLM', 'MNST', 'MOH', 'MOS', 'MRK', 'MTDR', 'MUFG', 'MUR', 'NDSN', 'NJR', 'NOC', 'NRG', 'NVDA', 
-'NVR', 'OSK', 'OTIS', 'PFG', 'PHI', 'PHIN', 'PLTR', 'PM', 'PSKY', 'PSO', 'REGN', 'RELX', 'REVG', 'RITM', 'RLI', 
-'RMD', 'RNST', 'ROK', 'RRX', 'RY', 'SAM', 'SBUX', 'SID', 'SIG', 'SKY', 'SLF', 'SMFG', 'SNAP', 'SNOW', 'SPGI', 
-'SPNT', 'SQM', 'STE', 'SUZ', 'SVV', 'TAL', 'TEVA', 'TFX', 'TGLS', 'THC', 'TIC', 'TM', 'TNET', 'TSLX', 'UBER', 
-'UBS', 'UE', 'UI', 'UL', 'ULTA', 'UNM', 'URI', 'USAC', 'VALE', 'VMC', 'VOYA', 'WD', 'WES', 'WMS', 'WYNN', 
-'XOM']
+'HI', 'HII', 'HL', 'HR', 'HSBC', 'HWM', 'IBKR', 'IBN', 'IDXX', 'IHG', 'ING', 'INGM', 'IR', 'ISRG', 'IVT', 
+'KIM', 'KKR', 'KMI', 'KRG', 'KT', 'LIN', 'LKQ', 'LOW', 'LPL', 'LPX', 'LYV', 'MAIN', 'MAR', 'MCY', 'MGY', 
+'MLI', 'MLM', 'MNST', 'MOH', 'MOS', 'MRK', 'MTDR', 'MUFG', 'MUR', 'NDSN', 'NJR', 'NOC', 'NRG', 'NVDA', 'NVR', 
+'OSK', 'OTIS', 'PFG', 'PHI', 'PHIN', 'PLTR', 'PM', 'PSKY', 'PSO', 'REGN', 'RELX', 'REVG', 'RITM', 'RLI', 'RMD', 
+'RNST', 'ROK', 'RRX', 'RY', 'SAM', 'SBUX', 'SID', 'SIG', 'SKY', 'SLF', 'SMFG', 'SNAP', 'SNOW', 'SPGI', 'SPNT', 
+'SQM', 'STE', 'SUZ', 'SVV', 'TAL', 'TEVA', 'TFX', 'TGLS', 'THC', 'TIC', 'TM', 'TNET', 'TSLX', 'UBER', 'UBS', 
+'UE', 'UI', 'UL', 'ULTA', 'UNM', 'URI', 'USAC', 'VALE', 'VMC', 'VOYA', 'WD', 'WES', 'WMS', 'WYNN', 'XOM']
