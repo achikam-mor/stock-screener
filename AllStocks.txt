@@ -78,7 +78,7 @@
 'SPHR', 'SPNT', 'SPOT', 'SPXC', 'SQM', 'SR', 'SRE', 'SREA', 'SSB', 'SSD', 'SSL', 'ST', 'STAG', 'STE', 'STLA', 
 'STLD', 'STM', 'STN', 'STNG', 'STT', 'STVN', 'STWD', 'STX', 'STZ', 'SU', 'SUI', 'SUN', 'SUZ', 'SVV', 'SW', 
 'SWK', 'SWKS', 'SWX', 'SXI', 'SXT', 'SYF', 'SYK', 'SYY', 'T', 'TAC', 'TAK', 'TAL', 'TAP', 'TBB', 'TBBB', 
-'TD', 'TDC', 'TDG', 'TDS', 'TDW', 'TDY', 'TECH', 'TECK', 'TEF', 'TEL', 'TEO', 'TER', 'TEVA', 'TEX', 'TFC', 
+'TD', 'TDC', 'TDG', 'TDS', 'TDW', 'TDY', 'TECH', 'TECK', 'TEF', 'TEL', ,'TENB', 'TEO', 'TER', 'TEVA', 'TEX', 'TFC', 
 'TFII', 'TFPM', 'TFX', 'TGLS', 'TGNA', 'TGS', 'TGT', 'THC', 'THG', 'THO', 'TIC', 'TIMB', 'TJX', 'TKC', 'TKO', 
 'TKR', 'TLK', 'TM', 'TME', 'TMHC', 'TMO', 'TMUS', 'TNET', 'TNL', 'TOL', 'TOST', 'TPC', 'TPH', 'TPL', 'TPR', 
 'TR', 'TREX', 'TRGP', 'TRMB', 'TRN', 'TRNO', 'TROW', 'TRP', 'TRU', 'TRV', 'TS', 'TSCO', 'TSLA', 'TSLX', 'TSM', 
