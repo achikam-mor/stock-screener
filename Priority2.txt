@@ -9,8 +9,9 @@
 'KEN', 'KEY', 'KIM', 'KKR', 'KNF', 'KNSL', 'KNTK', 'KR', 'KT', 'KTB', 'LEVI', 'LHX', 'LKQ', 'LMND', 'LMT', 
 'LOAR', 'LYV', 'MAIN', 'MAR', 'MCD', 'MCY', 'MDT', 'META', 'MFG', 'MGA', 'MIR', 'MO', 'MPC', 'MSFT', 'MT', 
 'MUFG', 'MUSA', 'NEM', 'NET', 'NEU', 'NGVT', 'NTR', 'OC', 'OII', 'OLN', 'ONON', 'ORCL', 'OTIS', 'PAG', 'PAGS', 
-'PFG', 'PFGC', 'PII', 'PKX', 'PNC', 'PPG', 'PUK', 'PYPL', 'RCL', 'REGN', 'RELX', 'REVG', 'RHI', 'RKT', 'RL', 
-'RNST', 'ROK', 'ROP', 'ROST', 'SAM', 'SAN', 'SE', 'SII', 'SITE', 'SKE', 'SKM', 'SLG', 'SMFG', 'SMG', 'SOBO', 
-'SONY', 'SPG', 'SPGI', 'SPOT', 'SPXC', 'SSD', 'STE', 'STNG', 'SUZ', 'SVV', 'SW', 'SWKS', 'T', 'TAP', 'TDS', 
-'TOL', 'TOST', 'TRN', 'TRP', 'TRU', 'TSLX', 'TT', 'TTAM', 'TU', 'U', 'UBS', 'UE', 'UNF', 'UNM', 'USB', 
-'USFD', 'VLO', 'VTRS', 'WAB', 'WBS', 'WEX', 'WMB', 'WPM', 'WPP', 'WRBY', 'WTW', 'XYL', 'YELP', 'YETI', 'YPF']
+'PFG', 'PFGC', 'PII', 'PKX', 'PNC', 'PPG', 'PUK', 'PYPL', 'QGEN', 'RCL', 'REGN', 'RELX', 'REVG', 'RHI', 'RKT', 
+'RL', 'RNST', 'ROK', 'ROP', 'ROST', 'SAM', 'SAN', 'SE', 'SII', 'SITE', 'SKE', 'SKM', 'SLG', 'SMFG', 'SMG', 
+'SOBO', 'SONY', 'SPG', 'SPGI', 'SPOT', 'SPXC', 'SSD', 'STE', 'STNG', 'SUZ', 'SVV', 'SW', 'SWKS', 'T', 'TAP', 
+'TDS', 'TOL', 'TOST', 'TRN', 'TRP', 'TRU', 'TSLX', 'TT', 'TTAM', 'TU', 'U', 'UBS', 'UE', 'UNF', 'UNM', 
+'USB', 'USFD', 'VLO', 'VTRS', 'WAB', 'WBS', 'WEX', 'WF', 'WMB', 'WPM', 'WPP', 'WRBY', 'WTW', 'XYL', 'YELP', 
+'YETI', 'YPF']
