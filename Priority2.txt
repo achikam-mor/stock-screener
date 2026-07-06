@@ -11,9 +11,8 @@
 'LEN', 'LEVI', 'LII', 'LIN', 'LKQ', 'LXP', 'LYB', 'LYG', 'M', 'MAR', 'MCHP', 'MFC', 'MGA', 'MHO', 'MKC', 
 'MOD', 'MP', 'MRK', 'MTB', 'MTCH', 'MTH', 'MUR', 'NE', 'NEM', 'NEU', 'NFLX', 'NMR', 'NOC', 'NUE', 'NVST', 
 'NWG', 'NXE', 'NXPI', 'ODFL', 'ONON', 'OTIS', 'PAG', 'PAGS', 'PGR', 'PHI', 'PHIN', 'PLTR', 'POST', 'PPG', 'PRI', 
-'PSA', 'PSKY', 'PSX', 'QCOM', 'QS', 'RACE', 'RBC', 'RCI', 'RDDT', 'REGN', 'REVG', 'RIG', 'RLX', 'RNG', 'RNR', 
-'RNST', 'RRX', 'RS', 'RVTY', 'SA', 'SAM', 'SARO', 'SEI', 'SFBS', 'SHG', 'SITE', 'SKT', 'SLGN', 'SMCI', 'SNA', 
-'SON', 'SPG', 'SPNT', 'STLD', 'STVN', 'STZ', 'SUZ', 'SW', 'TAP', 'TECK', 'TEX', 'TFII', 'TFPM', 'TFX', 'TIC', 
-'TM', 'TMHC', 'TRN', 'TRV', 'TSLX', 'TT', 'TTAM', 'TYL', 'UAA', 'UDR', 'UNF', 'UNFI', 'UNM', 'UNP', 'USB', 
-'VFC', 'VTR', 'VVV', 'WBS', 'WDAY', 'WELL', 'WPM', 'WSM', 'WU', 'WYNN', 'XPO', 'YETI', 'YPF', 'YUMC', 'ZBRA', 
-'ZS']
+'PSA', 'PSKY', 'PSX', 'QCOM', 'QS', 'RACE', 'RBC', 'RDDT', 'REGN', 'REVG', 'RIG', 'RLX', 'RNG', 'RNR', 'RNST', 
+'RRX', 'RS', 'RVTY', 'SA', 'SAM', 'SARO', 'SEI', 'SFBS', 'SHG', 'SITE', 'SKT', 'SLGN', 'SMCI', 'SNA', 'SON', 
+'SPG', 'SPNT', 'STLD', 'STVN', 'STZ', 'SUZ', 'SW', 'TAP', 'TECK', 'TEX', 'TFII', 'TFPM', 'TFX', 'TIC', 'TM', 
+'TMHC', 'TRN', 'TRV', 'TSLX', 'TT', 'TTAM', 'TYL', 'UAA', 'UDR', 'UNF', 'UNFI', 'UNM', 'UNP', 'USB', 'VFC', 
+'VTR', 'VVV', 'WBS', 'WDAY', 'WELL', 'WPM', 'WSM', 'WU', 'WYNN', 'XPO', 'YETI', 'YPF', 'YUMC', 'ZBRA', 'ZS']
