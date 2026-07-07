@@ -14,7 +14,7 @@
     "gold": {
       "name": "Gold",
       "symbol": "GC=F",
-      "price": 4123.4,
+      "price": 4117.8,
       "previous_close": 0,
       "change": 0,
       "change_percent": 0,
@@ -22,13 +22,17 @@
     },
     "silver": {
       "name": "Silver",
-      "available": false,
-      "error": "HTTPSConnectionPool(host='query1.finance.yahoo.com', port=443): Read timed out. (read timeout=30)"
+      "symbol": "SI=F",
+      "price": 60.42,
+      "previous_close": 0,
+      "change": 0,
+      "change_percent": 0,
+      "available": true
     },
     "bitcoin": {
       "name": "Bitcoin",
       "symbol": "BTC-USD",
-      "price": 63718.11,
+      "price": 63631.98,
       "previous_close": 0,
       "change": 0,
       "change_percent": 0,
@@ -36,9 +40,13 @@
     },
     "ethereum": {
       "name": "Ethereum",
-      "available": false,
-      "error": "HTTPSConnectionPool(host='query1.finance.yahoo.com', port=443): Read timed out. (read timeout=30)"
+      "symbol": "ETH-USD",
+      "price": 1782.42,
+      "previous_close": 0,
+      "change": 0,
+      "change_percent": 0,
+      "available": true
     }
   },
-  "last_updated": "2026-07-07T20:27:07.126528"
+  "last_updated": "2026-07-07T20:45:16.026107"
 }
