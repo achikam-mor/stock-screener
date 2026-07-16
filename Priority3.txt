@@ -18,11 +18,10 @@
 'NXE', 'OC', 'ODFL', 'OGN', 'OII', 'OKLO', 'ONTO', 'OR', 'ORCL', 'OSCR', 'OUT', 'PAAS', 'PAG', 'PANW', 'PAYX', 
 'PBA', 'PBF', 'PCOR', 'PFG', 'PFGC', 'PIPR', 'PK', 'PKX', 'PL', 'PLNT', 'PNC', 'PNR', 'PODD', 'PRI', 'PRIM', 
 'PRKS', 'PRM', 'PRMB', 'PSKY', 'PSO', 'PSX', 'PYPL', 'QBTS', 'QS', 'QXO', 'R', 'RBRK', 'RF', 'RH', 'RHI', 
-'RHP', 'RNG', 'ROL', 'RS', 'RSI', 'RXO', 'RY', 'S', 'SA', 'SAH', 'SAP', 'SBS', 'SBSW', 'SF', 'SGHC', 
-'SHAK', 'SID', 'SII', 'SITE', 'SKT', 'SLF', 'SLG', 'SM', 'SMCI', 'SMFG', 'SMG', 'SMR', 'SN', 'SNAP', 'SNDR', 
-'SNOW', 'SNX', 'SOBO', 'SPG', 'SQM', 'STLA', 'STM', 'STN', 'STT', 'STVN', 'STX', 'SUN', 'SXI', 'TD', 'TDS', 
-'TECH', 'TENB', 'TFII', 'TFPM', 'TGT', 'TIC', 'TKR', 'TLK', 'TME', 'TNET', 'TPH', 'TRGP', 'TRMB', 'TRN', 'TRNO', 
-'TROW', 'TSCO', 'TTD', 'TU', 'TWLO', 'TXN', 'UAA', 'UBS', 'UGP', 'UHAL', 'UHS', 'UI', 'ULTA', 'UMC', 'UNF', 
-'UNFI', 'UNH', 'UNP', 'URI', 'UWMC', 'VAC', 'VIK', 'VIRT', 'VLO', 'VNO', 'VOYA', 'VRNS', 'VSCO', 'VSH', 'VTRS', 
-'VVV', 'WDC', 'WELL', 'WHR', 'WIT', 'WLK', 'WLYB', 'WPM', 'WST', 'XPEV', 'XYZ', 'YETI', 'YOU', 'YPF', 'ZGN', 
-'ZTS']
+'RHP', 'RNG', 'ROL', 'RS', 'RSI', 'RXO', 'RY', 'S', 'SA', 'SAH', 'SAP', 'SBS', 'SBSW', 'SGHC', 'SHAK', 
+'SID', 'SII', 'SITE', 'SKT', 'SLF', 'SLG', 'SM', 'SMCI', 'SMFG', 'SMG', 'SMR', 'SN', 'SNAP', 'SNDR', 'SNOW', 
+'SNX', 'SOBO', 'SPG', 'SQM', 'STLA', 'STM', 'STN', 'STT', 'STVN', 'STX', 'SUN', 'TD', 'TDS', 'TECH', 'TENB', 
+'TFII', 'TFPM', 'TGT', 'TIC', 'TKR', 'TLK', 'TME', 'TNET', 'TPH', 'TRGP', 'TRMB', 'TRN', 'TRNO', 'TROW', 'TSCO', 
+'TTD', 'TU', 'TWLO', 'TXN', 'UAA', 'UBS', 'UGP', 'UHAL', 'UHS', 'UI', 'ULTA', 'UMC', 'UNF', 'UNFI', 'UNH', 
+'UNP', 'URI', 'UWMC', 'VAC', 'VIK', 'VIRT', 'VLO', 'VNO', 'VOYA', 'VRNS', 'VSCO', 'VSH', 'VTRS', 'VVV', 'WDC', 
+'WELL', 'WHR', 'WIT', 'WLK', 'WLYB', 'WPM', 'WST', 'XPEV', 'XYZ', 'YETI', 'YOU', 'YPF', 'ZGN', 'ZTS']

@@ -12,7 +12,7 @@
 'MCO', 'MCY', 'MGA', 'MHO', 'MRK', 'MSCI', 'MT', 'MTH', 'MTN', 'NATL', 'NEU', 'NJR', 'NMR', 'NNN', 'NRG', 
 'NSC', 'NVO', 'NWS', 'NWSA', 'OKE', 'OLN', 'ORA', 'OWL', 'PAC', 'PAY', 'PAYC', 'PBH', 'PFS', 'PFSI', 'PHIN', 
 'PII', 'PM', 'PNW', 'POST', 'PRU', 'PSA', 'PTC', 'RBLX', 'RDN', 'REVG', 'RGA', 'RIG', 'RMD', 'RNST', 'ROK', 
-'ROST', 'RVTY', 'SAM', 'SAN', 'SBUX', 'SFBS', 'SHG', 'SJM', 'SKE', 'SLGN', 'SNA', 'SON', 'SPHR', 'SPNT', 'ST', 
-'STAG', 'STLD', 'STNG', 'SUZ', 'SWK', 'T', 'TFX', 'THG', 'THO', 'TM', 'TMHC', 'TREX', 'TRP', 'TRV', 'TSM', 
-'TYL', 'UAL', 'UCB', 'UE', 'UNM', 'UPS', 'USB', 'USFD', 'V', 'VG', 'VMI', 'VNT', 'VRT', 'VTR', 'WES', 
-'WSM', 'WTS', 'XPO', 'ZBRA', 'ZETA', 'ZS']
+'ROST', 'RVTY', 'SAM', 'SAN', 'SBUX', 'SF', 'SFBS', 'SHG', 'SJM', 'SKE', 'SLGN', 'SNA', 'SON', 'SPHR', 'SPNT', 
+'ST', 'STAG', 'STLD', 'STNG', 'SUZ', 'SWK', 'SXI', 'T', 'TFX', 'THG', 'THO', 'TM', 'TMHC', 'TREX', 'TRP', 
+'TRV', 'TSM', 'TYL', 'UAL', 'UCB', 'UE', 'UNM', 'UPS', 'USB', 'USFD', 'V', 'VG', 'VMI', 'VNT', 'VRT', 
+'VTR', 'WES', 'WSM', 'WTS', 'XPO', 'ZBRA', 'ZETA', 'ZS']
