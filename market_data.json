@@ -14,7 +14,7 @@
     "gold": {
       "name": "Gold",
       "symbol": "GC=F",
-      "price": 4069.1,
+      "price": 4065.7,
       "previous_close": 0,
       "change": 0,
       "change_percent": 0,
@@ -23,7 +23,7 @@
     "silver": {
       "name": "Silver",
       "symbol": "SI=F",
-      "price": 58.89,
+      "price": 58.7,
       "previous_close": 0,
       "change": 0,
       "change_percent": 0,
@@ -48,5 +48,5 @@
       "available": true
     }
   },
-  "last_updated": "2026-07-24T15:07:50.831302"
+  "last_updated": "2026-07-24T15:18:35.097456"
 }
