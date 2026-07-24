@@ -1,6 +1,6 @@
 {
   "cnn_fear_greed": {
-    "score": 41,
+    "score": 39,
     "rating": "fear",
     "previous_close": 40,
     "available": true
@@ -14,7 +14,7 @@
     "gold": {
       "name": "Gold",
       "symbol": "GC=F",
-      "price": 4066.2,
+      "price": 4054.5,
       "previous_close": 0,
       "change": 0,
       "change_percent": 0,
@@ -23,7 +23,7 @@
     "silver": {
       "name": "Silver",
       "symbol": "SI=F",
-      "price": 58.83,
+      "price": 58.52,
       "previous_close": 0,
       "change": 0,
       "change_percent": 0,
@@ -48,5 +48,5 @@
       "available": true
     }
   },
-  "last_updated": "2026-07-24T18:04:08.548557"
+  "last_updated": "2026-07-24T18:52:12.148077"
 }
