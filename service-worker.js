@@ -3,9 +3,9 @@
  * Provides offline support and caching for better performance
  */
 
-const CACHE_NAME = 'stock-screener-v12';
-const STATIC_CACHE = 'static-v12';
-const DATA_CACHE = 'data-v12';
+const CACHE_NAME = 'stock-screener-v13';
+const STATIC_CACHE = 'static-v13';
+const DATA_CACHE = 'data-v13';
 
 // Derive base path dynamically — works for both root and subdirectory deployments
 // e.g. '/stock-screener/' when served from a GitHub Pages project page
