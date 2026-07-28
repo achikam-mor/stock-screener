@@ -916,9 +916,11 @@ function addPatternMarkers(patterns, dates, highs, lows) {
         // Format pattern name for display
         const displayName = pattern.pattern.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
         const statusIcon = pattern.status === 'confirmed' ? '✅' : '⏳';
+        const volText = pattern.volume_ratio ? `${pattern.volume_ratio}×` : '';
+        const volIcon = pattern.volume_confirmed ? ' 🔊' : '';
         
         // Tooltip with date
-        const tooltip = `${displayName}\nDate: ${pattern.date}\n${pattern.signal.charAt(0).toUpperCase() + pattern.signal.slice(1)} ${statusIcon}\n${pattern.status.charAt(0).toUpperCase() + pattern.status.slice(1)}\nConfidence: ${pattern.confidence}%`;
+        const tooltip = `${displayName}\nDate: ${pattern.date}\n${pattern.signal.charAt(0).toUpperCase() + pattern.signal.slice(1)} ${statusIcon}${volIcon}\n${pattern.status.charAt(0).toUpperCase() + pattern.status.slice(1)}\nConfidence: ${pattern.confidence}%${volText ? '\nVolume: ' + volText + ' avg' : ''}`;
         marker.title = tooltip;
         
         overlay.appendChild(marker);

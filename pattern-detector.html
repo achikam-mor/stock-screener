@@ -82,14 +82,42 @@
                     </select>
                 </div>
                 <div class="filter-group">
-                    <label for="pattern-filter">Candlestick Patterns:</label>
-                    <select id="pattern-filter" onchange="applyFilters()">
+                    <label for="pattern-name-filter">Candle Pattern:</label>
+                    <select id="pattern-name-filter" onchange="applyFilters()">
+                        <option value="all">Any Pattern</option>
+                        <option value="hammer">🔨 Hammer</option>
+                        <option value="shooting_star">🌠 Shooting Star</option>
+                        <option value="bullish_engulfing">📈 Bull Engulfing</option>
+                        <option value="bearish_engulfing">📉 Bear Engulfing</option>
+                        <option value="piercing_line">🔪 Piercing Line</option>
+                        <option value="dark_cloud_cover">☁️ Dark Cloud Cover</option>
+                        <option value="morning_star">🌅 Morning Star</option>
+                        <option value="evening_star">🌆 Evening Star</option>
+                        <option value="three_white_soldiers">⬆️ 3 White Soldiers</option>
+                        <option value="three_black_crows">⬇️ 3 Black Crows</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="pattern-direction-filter">Direction:</label>
+                    <select id="pattern-direction-filter" onchange="applyFilters()">
                         <option value="all">All</option>
-                        <option value="bullish_confirmed">🟢 Bullish Confirmed</option>
-                        <option value="pending_bullish">🟡 Pending Bullish</option>
-                        <option value="pending_bearish">🟠 Pending Bearish</option>
-                        <option value="bearish_confirmed">🔴 Bearish Confirmed</option>
-                        <option value="any_pattern">🕯️ Any Pattern</option>
+                        <option value="bullish">🟢 Bullish</option>
+                        <option value="bearish">🔴 Bearish</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="pattern-status-filter">Status:</label>
+                    <select id="pattern-status-filter" onchange="applyFilters()">
+                        <option value="all">All</option>
+                        <option value="confirmed">✅ Confirmed</option>
+                        <option value="pending">⏳ Pending</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="pattern-vol-filter">Vol Confirm:</label>
+                    <select id="pattern-vol-filter" onchange="applyFilters()">
+                        <option value="all">All</option>
+                        <option value="confirmed_only">🔊 Confirmed Only</option>
                     </select>
                 </div>
                 <div class="filter-group">

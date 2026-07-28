@@ -111,19 +111,23 @@ function populateSectorFilterFromData() {
 }
 
 function applyFilters() {
-    const smaStatusFilter = document.getElementById('sma-status-filter').value;
-    const smaDistanceFilter = document.getElementById('sma-distance-filter').value;
-    const patternFilter = document.getElementById('pattern-filter').value;
-    const crossFilter = document.getElementById('cross-filter').value;
-    const cupHandleFilter = document.getElementById('cup-handle-filter').value;
-    const sectorFilter = document.getElementById('sector-filter').value;
-    const favoritesFilter = document.getElementById('favorites-filter').value;
-    const atrFilter = document.getElementById('atr-filter').value;
-    const volumeFilter = document.getElementById('volume-filter').value;
+    const smaStatusFilter   = document.getElementById('sma-status-filter').value;
+    const smaDistanceFilter  = document.getElementById('sma-distance-filter').value;
+    const patternNameFilter  = document.getElementById('pattern-name-filter').value;
+    const patternDirFilter   = document.getElementById('pattern-direction-filter').value;
+    const patternStatFilter  = document.getElementById('pattern-status-filter').value;
+    const patternVolFilter   = document.getElementById('pattern-vol-filter').value;
+    const crossFilter        = document.getElementById('cross-filter').value;
+    const cupHandleFilter    = document.getElementById('cup-handle-filter').value;
+    const sectorFilter       = document.getElementById('sector-filter').value;
+    const favoritesFilter    = document.getElementById('favorites-filter').value;
+    const atrFilter          = document.getElementById('atr-filter').value;
+    const volumeFilter       = document.getElementById('volume-filter').value;
     const favorites = getFavorites();
     
     console.log('[Pattern Detector] Applying filters:', { 
-        smaStatusFilter, smaDistanceFilter, patternFilter, crossFilter, 
+        smaStatusFilter, smaDistanceFilter, patternNameFilter, patternDirFilter,
+        patternStatFilter, patternVolFilter, crossFilter, 
         cupHandleFilter, sectorFilter, favoritesFilter, atrFilter, volumeFilter 
     });
     
@@ -141,24 +145,19 @@ function applyFilters() {
             if (absDistance < min || absDistance >= max) return false;
         }
         
-        // Candlestick Pattern filter
-        if (patternFilter !== 'all') {
-            // If "any_pattern" is selected, just check if patterns exist
-            if (patternFilter === 'any_pattern') {
-                if (!stock.patterns || stock.patterns.length === 0) return false;
-            } else {
-                // If no patterns array or empty, filter out
-                if (!stock.patterns || stock.patterns.length === 0) return false;
-                
-                const hasPattern = stock.patterns.some(p => {
-                    if (patternFilter === 'bullish_confirmed') return p.signal === 'bullish' && p.status === 'confirmed';
-                    if (patternFilter === 'pending_bullish') return p.signal === 'bullish' && p.status === 'pending';
-                    if (patternFilter === 'pending_bearish') return p.signal === 'bearish' && p.status === 'pending';
-                    if (patternFilter === 'bearish_confirmed') return p.signal === 'bearish' && p.status === 'confirmed';
-                    return false;
-                });
-                if (!hasPattern) return false;
-            }
+        // Candlestick pattern filters
+        const hasAnyPatternFilter = patternNameFilter !== 'all' || patternDirFilter !== 'all' ||
+                                    patternStatFilter !== 'all' || patternVolFilter !== 'all';
+        if (hasAnyPatternFilter) {
+            const pts = stock.patterns || [];
+            if (pts.length === 0) return false;
+            const match = pts.some(p =>
+                (patternNameFilter === 'all' || p.pattern === patternNameFilter) &&
+                (patternDirFilter  === 'all' || p.signal  === patternDirFilter) &&
+                (patternStatFilter === 'all' || p.status  === patternStatFilter) &&
+                (patternVolFilter  !== 'confirmed_only' || p.volume_confirmed === true)
+            );
+            if (!match) return false;
         }
         
         // Golden/Death Cross filter
@@ -225,15 +224,18 @@ function applyFilters() {
 }
 
 function resetFilters() {
-    document.getElementById('sma-status-filter').value = 'all';
-    document.getElementById('sma-distance-filter').value = 'all';
-    document.getElementById('pattern-filter').value = 'all';
-    document.getElementById('cross-filter').value = 'all';
-    document.getElementById('cup-handle-filter').value = 'all';
-    document.getElementById('sector-filter').value = 'all';
-    document.getElementById('favorites-filter').value = 'all';
-    document.getElementById('atr-filter').value = 'all';
-    document.getElementById('volume-filter').value = 'all';
+    document.getElementById('sma-status-filter').value    = 'all';
+    document.getElementById('sma-distance-filter').value   = 'all';
+    document.getElementById('pattern-name-filter').value   = 'all';
+    document.getElementById('pattern-direction-filter').value = 'all';
+    document.getElementById('pattern-status-filter').value = 'all';
+    document.getElementById('pattern-vol-filter').value    = 'all';
+    document.getElementById('cross-filter').value          = 'all';
+    document.getElementById('cup-handle-filter').value     = 'all';
+    document.getElementById('sector-filter').value         = 'all';
+    document.getElementById('favorites-filter').value      = 'all';
+    document.getElementById('atr-filter').value            = 'all';
+    document.getElementById('volume-filter').value         = 'all';
     
     console.log('[Pattern Detector] Filters reset');
     applyFilters();
@@ -344,8 +346,8 @@ function createCompactStockCard(stock) {
         crossIconHTML = '<span class="cross-icon death-cross" title="Death Cross (50 SMA crossed below 200 SMA)">💀</span>';
     }
     
-    // Create pattern dots HTML
-    const patternDotsHTML = renderPatternDots(stock.patterns);
+    // Create pattern chips HTML
+    const patternChipsHTML = renderPatternChips(stock.patterns);
     
     // Create cup and handle dots HTML
     const cupHandleHTML = renderCupHandleDots(stock.cup_handle_patterns);
@@ -408,7 +410,7 @@ function createCompactStockCard(stock) {
                 </div>
                 <div class="data-row">
                     <span class="label">Patterns (7d)</span>
-                    <span class="value pattern-dots-container">${patternDotsHTML}</span>
+                    <span class="value pattern-chips-container">${patternChipsHTML}</span>
                 </div>
             </div>
         </div>

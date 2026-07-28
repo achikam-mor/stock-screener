@@ -1,7 +1,7 @@
 """
 Candlestick Pattern Detection Module
 
-Detects 7 high-reliability candlestick patterns with confirmation:
+Detects 10 hardened candlestick patterns with volume confirmation and trend context:
 - Hammer (Bullish Reversal)
 - Shooting Star (Bearish Reversal)
 - Bullish Engulfing (Bullish Reversal)
@@ -10,10 +10,60 @@ Detects 7 high-reliability candlestick patterns with confirmation:
 - Evening Star (Bearish Reversal)
 - Three White Soldiers (Bullish Continuation)
 - Three Black Crows (Bearish Continuation)
+- Piercing Line (Bullish Reversal)
+- Dark Cloud Cover (Bearish Reversal)
 """
 
-from datetime import datetime, timedelta
-from typing import List, Dict, Optional
+from datetime import datetime
+from typing import List, Dict, Optional, Tuple
+
+# ── Tunables ─────────────────────────────────────────────────────────────────
+VOL_WINDOW     = 20   # bars used for rolling volume average
+VOL_CONFIRM    = 1.5  # ratio >= this → volume_confirmed = True
+VOL_MID        = 1.2  # ratio >= this → partial confidence boost
+TREND_LOOKBACK = 10   # bars assessed for prior_trend()
+CONF_FLOOR     = 65   # minimum post-boost confidence to report
+
+
+def compute_volume_confirmation(volumes: List[int], idx: int,
+                                window: int = VOL_WINDOW) -> Tuple[float, bool]:
+    """Compare idx's volume against its rolling prior average."""
+    if not volumes or idx < 1 or idx >= len(volumes):
+        return (0.0, False)
+    prior = volumes[max(0, idx - window):idx]
+    if not prior:
+        return (0.0, False)
+    avg = sum(prior) / len(prior)
+    if avg == 0:
+        return (0.0, False)
+    ratio = volumes[idx] / avg
+    return (round(ratio, 2), ratio >= VOL_CONFIRM)
+
+
+def prior_trend(closes: List[float], idx: int,
+               lookback: int = TREND_LOOKBACK) -> str:
+    """Return 'uptrend', 'downtrend', or 'sideways' over the closes preceding idx."""
+    window = closes[max(0, idx - lookback):idx]
+    if len(window) < 4:
+        return "sideways"
+    mid        = len(window) // 2
+    avg_first  = sum(window[:mid]) / mid
+    avg_second = sum(window[mid:]) / (len(window) - mid)
+    change     = (avg_second - avg_first) / avg_first if avg_first > 0 else 0
+    if change < -0.02:
+        return "downtrend"
+    if change > 0.02:
+        return "uptrend"
+    return "sideways"
+
+
+def _vol_confidence_boost(ratio: float) -> int:
+    """Tiered confidence boost from volume-vs-average ratio."""
+    if ratio >= VOL_CONFIRM:
+        return 10
+    if ratio >= VOL_MID:
+        return 5
+    return 0
 
 
 def calculate_body_size(open_price: float, close_price: float) -> float:
@@ -41,391 +91,305 @@ def is_bearish_candle(open_price: float, close_price: float) -> bool:
     return close_price < open_price
 
 
-def detect_hammer(idx: int, opens: List[float], highs: List[float], 
+def detect_hammer(idx: int, opens: List[float], highs: List[float],
                   lows: List[float], closes: List[float], atr: float) -> Optional[Dict]:
-    """
-    Detect Hammer pattern (Bullish Reversal).
-    
-    Criteria:
-    - Lower shadow >= 2x body length
-    - Upper shadow <= 10% of body (minimal)
-    - Body in upper 30% of total range
-    - Body size significant (> 30% of ATR)
-    """
     if idx >= len(opens):
         return None
-    
+
     open_p = opens[idx]
-    high = highs[idx]
-    low = lows[idx]
-    close = closes[idx]
-    
-    body = calculate_body_size(open_p, close)
+    high   = highs[idx]
+    low    = lows[idx]
+    close  = closes[idx]
+
+    body         = calculate_body_size(open_p, close)
     lower_shadow = calculate_lower_shadow(low, open_p, close)
     upper_shadow = calculate_upper_shadow(high, open_p, close)
-    total_range = high - low
-    
+    total_range  = high - low
+
     if total_range == 0 or atr is None or atr == 0:
         return None
-    
-    # Hammer criteria
-    if (lower_shadow >= 2 * body and 
-        upper_shadow <= 0.1 * body and
-        body >= 0.3 * atr and
-        (max(open_p, close) - low) / total_range >= 0.7):  # Body in upper 30%
-        
-        # Calculate confidence based on shadow ratio and volume
-        confidence = min(95, 60 + (lower_shadow / body) * 10)
-        
-        return {
-            "pattern": "hammer",
-            "signal": "bullish",
-            "confidence": round(confidence, 0)
-        }
-    
+
+    # Require a real body (not a doji)
+    if body < 0.08 * total_range:
+        return None
+
+    if (lower_shadow >= 2.5 * body and
+            upper_shadow <= 0.15 * total_range and
+            body >= 0.15 * atr and
+            (max(open_p, close) - low) / total_range >= 0.7):
+        confidence = min(75, CONF_FLOOR + (lower_shadow / max(body, 0.001)) * 3)
+        return {"pattern": "hammer", "signal": "bullish", "confidence": round(confidence, 0)}
+
     return None
 
 
-def detect_shooting_star(idx: int, opens: List[float], highs: List[float], 
+def detect_shooting_star(idx: int, opens: List[float], highs: List[float],
                          lows: List[float], closes: List[float], atr: float) -> Optional[Dict]:
-    """
-    Detect Shooting Star pattern (Bearish Reversal).
-    
-    Criteria:
-    - Upper shadow >= 2x body length
-    - Lower shadow <= 10% of body (minimal)
-    - Body in lower 30% of total range
-    - Body size significant (> 30% of ATR)
-    """
     if idx >= len(opens):
         return None
     
     open_p = opens[idx]
-    high = highs[idx]
-    low = lows[idx]
-    close = closes[idx]
-    
-    body = calculate_body_size(open_p, close)
-    lower_shadow = calculate_lower_shadow(low, open_p, close)
+    high   = highs[idx]
+    low    = lows[idx]
+    close  = closes[idx]
+
+    body         = calculate_body_size(open_p, close)
     upper_shadow = calculate_upper_shadow(high, open_p, close)
-    total_range = high - low
-    
+    lower_shadow = calculate_lower_shadow(low, open_p, close)
+    total_range  = high - low
+
     if total_range == 0 or atr is None or atr == 0:
         return None
-    
-    # Shooting Star criteria
-    if (upper_shadow >= 2 * body and 
-        lower_shadow <= 0.1 * body and
-        body >= 0.3 * atr and
-        (high - min(open_p, close)) / total_range >= 0.7):  # Body in lower 30%
-        
-        confidence = min(95, 60 + (upper_shadow / body) * 10)
-        
-        return {
-            "pattern": "shooting_star",
-            "signal": "bearish",
-            "confidence": round(confidence, 0)
-        }
-    
+
+    if body < 0.08 * total_range:
+        return None
+
+    if (upper_shadow >= 2.5 * body and
+            lower_shadow <= 0.15 * total_range and
+            body >= 0.15 * atr and
+            (high - min(open_p, close)) / total_range >= 0.7):
+        confidence = min(75, CONF_FLOOR + (upper_shadow / max(body, 0.001)) * 3)
+        return {"pattern": "shooting_star", "signal": "bearish", "confidence": round(confidence, 0)}
+
     return None
 
 
-def detect_bullish_engulfing(idx: int, opens: List[float], highs: List[float], 
-                             lows: List[float], closes: List[float], 
-                             volumes: List[int], atr: float) -> Optional[Dict]:
-    """
-    Detect Bullish Engulfing pattern (Bullish Reversal).
-    
-    Criteria:
-    - Day 1: Bearish candle
-    - Day 2: Bullish candle that completely engulfs Day 1
-    - Day 2 opens below Day 1 close
-    - Day 2 closes above Day 1 open
-    """
+def detect_bullish_engulfing(idx: int, opens: List[float], highs: List[float],
+                             lows: List[float], closes: List[float],
+                             atr: float) -> Optional[Dict]:
     if idx < 1 or idx >= len(opens):
         return None
-    
-    # Day 1 (previous)
-    open1 = opens[idx - 1]
-    close1 = closes[idx - 1]
-    
-    # Day 2 (current)
-    open2 = opens[idx]
-    close2 = closes[idx]
-    
-    # Check pattern criteria
-    if (is_bearish_candle(open1, close1) and  # Day 1 bearish
-        is_bullish_candle(open2, close2) and  # Day 2 bullish
-        open2 < close1 and  # Opens below previous close
-        close2 > open1):  # Closes above previous open
-        
-        # Volume confirmation boost
-        volume_boost = 0
-        if idx < len(volumes) and idx - 1 < len(volumes):
-            if volumes[idx] > volumes[idx - 1]:
-                volume_boost = 10
-        
-        confidence = min(95, 70 + volume_boost)
-        
-        return {
-            "pattern": "bullish_engulfing",
-            "signal": "bullish",
-            "confidence": round(confidence, 0)
-        }
-    
+
+    open1, close1 = opens[idx - 1], closes[idx - 1]
+    open2, close2 = opens[idx],     closes[idx]
+    body1 = calculate_body_size(open1, close1)
+    body2 = calculate_body_size(open2, close2)
+
+    if atr is None or atr == 0:
+        return None
+
+    if (is_bearish_candle(open1, close1) and
+            is_bullish_candle(open2, close2) and
+            open2 <= close1 and
+            close2 >= open1 and
+            body2 >= body1 and       # current body fully covers prior body
+            body1 >= 0.3 * atr):     # prior candle must be significant
+        return {"pattern": "bullish_engulfing", "signal": "bullish", "confidence": 68.0}
+
     return None
 
 
-def detect_bearish_engulfing(idx: int, opens: List[float], highs: List[float], 
-                             lows: List[float], closes: List[float], 
-                             volumes: List[int], atr: float) -> Optional[Dict]:
-    """
-    Detect Bearish Engulfing pattern (Bearish Reversal).
-    
-    Criteria:
-    - Day 1: Bullish candle
-    - Day 2: Bearish candle that completely engulfs Day 1
-    - Day 2 opens above Day 1 close
-    - Day 2 closes below Day 1 open
-    """
+def detect_bearish_engulfing(idx: int, opens: List[float], highs: List[float],
+                             lows: List[float], closes: List[float],
+                             atr: float) -> Optional[Dict]:
     if idx < 1 or idx >= len(opens):
         return None
-    
-    # Day 1 (previous)
-    open1 = opens[idx - 1]
-    close1 = closes[idx - 1]
-    
-    # Day 2 (current)
-    open2 = opens[idx]
-    close2 = closes[idx]
-    
-    # Check pattern criteria
-    if (is_bullish_candle(open1, close1) and  # Day 1 bullish
-        is_bearish_candle(open2, close2) and  # Day 2 bearish
-        open2 > close1 and  # Opens above previous close
-        close2 < open1):  # Closes below previous open
-        
-        # Volume confirmation boost
-        volume_boost = 0
-        if idx < len(volumes) and idx - 1 < len(volumes):
-            if volumes[idx] > volumes[idx - 1]:
-                volume_boost = 10
-        
-        confidence = min(95, 70 + volume_boost)
-        
-        return {
-            "pattern": "bearish_engulfing",
-            "signal": "bearish",
-            "confidence": round(confidence, 0)
-        }
-    
-    return None
 
-
-def detect_morning_star(idx: int, opens: List[float], highs: List[float], 
-                       lows: List[float], closes: List[float], atr: float) -> Optional[Dict]:
-    """
-    Detect Morning Star pattern (Bullish Reversal).
-    
-    Criteria:
-    - Day 1: Long bearish candle
-    - Day 2: Small body (indecision), gaps down
-    - Day 3: Long bullish candle, closes above Day 1 midpoint
-    """
-    if idx < 2 or idx >= len(opens):
-        return None
-    
-    # Day 1
-    open1 = opens[idx - 2]
-    close1 = closes[idx - 2]
+    open1, close1 = opens[idx - 1], closes[idx - 1]
+    open2, close2 = opens[idx],     closes[idx]
     body1 = calculate_body_size(open1, close1)
-    
-    # Day 2
-    open2 = opens[idx - 1]
-    close2 = closes[idx - 1]
     body2 = calculate_body_size(open2, close2)
-    
-    # Day 3
-    open3 = opens[idx]
-    close3 = closes[idx]
-    body3 = calculate_body_size(open3, close3)
-    
+
     if atr is None or atr == 0:
         return None
-    
-    # Pattern criteria
-    if (is_bearish_candle(open1, close1) and  # Day 1 bearish
-        body1 > 0.7 * atr and  # Day 1 long
-        body2 < 0.3 * body1 and  # Day 2 small
-        max(open2, close2) < close1 and  # Day 2 gaps down
-        is_bullish_candle(open3, close3) and  # Day 3 bullish
-        body3 > 0.7 * atr and  # Day 3 long
-        close3 > (open1 + close1) / 2):  # Closes above Day 1 midpoint
-        
-        confidence = 75
-        
-        return {
-            "pattern": "morning_star",
-            "signal": "bullish",
-            "confidence": round(confidence, 0)
-        }
-    
+
+    if (is_bullish_candle(open1, close1) and
+            is_bearish_candle(open2, close2) and
+            open2 >= close1 and
+            close2 <= open1 and
+            body2 >= body1 and
+            body1 >= 0.3 * atr):
+        return {"pattern": "bearish_engulfing", "signal": "bearish", "confidence": 68.0}
+
     return None
 
 
-def detect_evening_star(idx: int, opens: List[float], highs: List[float], 
-                       lows: List[float], closes: List[float], atr: float) -> Optional[Dict]:
-    """
-    Detect Evening Star pattern (Bearish Reversal).
-    
-    Criteria:
-    - Day 1: Long bullish candle
-    - Day 2: Small body (indecision), gaps up
-    - Day 3: Long bearish candle, closes below Day 1 midpoint
-    """
+def detect_morning_star(idx: int, opens: List[float], highs: List[float],
+                        lows: List[float], closes: List[float], atr: float) -> Optional[Dict]:
     if idx < 2 or idx >= len(opens):
         return None
-    
-    # Day 1
-    open1 = opens[idx - 2]
-    close1 = closes[idx - 2]
+
+    open1, close1 = opens[idx - 2], closes[idx - 2]
+    open2, close2 = opens[idx - 1], closes[idx - 1]
+    open3, close3 = opens[idx],     closes[idx]
     body1 = calculate_body_size(open1, close1)
-    
-    # Day 2
-    open2 = opens[idx - 1]
-    close2 = closes[idx - 1]
     body2 = calculate_body_size(open2, close2)
-    
-    # Day 3
-    open3 = opens[idx]
-    close3 = closes[idx]
     body3 = calculate_body_size(open3, close3)
-    
+
     if atr is None or atr == 0:
         return None
-    
-    # Pattern criteria
-    if (is_bullish_candle(open1, close1) and  # Day 1 bullish
-        body1 > 0.7 * atr and  # Day 1 long
-        body2 < 0.3 * body1 and  # Day 2 small
-        min(open2, close2) > close1 and  # Day 2 gaps up
-        is_bearish_candle(open3, close3) and  # Day 3 bearish
-        body3 > 0.7 * atr and  # Day 3 long
-        close3 < (open1 + close1) / 2):  # Closes below Day 1 midpoint
-        
-        confidence = 75
-        
-        return {
-            "pattern": "evening_star",
-            "signal": "bearish",
-            "confidence": round(confidence, 0)
-        }
-    
+
+    if (is_bearish_candle(open1, close1) and
+            body1 >= 0.6 * atr and
+            body2 <= 0.3 * body1 and
+            max(open2, close2) <= close1 * 1.005 and  # Day 2 at or below Day 1 close
+            is_bullish_candle(open3, close3) and
+            body3 >= 0.6 * atr and
+            close3 >= (open1 + close1) / 2):
+        return {"pattern": "morning_star", "signal": "bullish", "confidence": 72.0}
+
     return None
 
 
-def detect_three_white_soldiers(idx: int, opens: List[float], highs: List[float], 
+def detect_evening_star(idx: int, opens: List[float], highs: List[float],
+                        lows: List[float], closes: List[float], atr: float) -> Optional[Dict]:
+    if idx < 2 or idx >= len(opens):
+        return None
+
+    open1, close1 = opens[idx - 2], closes[idx - 2]
+    open2, close2 = opens[idx - 1], closes[idx - 1]
+    open3, close3 = opens[idx],     closes[idx]
+    body1 = calculate_body_size(open1, close1)
+    body2 = calculate_body_size(open2, close2)
+    body3 = calculate_body_size(open3, close3)
+
+    if atr is None or atr == 0:
+        return None
+
+    if (is_bullish_candle(open1, close1) and
+            body1 >= 0.6 * atr and
+            body2 <= 0.3 * body1 and
+            min(open2, close2) >= close1 * 0.995 and  # Day 2 at or above Day 1 close
+            is_bearish_candle(open3, close3) and
+            body3 >= 0.6 * atr and
+            close3 <= (open1 + close1) / 2):
+        return {"pattern": "evening_star", "signal": "bearish", "confidence": 72.0}
+
+    return None
+
+
+def detect_three_white_soldiers(idx: int, opens: List[float], highs: List[float],
                                 lows: List[float], closes: List[float], atr: float) -> Optional[Dict]:
-    """
-    Detect Three White Soldiers pattern (Bullish Continuation).
-    
-    Criteria:
-    - Three consecutive bullish candles
-    - Each opens within previous body
-    - Each closes near highs (< 20% shadow)
-    - Progressive highs
-    """
     if idx < 2 or idx >= len(opens):
         return None
-    
-    bodies = []
+
+    if atr is None or atr == 0:
+        return None
+
     for i in range(idx - 2, idx + 1):
-        open_p = opens[i]
-        close = closes[i]
-        high = highs[i]
-        
-        # Must be bullish
-        if not is_bullish_candle(open_p, close):
+        op, cl, hi, lo = opens[i], closes[i], highs[i], lows[i]
+        if not is_bullish_candle(op, cl):
             return None
-        
-        # Must close near highs
-        upper_shadow = calculate_upper_shadow(high, open_p, close)
-        total_range = high - lows[i]
-        if total_range > 0 and upper_shadow / total_range > 0.2:
+        total_range = hi - lo
+        if total_range == 0:
             return None
-        
-        bodies.append(calculate_body_size(open_p, close))
-    
-    # Check opens within previous body
+        # Body must be substantial and candle must close near its high
+        if calculate_body_size(op, cl) < 0.4 * atr:
+            return None
+        if calculate_upper_shadow(hi, op, cl) / total_range > 0.25:
+            return None
+
     for i in range(1, 3):
-        prev_idx = idx - 3 + i
-        curr_idx = idx - 3 + i + 1
-        if opens[curr_idx] <= opens[prev_idx] or opens[curr_idx] >= closes[prev_idx]:
+        prev_i, curr_i = idx - 3 + i, idx - 3 + i + 1
+        if not (opens[prev_i] < opens[curr_i] < closes[prev_i]):
             return None
-    
-    # Check progressive highs
+
     if not (highs[idx - 2] < highs[idx - 1] < highs[idx]):
         return None
-    
-    confidence = 80
-    
-    return {
-        "pattern": "three_white_soldiers",
-        "signal": "bullish",
-        "confidence": round(confidence, 0)
-    }
+
+    return {"pattern": "three_white_soldiers", "signal": "bullish", "confidence": 75.0}
 
 
-def detect_three_black_crows(idx: int, opens: List[float], highs: List[float], 
-                            lows: List[float], closes: List[float], atr: float) -> Optional[Dict]:
-    """
-    Detect Three Black Crows pattern (Bearish Continuation).
-    
-    Criteria:
-    - Three consecutive bearish candles
-    - Each opens within previous body
-    - Each closes near lows (< 20% shadow)
-    - Progressive lows
-    """
+def detect_three_black_crows(idx: int, opens: List[float], highs: List[float],
+                             lows: List[float], closes: List[float], atr: float) -> Optional[Dict]:
     if idx < 2 or idx >= len(opens):
         return None
-    
-    bodies = []
+
+    if atr is None or atr == 0:
+        return None
+
     for i in range(idx - 2, idx + 1):
-        open_p = opens[i]
-        close = closes[i]
-        low = lows[i]
-        
-        # Must be bearish
-        if not is_bearish_candle(open_p, close):
+        op, cl, hi, lo = opens[i], closes[i], highs[i], lows[i]
+        if not is_bearish_candle(op, cl):
             return None
-        
-        # Must close near lows
-        lower_shadow = calculate_lower_shadow(low, open_p, close)
-        total_range = highs[i] - low
-        if total_range > 0 and lower_shadow / total_range > 0.2:
+        total_range = hi - lo
+        if total_range == 0:
             return None
-        
-        bodies.append(calculate_body_size(open_p, close))
-    
-    # Check opens within previous body
+        if calculate_body_size(op, cl) < 0.4 * atr:
+            return None
+        if calculate_lower_shadow(lo, op, cl) / total_range > 0.25:
+            return None
+
     for i in range(1, 3):
-        prev_idx = idx - 3 + i
-        curr_idx = idx - 3 + i + 1
-        if opens[curr_idx] >= opens[prev_idx] or opens[curr_idx] <= closes[prev_idx]:
+        prev_i, curr_i = idx - 3 + i, idx - 3 + i + 1
+        if not (closes[prev_i] < opens[curr_i] < opens[prev_i]):
             return None
-    
-    # Check progressive lows
+
     if not (lows[idx - 2] > lows[idx - 1] > lows[idx]):
         return None
-    
-    confidence = 80
-    
-    return {
-        "pattern": "three_black_crows",
-        "signal": "bearish",
-        "confidence": round(confidence, 0)
-    }
+
+    return {"pattern": "three_black_crows", "signal": "bearish", "confidence": 75.0}
+
+
+def detect_piercing_line(idx: int, opens: List[float], highs: List[float],
+                         lows: List[float], closes: List[float], atr: float) -> Optional[Dict]:
+    """Bullish 2-candle reversal: Day 1 long bearish; Day 2 gaps below Day 1 low, closes above midpoint."""
+    if idx < 1 or idx >= len(opens):
+        return None
+
+    open1, close1 = opens[idx - 1], closes[idx - 1]
+    open2, close2 = opens[idx],     closes[idx]
+    body1 = calculate_body_size(open1, close1)
+
+    if atr is None or atr == 0:
+        return None
+
+    if (is_bearish_candle(open1, close1) and
+            body1 >= 0.5 * atr and
+            is_bullish_candle(open2, close2) and
+            open2 < lows[idx - 1] and
+            close2 > (open1 + close1) / 2 and
+            close2 < open1):                 # stops short of full engulf
+        return {"pattern": "piercing_line", "signal": "bullish", "confidence": 68.0}
+
+    return None
+
+
+def detect_dark_cloud_cover(idx: int, opens: List[float], highs: List[float],
+                            lows: List[float], closes: List[float], atr: float) -> Optional[Dict]:
+    """Bearish 2-candle reversal: Day 1 long bullish; Day 2 gaps above Day 1 high, closes below midpoint."""
+    if idx < 1 or idx >= len(opens):
+        return None
+
+    open1, close1 = opens[idx - 1], closes[idx - 1]
+    open2, close2 = opens[idx],     closes[idx]
+    body1 = calculate_body_size(open1, close1)
+
+    if atr is None or atr == 0:
+        return None
+
+    if (is_bullish_candle(open1, close1) and
+            body1 >= 0.5 * atr and
+            is_bearish_candle(open2, close2) and
+            open2 > highs[idx - 1] and
+            close2 < (open1 + close1) / 2 and
+            close2 > open1):                # stops short of full engulf
+        return {"pattern": "dark_cloud_cover", "signal": "bearish", "confidence": 68.0}
+
+    return None
+
+
+# Trend directions that invalidate each pattern (hard gate)
+_PATTERN_TREND_GATE: Dict[str, List[str]] = {
+    "hammer":               ["uptrend"],
+    "shooting_star":        ["downtrend"],
+    "bullish_engulfing":    ["uptrend"],
+    "bearish_engulfing":    ["downtrend"],
+    "morning_star":         ["uptrend"],
+    "evening_star":         ["downtrend"],
+    "three_white_soldiers": ["downtrend"],
+    "three_black_crows":    ["uptrend"],
+    "piercing_line":        ["uptrend"],
+    "dark_cloud_cover":     ["downtrend"],
+}
+
+_PATTERN_CANDLES: Dict[str, int] = {
+    "hammer": 1, "shooting_star": 1,
+    "bullish_engulfing": 2, "bearish_engulfing": 2,
+    "piercing_line": 2, "dark_cloud_cover": 2,
+    "morning_star": 3, "evening_star": 3,
+    "three_white_soldiers": 3, "three_black_crows": 3,
+}
 
 
 def check_confirmation(pattern_signal: str, pattern_idx: int, highs: List[float], 
@@ -471,103 +435,83 @@ def calculate_days_ago(pattern_date: str, dates: List[str]) -> int:
         return 0
 
 
-def scan_patterns_last_7days(opens: List[float], highs: List[float], 
-                             lows: List[float], closes: List[float], 
-                             volumes: List[int], atr: float, 
+def scan_patterns_last_7days(opens: List[float], highs: List[float],
+                             lows: List[float], closes: List[float],
+                             volumes: List[int], atr: float,
                              dates: List[str]) -> List[Dict]:
     """
-    Scan last 7 trading days for candlestick patterns with confirmation.
-    
-    Returns list of detected patterns sorted by date (oldest first).
-    Only returns confirmed or pending patterns (skips failed confirmations).
-    
-    Args:
-        opens: List of opening prices
-        highs: List of high prices
-        lows: List of low prices
-        closes: List of closing prices
-        volumes: List of volumes
-        atr: Average True Range value
-        dates: List of date strings (YYYY-MM-DD format)
-    
-    Returns:
-        List of pattern dictionaries with keys:
-        - date: Pattern date (YYYY-MM-DD)
-        - days_ago: Days since pattern
-        - pattern: Pattern name
-        - signal: "bullish" or "bearish"
-        - confidence: Confidence score (0-100)
-        - status: "confirmed" or "pending"
+    Scan last 7 trading days for hardened candlestick patterns.
+
+    Per-day logic:
+    - All 10 detectors are run; only the highest-confidence pattern per day is kept.
+    - Trend-context gate: bullish reversals require prior downtrend; bearish require uptrend.
+    - Volume confirmation (20-day avg): +10 pts if ≥1.5×, +5 pts if ≥1.2×.
+    - Patterns below CONF_FLOOR after boost are discarded.
     """
-    if len(opens) < 8:  # Need at least 8 days (7 to analyze + 1 for confirmation)
+    if len(opens) < 8:
         return []
-    
+
     patterns = []
-    
-    # Analyze last 7 trading days (need 8 days of data to check confirmation for day 7)
     start_idx = max(0, len(opens) - 7)
-    
+
     for idx in range(start_idx, len(opens)):
-        detected = None
-        
-        # Single candle patterns
-        hammer = detect_hammer(idx, opens, highs, lows, closes, atr)
-        if hammer:
-            detected = hammer
-        
-        shooting_star = detect_shooting_star(idx, opens, highs, lows, closes, atr)
-        if shooting_star:
-            detected = shooting_star
-        
-        # Two candle patterns
+        trend                  = prior_trend(closes, idx)
+        vol_ratio, vol_confirmed = compute_volume_confirmation(volumes, idx)
+        vol_boost              = _vol_confidence_boost(vol_ratio)
+
+        candidates: Dict[str, Dict] = {}
+
+        def _try(result: Optional[Dict]) -> None:
+            if result is None:
+                return
+            pname = result["pattern"]
+            if trend in _PATTERN_TREND_GATE.get(pname, []):
+                return
+            adj_conf = min(95, result["confidence"] + vol_boost)
+            if adj_conf < CONF_FLOOR:
+                return
+            if pname not in candidates or adj_conf > candidates[pname]["confidence"]:
+                candidates[pname] = {**result, "confidence": adj_conf}
+
+        _try(detect_hammer(idx, opens, highs, lows, closes, atr))
+        _try(detect_shooting_star(idx, opens, highs, lows, closes, atr))
+
         if idx >= 1:
-            bullish_eng = detect_bullish_engulfing(idx, opens, highs, lows, closes, volumes, atr)
-            if bullish_eng:
-                detected = bullish_eng
-            
-            bearish_eng = detect_bearish_engulfing(idx, opens, highs, lows, closes, volumes, atr)
-            if bearish_eng:
-                detected = bearish_eng
-        
-        # Three candle patterns
+            _try(detect_bullish_engulfing(idx, opens, highs, lows, closes, atr))
+            _try(detect_bearish_engulfing(idx, opens, highs, lows, closes, atr))
+            _try(detect_piercing_line(idx, opens, highs, lows, closes, atr))
+            _try(detect_dark_cloud_cover(idx, opens, highs, lows, closes, atr))
+
         if idx >= 2:
-            morning = detect_morning_star(idx, opens, highs, lows, closes, atr)
-            if morning:
-                detected = morning
-            
-            evening = detect_evening_star(idx, opens, highs, lows, closes, atr)
-            if evening:
-                detected = evening
-            
-            soldiers = detect_three_white_soldiers(idx, opens, highs, lows, closes, atr)
-            if soldiers:
-                detected = soldiers
-            
-            crows = detect_three_black_crows(idx, opens, highs, lows, closes, atr)
-            if crows:
-                detected = crows
-        
-        # If pattern detected, check confirmation and add to results
-        if detected:
-            status = check_confirmation(detected["signal"], idx, highs, lows, closes)
-            
-            # Only include confirmed or pending patterns (skip failed)
-            if status in ["confirmed", "pending"]:
-                pattern_date = dates[idx] if idx < len(dates) else ""
-                days_ago = calculate_days_ago(pattern_date, dates)
-                
-                patterns.append({
-                    "date": pattern_date,
-                    "days_ago": days_ago,
-                    "pattern": detected["pattern"],
-                    "signal": detected["signal"],
-                    "confidence": detected["confidence"],
-                    "status": status
-                })
-    
-    # Sort by date (oldest first) for chronological display
+            _try(detect_morning_star(idx, opens, highs, lows, closes, atr))
+            _try(detect_evening_star(idx, opens, highs, lows, closes, atr))
+            _try(detect_three_white_soldiers(idx, opens, highs, lows, closes, atr))
+            _try(detect_three_black_crows(idx, opens, highs, lows, closes, atr))
+
+        if not candidates:
+            continue
+
+        best   = max(candidates.values(), key=lambda x: x["confidence"])
+        status = check_confirmation(best["signal"], idx, highs, lows, closes)
+        if status not in ("confirmed", "pending"):
+            continue
+
+        pattern_date = dates[idx] if idx < len(dates) else ""
+        patterns.append({
+            "date":             pattern_date,
+            "days_ago":         calculate_days_ago(pattern_date, dates),
+            "pattern":          best["pattern"],
+            "signal":           best["signal"],
+            "confidence":       best["confidence"],
+            "status":           status,
+            "category":         "candlestick",
+            "candles":          _PATTERN_CANDLES.get(best["pattern"], 1),
+            "volume_ratio":     vol_ratio,
+            "volume_confirmed": vol_confirmed,
+            "trend_context_ok": True,
+        })
+
     patterns.sort(key=lambda x: x["date"])
-    
     return patterns
 
 
