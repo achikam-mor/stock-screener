@@ -258,36 +258,33 @@ function displayCurrentPage() {
     document.getElementById('current-page').textContent = currentPage;
 }
 
-function renderPatternDots(patterns) {
+function renderPatternChips(patterns) {
     if (!patterns || patterns.length === 0) {
         return '<span class="no-patterns">—</span>';
     }
-    
-    // Sort patterns by date (oldest first) for left-to-right chronological display
-    const sortedPatterns = [...patterns].sort((a, b) => a.date.localeCompare(b.date));
-    
-    return sortedPatterns.map(pattern => {
-        const { signal, status, confidence, days_ago, pattern: patternName, date } = pattern;
-        
-        // Determine color class
-        let colorClass = '';
-        if (signal === 'bullish' && status === 'confirmed') colorClass = 'pattern-dot-green';
-        else if (signal === 'bullish' && status === 'pending') colorClass = 'pattern-dot-yellow';
-        else if (signal === 'bearish' && status === 'pending') colorClass = 'pattern-dot-orange';
-        else if (signal === 'bearish' && status === 'confirmed') colorClass = 'pattern-dot-red';
-        
-        // Format pattern name for display
-        const displayName = patternName.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+
+    const sorted = [...patterns].sort((a, b) => a.date.localeCompare(b.date));
+
+    return sorted.map(p => {
+        const { signal, status, confidence, pattern: name, date,
+                volume_confirmed, volume_ratio } = p;
+
+        const displayName = name.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+        const [y, mo, d] = date.split('-');
+        const formattedDate = `${parseInt(mo)}/${parseInt(d)}`;
+
+        const chipClass  = signal === 'bullish' ? 'chip-bullish' : 'chip-bearish';
+        const pendingCls = status === 'pending'  ? ' chip-pending' : '';
         const statusIcon = status === 'confirmed' ? '✅' : '⏳';
-        
-        // Format date (MM/DD)
-        const dateObj = new Date(date);
-        const formattedDate = `${dateObj.getMonth() + 1}/${dateObj.getDate()}`;
-        
-        // Create tooltip
-        const tooltip = `Pattern: ${displayName} | Signal: ${signal.charAt(0).toUpperCase() + signal.slice(1)} | Status: ${status.charAt(0).toUpperCase() + status.slice(1)} ${statusIcon} | Date: ${date} | Confidence: ${confidence}%`;
-        
-        return `<div class="pattern-item"><span class="pattern-dot ${colorClass}" title="${tooltip}"></span><span class="pattern-date">${formattedDate}</span></div>`;
+        const volIcon    = volume_confirmed ? ' 🔊' : '';
+        const volText    = volume_ratio ? `${volume_ratio}× vol` : 'vol n/a';
+
+        const tooltip = `${displayName} | ${signal.charAt(0).toUpperCase() + signal.slice(1)} ` +
+                        `${statusIcon} | ${date} | Confidence: ${confidence}% | Volume: ${volText}`;
+
+        return `<span class="pattern-chip ${chipClass}${pendingCls}" title="${tooltip}">` +
+               `${displayName}&nbsp;${statusIcon}${volIcon}` +
+               `<span class="chip-date">${formattedDate}</span></span>`;
     }).join('');
 }
 
