@@ -29,6 +29,15 @@
           "value": "public, max-age=300, s-maxage=300"
         }
       ]
+    },
+    {
+      "source": "/stock-names.json",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400, s-maxage=86400"
+        }
+      ]
     }
   ]
 }

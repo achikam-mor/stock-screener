@@ -1,5 +1,7 @@
 // Common functionality shared across all pages
 let globalData = null;
+let stockNames = {};
+let searchIndex = [];
 
 // ============================================
 // PWA SERVICE WORKER REGISTRATION
@@ -160,6 +162,74 @@ async function loadResults() {
     }
 }
 
+async function loadStockNames() {
+    try {
+        const res = await fetch('stock-names.json');
+        if (!res.ok) return;
+        stockNames = await res.json();
+        searchIndex = Object.entries(stockNames).map(([ticker, name]) => ({
+            ticker,
+            name: name || ticker,
+            tickerLower: ticker.toLowerCase(),
+            nameLower: (name || '').toLowerCase()
+        }));
+    } catch (_) { /* autocomplete degrades gracefully if file is missing */ }
+}
+
+function getSuggestions(query, limit = 5) {
+    const q = query.trim().toLowerCase();
+    if (!q || !searchIndex.length) return [];
+    const results = [];
+    for (const s of searchIndex) {
+        const tickerMatch = s.tickerLower.startsWith(q);
+        const nameMatch = s.nameLower.startsWith(q) ||
+                          s.nameLower.split(' ').some(w => w.startsWith(q));
+        if (tickerMatch || nameMatch) {
+            results.push({ ...s, rank: tickerMatch ? 0 : 1 });
+            if (results.length >= limit * 4) break;
+        }
+    }
+    results.sort((a, b) => a.rank - b.rank || a.ticker.localeCompare(b.ticker));
+    return results.slice(0, limit);
+}
+
+function renderDropdown(suggestions) {
+    const ul = document.getElementById('search-suggestions');
+    if (!ul) return;
+    if (!suggestions.length) { closeDropdown(); return; }
+    ul.innerHTML = suggestions.map(s =>
+        `<li data-ticker="${s.ticker}">` +
+        `<span class="suggestion-ticker">${s.ticker}</span>` +
+        `<span class="suggestion-name">${s.name}</span>` +
+        `</li>`
+    ).join('');
+    ul.querySelectorAll('li').forEach(li => {
+        li.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            const inp = document.getElementById('ticker-search');
+            if (inp) inp.value = li.dataset.ticker;
+            closeDropdown();
+            searchTicker();
+        });
+    });
+    ul.classList.add('open');
+}
+
+function closeDropdown() {
+    const ul = document.getElementById('search-suggestions');
+    if (ul) { ul.classList.remove('open'); ul.innerHTML = ''; }
+}
+
+function resolveByName(query) {
+    const q = query.toLowerCase();
+    if (!searchIndex.length) return null;
+    const hit = searchIndex.find(s =>
+        s.nameLower.startsWith(q) ||
+        s.nameLower.split(' ').some(w => w.startsWith(q))
+    );
+    return hit ? hit.ticker : null;
+}
+
 // Update timestamp display
 function updateTimestamp(data) {
     const timestamp = new Date(data.timestamp);
@@ -222,6 +292,14 @@ async function searchTicker() {
     if (inFiltered) {
         handleSearchResult('filtered', ticker, 'Filtered Stocks');
         return;
+    }
+
+    // Try resolving as company name before showing not-found
+    const resolvedTicker = resolveByName(ticker);
+    if (resolvedTicker && resolvedTicker !== ticker) {
+        const inp = document.getElementById('ticker-search');
+        if (inp) inp.value = resolvedTicker;
+        return searchTicker();
     }
 
     showNotification(`Ticker "${ticker}" not found`, 'error');
@@ -386,16 +464,59 @@ function showNotificationWithRedirect(ticker, listName, targetPage) {
     }, 5000);
 }
 
-// Allow Enter key to trigger search
+// Allow Enter key to trigger search; inject autocomplete dropdown
 document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('ticker-search');
     if (searchInput) {
+        const container = searchInput.closest('.search-container');
+        if (container) {
+            const ul = document.createElement('ul');
+            ul.id = 'search-suggestions';
+            ul.className = 'search-suggestions';
+            container.appendChild(ul);
+        }
+
         searchInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
+                const active = document.querySelector('#search-suggestions li.active');
+                if (active) {
+                    searchInput.value = active.dataset.ticker;
+                    closeDropdown();
+                }
                 searchTicker();
             }
         });
+
+        let _sbDebounce;
+        searchInput.addEventListener('input', () => {
+            clearTimeout(_sbDebounce);
+            _sbDebounce = setTimeout(() => renderDropdown(getSuggestions(searchInput.value)), 120);
+        });
+
+        searchInput.addEventListener('keydown', (e) => {
+            const items = Array.from(document.querySelectorAll('#search-suggestions li'));
+            if (!items.length) return;
+            const idx = items.findIndex(el => el.classList.contains('active'));
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                items.forEach(el => el.classList.remove('active'));
+                items[Math.min(idx + 1, items.length - 1)].classList.add('active');
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                items.forEach(el => el.classList.remove('active'));
+                items[Math.max(idx - 1, 0)].classList.add('active');
+            } else if (e.key === 'Escape') {
+                closeDropdown();
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            const cont = searchInput.closest('.search-container');
+            if (cont && !cont.contains(e.target)) closeDropdown();
+        });
     }
+
+    loadStockNames();
 });
 
 // Auto-refresh every 5 minutes

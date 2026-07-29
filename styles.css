@@ -141,6 +141,7 @@ h1 {
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
+    position: relative;
 }
 
 .search-notification {
@@ -190,6 +191,62 @@ h1 {
 .redirect-btn:hover {
     background: #2563eb;
     transform: translateY(-1px);
+}
+
+/* Autocomplete suggestion dropdown */
+.search-suggestions {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 340px;
+    max-width: 90vw;
+    background: var(--card-bg, #1e293b);
+    border: 1px solid var(--border-color, #334155);
+    border-radius: 10px;
+    list-style: none;
+    margin: 0;
+    padding: 4px 0;
+    z-index: 1000;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    display: none;
+}
+
+.search-suggestions.open { display: block; }
+
+.search-suggestions li {
+    padding: 10px 16px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: var(--text-primary, #e2e8f0);
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+    transition: background 0.15s;
+}
+
+.search-suggestions li:hover,
+.search-suggestions li.active {
+    background: rgba(59, 130, 246, 0.15);
+    color: #3b82f6;
+}
+
+.search-suggestions li .suggestion-ticker {
+    font-weight: 700;
+    min-width: 60px;
+}
+
+.search-suggestions li .suggestion-name {
+    color: var(--text-secondary, #94a3b8);
+    font-size: 0.85rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.search-suggestions li:hover .suggestion-name,
+.search-suggestions li.active .suggestion-name {
+    color: inherit;
 }
 
 /* Filter Styles */

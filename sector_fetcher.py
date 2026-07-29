@@ -57,11 +57,13 @@ def fetch_single_stock_info(ticker: str) -> dict:
             if info and isinstance(info, dict):
                 sector = info.get('sector')
                 industry = info.get('industry')
+                name = info.get('longName') or info.get('shortName')
                 
                 # Check if we got valid data
                 if sector or industry:
                     return {
                         'ticker': ticker,
+                        'name': name,
                         'sector': sector if sector else None,
                         'industry': industry if industry else None,
                         'success': True
@@ -72,6 +74,7 @@ def fetch_single_stock_info(ticker: str) -> dict:
         # No data found
         return {
             'ticker': ticker,
+            'name': None,
             'sector': None,
             'industry': None,
             'success': False
@@ -80,6 +83,7 @@ def fetch_single_stock_info(ticker: str) -> dict:
     except Exception as e:
         return {
             'ticker': ticker,
+            'name': None,
             'sector': None,
             'industry': None,
             'success': False
@@ -105,6 +109,7 @@ def fetch_all_sectors_and_industries(tickers: list, max_workers: int = 5):
     industries_by_name = defaultdict(list)
     stocks_by_industry = {}
     
+    names_data = {}
     total = len(tickers)
     success_count = 0
     failed_count = 0
@@ -131,6 +136,7 @@ def fetch_all_sectors_and_industries(tickers: list, max_workers: int = 5):
                 ticker = result['ticker']
                 sector = result['sector']
                 industry = result['industry']
+                names_data[ticker] = result.get('name') or ticker
                 
                 if sector:
                     sectors_by_name[sector].append(ticker)
@@ -176,7 +182,7 @@ def fetch_all_sectors_and_industries(tickers: list, max_workers: int = 5):
         'success_count': success_count
     }
     
-    return sectors_data, industries_data
+    return sectors_data, industries_data, names_data
 
 
 def save_to_json(data: dict, filepath: str):
@@ -200,7 +206,7 @@ def main():
     
     print(f"📋 Loaded {len(tickers)} tickers from AllStocks.txt")
     
-    sectors_data, industries_data = fetch_all_sectors_and_industries(
+    sectors_data, industries_data, names_data = fetch_all_sectors_and_industries(
         tickers, 
         max_workers=5
     )
@@ -219,6 +225,7 @@ def main():
     print("\n" + "=" * 60)
     save_to_json(sectors_data, "sectors.json")
     save_to_json(industries_data, "industries.json")
+    save_to_json(names_data, "stock-names.json")
     
     print("\n✅ Done!")
 

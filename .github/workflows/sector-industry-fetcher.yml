@@ -34,7 +34,7 @@ jobs:
       run: |
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
         git config --local user.name "github-actions[bot]"
-        git add sectors.json industries.json
+        git add sectors.json industries.json stock-names.json
         git diff --quiet && git diff --staged --quiet || (git commit -m "Update sector and industry data - $(date +'%Y-%m-%d')" && git push)
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

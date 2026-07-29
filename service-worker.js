@@ -3,9 +3,9 @@
  * Provides offline support and caching for better performance
  */
 
-const CACHE_NAME = 'stock-screener-v13';
-const STATIC_CACHE = 'static-v13';
-const DATA_CACHE = 'data-v13';
+const CACHE_NAME = 'stock-screener-v14';
+const STATIC_CACHE = 'static-v14';
+const DATA_CACHE = 'data-v14';
 
 // Derive base path dynamically — works for both root and subdirectory deployments
 // e.g. '/stock-screener/' when served from a GitHub Pages project page
@@ -34,7 +34,8 @@ const STATIC_ASSETS = [
     SW_BASE + 'favorites.js',
     SW_BASE + 'market-overview.js',
     SW_BASE + 'stock-notes.js',
-    SW_BASE + 'pattern-detector.js'
+    SW_BASE + 'pattern-detector.js',
+    SW_BASE + 'stock-names.json'
 ];
 
 // External CDN resources to cache
