@@ -166,8 +166,7 @@
       "KB",
       "KEY",
       "LYG",
-      "MFG",
-      "MTB"
+      "MFG"
     ],
     "Beverages - Brewers": [
       "ABEV",
@@ -738,7 +737,10 @@
       "MFAO",
       "MMC",
       "MPW",
+      "MSTR",
       "MSTY",
+      "MT",
+      "MTB",
       "MTCH",
       "MTD",
       "MTDR",
@@ -1495,8 +1497,7 @@
       "GWRE",
       "HUBS",
       "INTU",
-      "KVYO",
-      "MSTR"
+      "KVYO"
     ],
     "Software - Infrastructure": [
       "AI",
@@ -1587,8 +1588,7 @@
     ],
     "Steel": [
       "CLF",
-      "GGB",
-      "MT"
+      "GGB"
     ],
     "Telecom Services": [
       "AD",
@@ -2538,10 +2538,10 @@
     "MSGS": "Entertainment",
     "MSI": "Communication Equipment",
     "MSM": "Industrial Distribution",
-    "MSTR": "Software - Application",
+    "MSTR": "Other",
     "MSTY": "Other",
-    "MT": "Steel",
-    "MTB": "Banks - Regional",
+    "MT": "Other",
+    "MTB": "Other",
     "MTCH": "Other",
     "MTD": "Other",
     "MTDR": "Other",
@@ -3225,7 +3225,7 @@
     "Utilities - Renewable",
     "Waste Management"
   ],
-  "last_updated": "2026-07-29T05:17:26.149464",
+  "last_updated": "2026-07-29T05:43:37.707941",
   "total_stocks": 1409,
-  "success_count": 808
+  "success_count": 805
 }

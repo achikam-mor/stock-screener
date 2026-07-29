@@ -60,8 +60,7 @@
       "LYB",
       "MLM",
       "MOS",
-      "MP",
-      "MT"
+      "MP"
     ],
     "Communication Services": [
       "AD",
@@ -432,8 +431,7 @@
       "MFG",
       "MKL",
       "MS",
-      "MSCI",
-      "MTB"
+      "MSCI"
     ],
     "Healthcare": [
       "A",
@@ -693,7 +691,10 @@
       "MFAO",
       "MMC",
       "MPW",
+      "MSTR",
       "MSTY",
+      "MT",
+      "MTB",
       "MTCH",
       "MTD",
       "MTDR",
@@ -1389,8 +1390,7 @@
       "MCHP",
       "MPWR",
       "MSFT",
-      "MSI",
-      "MSTR"
+      "MSI"
     ],
     "Utilities": [
       "AEE",
@@ -2294,10 +2294,10 @@
     "MSGS": "Communication Services",
     "MSI": "Technology",
     "MSM": "Industrials",
-    "MSTR": "Technology",
+    "MSTR": "Other",
     "MSTY": "Other",
-    "MT": "Basic Materials",
-    "MTB": "Financial Services",
+    "MT": "Other",
+    "MTB": "Other",
     "MTCH": "Other",
     "MTD": "Other",
     "MTDR": "Other",
@@ -2859,7 +2859,7 @@
     "Technology",
     "Utilities"
   ],
-  "last_updated": "2026-07-29T05:17:26.148986",
+  "last_updated": "2026-07-29T05:43:37.707501",
   "total_stocks": 1409,
-  "success_count": 808
+  "success_count": 805
 }
