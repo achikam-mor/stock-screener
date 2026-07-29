@@ -169,7 +169,7 @@ async function loadStockNames() {
         stockNames = await res.json();
         searchIndex = Object.entries(stockNames).map(([ticker, name]) => ({
             ticker,
-            name: name || ticker,
+            name: name || '',          // empty when name unavailable; ticker autocomplete still works
             tickerLower: ticker.toLowerCase(),
             nameLower: (name || '').toLowerCase()
         }));
@@ -200,7 +200,7 @@ function renderDropdown(suggestions) {
     ul.innerHTML = suggestions.map(s =>
         `<li data-ticker="${s.ticker}">` +
         `<span class="suggestion-ticker">${s.ticker}</span>` +
-        `<span class="suggestion-name">${s.name}</span>` +
+        (s.name ? `<span class="suggestion-name">${s.name}</span>` : '') +
         `</li>`
     ).join('');
     ul.querySelectorAll('li').forEach(li => {

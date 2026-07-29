@@ -15,7 +15,8 @@ def fetch_name(ticker: str) -> tuple[str, str | None]:
     try:
         info = yf.Ticker(ticker).info
         if info and isinstance(info, dict):
-            name = info.get('longName') or info.get('shortName')
+            name = (info.get('longName') or info.get('shortName') or
+                    info.get('displayName') or info.get('name'))
             return ticker, name
     except Exception:
         pass
@@ -37,7 +38,7 @@ def main():
         batch = tickers[batch_start:batch_start + batch_size]
         with ThreadPoolExecutor(max_workers=5) as executor:
             for ticker, name in executor.map(fetch_name, batch):
-                names[ticker] = name or ticker
+                names[ticker] = name  # None when yfinance couldn't return a name
                 processed += 1
         pct = processed * 100 // len(tickers)
         print(f'   {processed}/{len(tickers)} ({pct}%)')

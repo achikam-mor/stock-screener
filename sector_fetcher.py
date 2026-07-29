@@ -57,9 +57,9 @@ def fetch_single_stock_info(ticker: str) -> dict:
             if info and isinstance(info, dict):
                 sector = info.get('sector')
                 industry = info.get('industry')
-                name = info.get('longName') or info.get('shortName')
+                name = (info.get('longName') or info.get('shortName') or
+                        info.get('displayName') or info.get('name'))
                 
-                # Check if we got valid data
                 if sector or industry:
                     return {
                         'ticker': ticker,
@@ -67,6 +67,15 @@ def fetch_single_stock_info(ticker: str) -> dict:
                         'sector': sector if sector else None,
                         'industry': industry if industry else None,
                         'success': True
+                    }
+                elif name:
+                    # Has a name but no sector/industry — still capture the name
+                    return {
+                        'ticker': ticker,
+                        'name': name,
+                        'sector': None,
+                        'industry': None,
+                        'success': False
                     }
         except Exception as e:
             pass
@@ -136,7 +145,7 @@ def fetch_all_sectors_and_industries(tickers: list, max_workers: int = 5):
                 ticker = result['ticker']
                 sector = result['sector']
                 industry = result['industry']
-                names_data[ticker] = result.get('name') or ticker
+                names_data[ticker] = result.get('name')  # None when name unavailable
                 
                 if sector:
                     sectors_by_name[sector].append(ticker)
