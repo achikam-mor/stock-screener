@@ -8,8 +8,9 @@
 'J', 'JBTM', 'JCI', 'JPM', 'KB', 'KNTK', 'KNX', 'KR', 'KTB', 'LCII', 'LHX', 'LKQ', 'LLY', 'LVS', 'LYG', 
 'LYV', 'MAC', 'MCD', 'MFC', 'MLM', 'MMM', 'MOH', 'MOS', 'MRK', 'MS', 'MTB', 'MTD', 'MTG', 'MUSA', 'NFLX', 
 'NIO', 'NMR', 'NOV', 'NSA', 'NSC', 'NVDA', 'NWG', 'NWS', 'NWSA', 'NYT', 'OMC', 'OMF', 'OR', 'ORCL', 'OTIS', 
-'OWL', 'PAGS', 'PBH', 'PCOR', 'PFG', 'PH', 'PINS', 'PKG', 'PNC', 'POOL', 'PRI', 'PRKS', 'PRMB', 'PSO', 'R', 
-'REGN', 'REVG', 'RF', 'RHP', 'RJF', 'RLX', 'RRX', 'RTX', 'SAM', 'SAP', 'SBSW', 'SCHW', 'SFBS', 'SJM', 'SLF', 
-'SSB', 'ST', 'STM', 'STN', 'STZ', 'SU', 'SUN', 'SUZ', 'SVV', 'SW', 'SYF', 'TECK', 'TEVA', 'TFII', 'TIC', 
-'TKC', 'TMHC', 'TMO', 'TPL', 'TPR', 'TRGP', 'TSCO', 'TSLA', 'TSM', 'TXN', 'UAL', 'ULS', 'ULTA', 'UNF', 'UNH', 
-'UNM', 'UNP', 'USB', 'VALE', 'VG', 'VIST', 'VRTX', 'VSH', 'WDS', 'WELL', 'WES', 'WIT', 'WTW', 'WWW', 'YOU']
+'OWL', 'PAGS', 'PBH', 'PCOR', 'PDI', 'PFG', 'PH', 'PINS', 'PKG', 'PNC', 'POOL', 'PRI', 'PRKS', 'PRMB', 'PSO', 
+'R', 'RDY', 'REGN', 'REVG', 'RF', 'RHP', 'RJF', 'RLX', 'RRX', 'RTX', 'SAM', 'SAP', 'SBSW', 'SCHW', 'SFBS', 
+'SJM', 'SLF', 'SSB', 'ST', 'STM', 'STN', 'STZ', 'SU', 'SUN', 'SUZ', 'SVV', 'SW', 'SYF', 'TECK', 'TEVA', 
+'TFII', 'TIC', 'TKC', 'TMHC', 'TMO', 'TPL', 'TPR', 'TRGP', 'TSCO', 'TSLA', 'TSM', 'TXN', 'UAL', 'ULS', 'ULTA', 
+'UNF', 'UNH', 'UNM', 'UNP', 'USB', 'VALE', 'VG', 'VIST', 'VRTX', 'VSH', 'WDS', 'WELL', 'WES', 'WIT', 'WTW', 
+'WWW', 'YOU']
