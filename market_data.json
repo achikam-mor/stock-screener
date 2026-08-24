@@ -1,12 +1,12 @@
 {
   "cnn_fear_greed": {
-    "score": 55,
+    "score": 56,
     "rating": "greed",
-    "previous_close": 52,
+    "previous_close": 55,
     "available": true
   },
   "crypto_fear_greed": {
-    "score": 72,
+    "score": 73,
     "rating": "Greed",
     "available": true
   },
@@ -14,7 +14,7 @@
     "gold": {
       "name": "Gold",
       "symbol": "GC=F",
-      "price": 4661.6,
+      "price": 4722.1,
       "previous_close": 0,
       "change": 0,
       "change_percent": 0,
@@ -23,7 +23,7 @@
     "silver": {
       "name": "Silver",
       "symbol": "SI=F",
-      "price": 69.01,
+      "price": 68.97,
       "previous_close": 0,
       "change": 0,
       "change_percent": 0,
@@ -32,7 +32,7 @@
     "bitcoin": {
       "name": "Bitcoin",
       "symbol": "BTC-USD",
-      "price": 78153.4,
+      "price": 78790.89,
       "previous_close": 0,
       "change": 0,
       "change_percent": 0,
@@ -41,12 +41,12 @@
     "ethereum": {
       "name": "Ethereum",
       "symbol": "ETH-USD",
-      "price": 2481.09,
+      "price": 2499.2,
       "previous_close": 0,
       "change": 0,
       "change_percent": 0,
       "available": true
     }
   },
-  "last_updated": "2026-08-21T21:41:58.560838"
+  "last_updated": "2026-08-24T14:02:50.340697"
 }
