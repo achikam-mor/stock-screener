@@ -10,7 +10,7 @@
 'MMS', 'MOH', 'MS', 'MSGS', 'MSI', 'MTG', 'NCLH', 'NDAQ', 'NI', 'NMR', 'NOC', 'NSA', 'NSC', 'NTRS', 'NWG', 
 'NXPI', 'OC', 'OMC', 'ON', 'ONTO', 'ORA', 'OWL', 'PAC', 'PFG', 'PINS', 'PJT', 'POOL', 'POST', 'PRKS', 'PRU', 
 'PSN', 'PSO', 'QBTS', 'RACE', 'RBC', 'REGN', 'REVG', 'RGA', 'RJF', 'RLI', 'RY', 'RYAN', 'SA', 'SCHW', 'SGHC', 
-'SKE', 'SKY', 'SMFG', 'SNDR', 'SONY', 'SPOT', 'SUN', 'SW', 'TD', 'TDW', 'TEVA', 'TFX', 'TIC', 'TJX', 'TKC', 
-'TLK', 'TMHC', 'TPL', 'TREX', 'TRN', 'TRU', 'TSCO', 'TSLA', 'UI', 'ULS', 'UNF', 'UNH', 'UNM', 'URI', 'VG', 
-'VRSN', 'VST', 'WAB', 'WDC', 'WELL', 'WES', 'WIT', 'WMT', 'WSM', 'WU', 'WWW', 'YOU', 'YPF', 'ZBH', 'ZGN', 
-'ZS', 'ZTO']
+'SKE', 'SKY', 'SLF', 'SMFG', 'SNDR', 'SONY', 'SPOT', 'SUN', 'SW', 'TD', 'TDW', 'TEVA', 'TFX', 'TIC', 'TJX', 
+'TKC', 'TLK', 'TMHC', 'TPL', 'TREX', 'TRN', 'TRU', 'TSCO', 'TSLA', 'UI', 'ULS', 'UNF', 'UNH', 'UNM', 'URI', 
+'VG', 'VRSN', 'VST', 'WAB', 'WDC', 'WELL', 'WES', 'WIT', 'WMT', 'WSM', 'WU', 'WWW', 'YOU', 'YPF', 'ZBH', 
+'ZGN', 'ZS', 'ZTO']
