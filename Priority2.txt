@@ -10,7 +10,8 @@
 'MDU', 'MFC', 'MGY', 'MHK', 'MIR', 'MOD', 'MP', 'MSGE', 'MSGS', 'MSM', 'MSTY', 'MTCH', 'NAN', 'NDSN', 'NEE', 
 'NHI', 'NI', 'NMR', 'NOC', 'NSA', 'NVDA', 'NVO', 'NVT', 'NYT', 'O', 'OGS', 'OII', 'ON', 'ORCL', 'OTIS', 
 'PBH', 'PEG', 'PEP', 'PFG', 'PHI', 'PPL', 'PRMB', 'PRU', 'PUK', 'PYPL', 'QBTS', 'RACE', 'RBC', 'RCI', 'RCL', 
-'REVG', 'RGA', 'SAN', 'SARO', 'SBAC', 'SEI', 'SGI', 'SJM', 'SLGN', 'SMFG', 'SNN', 'SNX', 'SO', 'SOJC', 'SQM', 
-'SRE', 'STN', 'STT', 'SXT', 'TAC', 'TAP', 'TER', 'TGS', 'TJX', 'TKC', 'TME', 'TMHC', 'TMUS', 'TNL', 'TRN', 
-'TRV', 'TSCO', 'TSM', 'TTAM', 'TXT', 'UPS', 'VALE', 'VFC', 'VICI', 'VIPS', 'VMC', 'VOYA', 'VRT', 'VRTX', 'VTRS', 
-'WBD', 'WCC', 'WH', 'WHD', 'WOR', 'WSM', 'WSO', 'XEL', 'XPO', 'XYL', 'YPF', 'YUMC']
+'REVG', 'RGA', 'SAN', 'SAP', 'SBAC', 'SBSW', 'SGI', 'SIG', 'SJM', 'SLGN', 'SM', 'SNN', 'SNX', 'SO', 'SOJC', 
+'SOLV', 'SPNT', 'SQM', 'SRE', 'STN', 'STT', 'SUI', 'SXT', 'TAL', 'TAP', 'TEX', 'TGS', 'TJX', 'TKC', 'TME', 
+'TMHC', 'TMUS', 'TNL', 'TRN', 'TRV', 'TSCO', 'TSM', 'TSN', 'TV', 'TXT', 'UPS', 'VALE', 'VICI', 'VIPS', 'VMC', 
+'VOYA', 'VRTX', 'VST', 'VTRS', 'WBD', 'WCC', 'WEC', 'WEX', 'WF', 'WH', 'WHD', 'WSO', 'XEL', 'XPO', 'XYL', 
+'YPF', 'YUM', 'YUMC']

@@ -15,9 +15,9 @@
 'NOW', 'NRG', 'NTAP', 'NXE', 'ODFL', 'OGN', 'OKLO', 'OLN', 'ONON', 'ORA', 'OSCR', 'PAG', 'PANW', 'PAYC', 'PBF', 
 'PCG', 'PDI', 'PFSI', 'PHIN', 'PII', 'PIPR', 'PK', 'PL', 'PLNT', 'PLTR', 'PNR', 'PODD', 'POOL', 'POST', 'PRGO', 
 'PRIM', 'PRKS', 'PSN', 'PSX', 'QCOM', 'QS', 'QXO', 'RBA', 'RBRK', 'REZI', 'RH', 'RHI', 'RKT', 'RLX', 'RNG', 
-'ROL', 'RRX', 'RSI', 'RTO', 'RVTY', 'S', 'SAH', 'SAM', 'SAP', 'SBS', 'SFBS', 'SHAK', 'SHG', 'SIG', 'SITE', 
-'SMCI', 'SMG', 'SMR', 'SN', 'SNOW', 'SOLV', 'SPXC', 'SSL', 'STLA', 'STVN', 'STWD', 'STX', 'STZ', 'SWKS', 'SYK', 
-'TBBB', 'TECH', 'TENB', 'TEVA', 'TGLS', 'TGT', 'THC', 'TIMB', 'TLK', 'TMO', 'TNET', 'TPH', 'TPL', 'TPR', 'TSN', 
-'TTD', 'TU', 'TV', 'TWLO', 'TX', 'U', 'UAA', 'UGP', 'UI', 'ULS', 'UMC', 'UWMC', 'VAC', 'VEEV', 'VIV', 
-'VLO', 'VRNS', 'VSCO', 'VVV', 'W', 'WAT', 'WD', 'WDAY', 'WF', 'WHR', 'WIT', 'WK', 'WLK', 'WPP', 'WST', 
-'WU', 'WY', 'WYNN', 'XPEV', 'YELP', 'YOU', 'ZBRA', 'ZETA', 'ZS', 'ZTO', 'ZTS']
+'ROL', 'RRX', 'RSI', 'RTO', 'RVTY', 'S', 'SAH', 'SAM', 'SARO', 'SBS', 'SFBS', 'SHAK', 'SHG', 'SITE', 'SMCI', 
+'SMG', 'SMR', 'SN', 'SNOW', 'SPXC', 'SSL', 'STLA', 'STVN', 'STWD', 'STX', 'STZ', 'SWKS', 'SYK', 'TBBB', 'TECH', 
+'TENB', 'TEVA', 'TGLS', 'TGT', 'THC', 'TIMB', 'TLK', 'TMO', 'TNET', 'TPH', 'TPL', 'TPR', 'TTAM', 'TTD', 'TU', 
+'TWLO', 'TX', 'U', 'UAA', 'UGP', 'UI', 'ULS', 'UMC', 'UWMC', 'VAC', 'VEEV', 'VFC', 'VIV', 'VLO', 'VRNS', 
+'VRT', 'VSCO', 'VVV', 'W', 'WAT', 'WD', 'WDAY', 'WHR', 'WIT', 'WK', 'WLK', 'WPP', 'WST', 'WU', 'WY', 
+'WYNN', 'XPEV', 'YELP', 'YOU', 'ZBRA', 'ZETA', 'ZS', 'ZTO', 'ZTS']
